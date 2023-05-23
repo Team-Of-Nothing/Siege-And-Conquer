@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
@@ -18,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class MainMenu implements Screen{
 
     // mainly for access to batch
-    SAC game;
+    final private SAC game;
 
     // manages UI
     Stage stage;
@@ -28,7 +29,7 @@ public class MainMenu implements Screen{
     // manages UI size
     Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 
-    MainMenu(SAC game)
+    MainMenu(final SAC game)
     {
         this.game = game;
         stage = new Stage(viewport, game.batch);
@@ -58,7 +59,14 @@ public class MainMenu implements Screen{
             buttonInactive,
             buttonActive, // something has to be wrong with this
             null,font));
-            buttonPlay.getLabel().setColor(Color.GOLD);
+        buttonPlay.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+                dispose();
+            }
+        });
+        buttonPlay.getLabel().setColor(Color.GOLD);
         
 
         ImageTextButton buttonOptions = new ImageTextButton("Options", new ImageTextButton.ImageTextButtonStyle(
