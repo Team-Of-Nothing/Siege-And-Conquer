@@ -1,27 +1,22 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
-public class SAC extends ApplicationAdapter {
-	SpriteBatch batch;
+public class SAC extends Game {
+	public SpriteBatch batch;
 
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		setScreen(new MainMenu(this));
 
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(Color.BLACK);
-		batch.begin();
-
-		batch.end();
+		super.render();
 	}
 	
 	@Override
