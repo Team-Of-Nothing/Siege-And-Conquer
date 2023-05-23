@@ -1,13 +1,13 @@
 package com.mygdx.game;
 
-public class Tenant {
+public class Mercenary {
 
     private String name;
     private int speed;
     private int attack;
     private int defense;
 
-    public Tenant(String name, int speed, int attack, int defense) {
+    public Mercenary(String name, int speed, int attack, int defense) {
         this.name = name;
         this.speed = speed;
         this.attack = attack;
@@ -47,7 +47,7 @@ public class Tenant {
     }
 
 
-    public void attack(Tenant enemy) {
+    public void attack(Mercenary enemy) {
         enemy.setDefense(enemy.getDefense() - this.attack);
     }
 
