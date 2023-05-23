@@ -17,14 +17,18 @@ public class Gold {
             this.bonus = bonus;
         }
 
-        public void addGold() {
-            this.amount *= bonus;
+        public void addGold(int amount) {
+            this.amount = amount * bonus;
         }
 
-        public void subtractGold(int amount) {
+        // Returns true if the amount of gold is greater than or equal to the amount
+        public boolean subtractGold(int amount) {
             if (this.amount >= amount) {
                 this.amount -= amount;
+                return true;
             }
-            System.out.println("Not enough gold");
+            else {
+                return false;
+            }
         }
 }
