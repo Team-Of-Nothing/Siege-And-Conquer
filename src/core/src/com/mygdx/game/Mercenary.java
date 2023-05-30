@@ -16,10 +16,7 @@ public class Mercenary extends Actor {
     private int attack;
     private int defense;
 
-    private int action;
-
-    private Image img;
-
+    private File img;
     private File mp3_attack;
     private File mp3_death;
 
@@ -40,12 +37,8 @@ public class Mercenary extends Actor {
     public File setMp3_death(File mp3) {
         return this.mp3_death = mp3;
     }
-    public Image getImg() {
-        return img;
-    }
-    public Image setImg(Image img) {
-        return this.img = img;
-    }
+
+
 
     public int getId() {
         return id;
@@ -118,13 +111,10 @@ public class Mercenary extends Actor {
                 break;
         }
     }
-    public void Action(int action) throws IOException {
-        File file;
-        BufferedImage Image;
-        getId();
-        file = new File("core/assets/"+id+action+".png");
-        Image = ImageIO.read(file);
-        this.img = Image;
+
+    //Zwraca plik z obrazkiem akcji do animacji
+    public void Action(int action){
+        this.img = new File("core/assets/"+id+action+".png");
     }
 
     public void setSpeed(int speed) {
