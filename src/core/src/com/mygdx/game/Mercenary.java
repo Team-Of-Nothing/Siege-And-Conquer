@@ -2,12 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
-import javax.imageio.ImageIO;
-import java.io.IOException;
 
 public class Mercenary extends Actor {
 
@@ -15,15 +10,14 @@ public class Mercenary extends Actor {
     private int speed;
     private int attack;
     private int defense;
+    private int attack_bonus;
+    private int defense_bonus;
+    private int speed_bonus;
 
     private File img;
     private File mp3_attack;
     private File mp3_death;
 
-    public Mercenary (int id) {
-        this.id = id;
-        this.setStats(id);
-    }
 
     public File getMp3_attack() {
         return mp3_attack;
@@ -40,12 +34,25 @@ public class Mercenary extends Actor {
 
 
 
-    public int getId() {
-        return id;
+    public Mercenary (int id) {
+        this.id = id;
+        this.setStats(id);
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+
+    public int AttackBonus() {
+        return this.attack_bonus += 1;
+    }
+    public int DefenseBonus() {
+        return this.defense_bonus += 1;
+    }
+    public int SpeedBonus() {
+        return this.speed_bonus += 1;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getSpeed() {
@@ -140,11 +147,12 @@ public class Mercenary extends Actor {
 
 
 
+
     public void attack(Mercenary enemy) {
         enemy.setDefense(enemy.getDefense() - this.attack);
     }
 
-    public void upgradeStats() {
+    public void Merge() {
         double bonus = 1.5;
         this.speed *= bonus;
         this.attack *= bonus;
