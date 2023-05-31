@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,11 +17,15 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 
 
+//import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+//import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
 public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
     BitmapFont font = new BitmapFont();
-
+    SpriteBatch spriteBatch;
+    public Animation<TextureRegion> attackAnimation;
     GameScreen(final SAC game){
 
         this.game = game;
@@ -60,6 +64,28 @@ public class GameScreen implements Screen {
         });
         returnButton.getLabel().setColor(Color.GOLD);
 
+       /* Texture test = new Texture("./Lightning Mage/Attack_2.png");
+        TextureRegion[][] tmp = TextureRegion.split(test, test.getWidth()/4, test.getHeight());
+        TextureRegion[] frames = new TextureRegion[4];
+        for (int i = 0; i < 4; i++)
+        {
+            frames[i] = tmp[0][i];
+        }
+        idleAnimation = new Animation<>(1 / 5f, frames);
+
+        // Instantiate a SpriteBatch for drawing and reset the elapsed animation
+        // time to 0
+        spriteBatch = new SpriteBatch();
+        stateTime = 0f;*/
+
+        //Image warrior1jpg= new Image(new  Texture("./Lightning Mage/Idle.png"));
+
+        //Mercenary warrior1 = new Mercenary("kulak", 5,5, 5, warrior1jpg);
+
+        //stage.addActor(warrior1jpg);
+
+        TextureAtlas atlas = null;
+        attackAnimation = new Animation<TextureRegion>(0.033f, atlas.findRegions("running"), Animation.PlayMode.LOOP);
 
         group.addActor(returnButton);
         stage.addActor(group);
@@ -67,6 +93,8 @@ public class GameScreen implements Screen {
         // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
     }
+
+
     @Override
     public void show() {
 
@@ -75,6 +103,15 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(16384);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
+        //stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
+
+        // Get current frame of animation for the current stateTime
+        //TextureRegion currentFrame = idleAnimation.getKeyFrame(stateTime, true);
+        //spriteBatch.begin();
+        //spriteBatch.draw(currentFrame, 50, 50); // Draw current frame at (50, 50)
+        //spriteBatch.end();
+
         stage.act(delta);
         stage.draw();
     }
@@ -103,6 +140,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         stage.dispose();
         font.dispose();
+        spriteBatch.dispose();
         System.out.println("\ndispose SceneA");
     }
 }

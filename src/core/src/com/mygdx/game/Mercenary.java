@@ -1,13 +1,19 @@
 package com.mygdx.game;
 
-public class Mercenary {
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+
+public class Mercenary extends Actor {
 
     private String name;
     private int speed;
     private int attack;
     private int defense;
 
-    public Mercenary(String name, int speed, int attack, int defense) {
+    public Image img;
+
+    public Mercenary(String name, int speed, int attack, int defense, Image img) {
         this.name = name;
         this.speed = speed;
         this.attack = attack;
