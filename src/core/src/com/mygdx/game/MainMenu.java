@@ -1,5 +1,5 @@
 package com.mygdx.game;
-
+import com.mygdx.game.SettingsBox;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -23,6 +23,8 @@ public class MainMenu implements Screen{
 
     // manages UI
     Stage stage;
+    Image menuFrame;
+    VerticalGroup group;
 
     BitmapFont font = new BitmapFont();
     
@@ -38,12 +40,12 @@ public class MainMenu implements Screen{
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 
-        VerticalGroup group = new VerticalGroup();
+        group = new VerticalGroup();
         group.setPosition(Gdx.app.getGraphics().getWidth()*260/2560, Gdx.app.getGraphics().getHeight()*320/1440);
         group.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
         group.setDebug(true);
 
-        Image menuFrame = new Image(new Texture("menuframe.png"));
+        menuFrame = new Image(new Texture("menuframe.png"));
         menuFrame.setPosition(Gdx.app.getGraphics().getWidth()*260/2560, Gdx.app.getGraphics().getHeight()*320/1440 );
         menuFrame.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
 
@@ -73,6 +75,20 @@ public class MainMenu implements Screen{
             buttonInactive,
             buttonActive, // something has to be wrong with this
             null,font));
+
+        buttonOptions.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                
+                stage.addActor(new SettingsBox());
+                //fucking idiot
+                //group.setLayoutEnabled(false);
+                group.setVisible(false);
+                menuFrame.setVisible(false); //make it invisible
+                
+            }
+        });
+
             buttonOptions.getLabel().setColor(Color.GOLD);
 
 
@@ -108,6 +124,9 @@ public class MainMenu implements Screen{
         stage.addActor(group);
 
     }
+
+
+    
 
 
     @Override
