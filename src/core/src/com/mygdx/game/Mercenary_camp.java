@@ -13,6 +13,7 @@ public class Mercenary_camp {
         public Mercenary_camp() {
             int size = 5;
             this.mercenary_camp = new Mercenary[size];
+            CreateMercenaryCamp();
         }
 
         public void CreateMercenaryCamp() {
