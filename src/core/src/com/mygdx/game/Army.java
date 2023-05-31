@@ -22,15 +22,6 @@ public class Army {
         this.army[index] = null;
     }
 
-    public void refreshArmy() {
-        for (int i = 0; i < this.army.length; i++) {
-            if (this.army[i] != null) {
-                army[i].setAttack(army[i].getAttack());
-                army[i].setDefense(army[i].getDefense());
-                army[i].setSpeed(army[i].getSpeed());
-                }
-            }
-    }
 
     public void swapMercenary(int index1, int index2) {
         Mercenary temp = this.army[index1];

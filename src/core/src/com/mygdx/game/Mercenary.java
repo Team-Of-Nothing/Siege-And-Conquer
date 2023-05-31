@@ -10,9 +10,6 @@ public class Mercenary extends Actor {
     private int speed;
     private int attack;
     private int defense;
-    private int attack_bonus;
-    private int defense_bonus;
-    private int speed_bonus;
 
     private File img;
     private File mp3_attack;
@@ -39,17 +36,6 @@ public class Mercenary extends Actor {
         this.setStats(id);
     }
 
-
-
-    public int AttackBonus() {
-        return this.attack_bonus += 1;
-    }
-    public int DefenseBonus() {
-        return this.defense_bonus += 1;
-    }
-    public int SpeedBonus() {
-        return this.speed_bonus += 1;
-    }
 
     public int getId() {
         return id;
@@ -116,6 +102,7 @@ public class Mercenary extends Actor {
                 break;
             default:
                 break;
+
         }
     }
 
@@ -158,7 +145,6 @@ public class Mercenary extends Actor {
         this.attack *= bonus;
         this.defense *= bonus;
     }
-
 
 
 }
