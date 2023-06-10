@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SAC extends Game {
 	public SpriteBatch batch;
+	private Client client = new Client();
 
 	
 	@Override
