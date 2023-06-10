@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.util.ArrayList;
+
 public class Player {
 
         private final Army army;
@@ -29,8 +31,8 @@ public class Player {
             this.goldBonus = 0;
         }
 
-    public Army getArmy() {
-        return army;
+    public ArrayList<Mercenary> getArmy() {
+        return this.army.getArmy();
     }
 
     public void defeat() {
@@ -59,8 +61,8 @@ public class Player {
     }
 
 
-    public Mercenary_camp getMercenary_camp() {
-            return mercenary_camp;
+        public ArrayList<Mercenary> getMercenary_camp() {
+            return mercenary_camp.getMercenary_camp();
         }
 
         public int getGold() {
@@ -71,22 +73,26 @@ public class Player {
             this.gold += 500+this.goldBonus*50;
         }
 
-        public void buyMercenary() {
+        public void buyMercenary(int index,int index2) {
+            this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
+            this.mercenary_camp.removeMercenary(index);
             this.gold -= 100;
         }
 
+        public void sellMercenary(int index) {
+            this.army.removeMercenary(index);
+            this.gold += 50;
+        }
+
         public void newTurn() {
-            this.addGold();
-            for (int i = 0; i < this.army.getArmy().length; i++) {
-                if (this.army.getArmy()[i] != null) {
-                    this.army.getArmy()[i].setStats((this.army.getArmy()[i].getId()));
-                    this.army.getArmy()[i].setAttack(this.army.getArmy()[i].getAttack() + this.attackBonus);
-                    this.army.getArmy()[i].setDefense(this.army.getArmy()[i].getDefense() + this.defenseBonus);
-                    this.army.getArmy()[i].setSpeed(this.army.getArmy()[i].getSpeed() + this.speedBonus);
-                }
+            addGold();
+            for (int i = 0; i <this.army.getArmy().size(); i++) {
+                    this.army.getArmy().get(i).setStats((this.army.getArmy().get(i).getId()));
+                    this.army.getArmy().get(i).setAttack((this.army.getArmy().get(i).getAttack()+this.attackBonus));
+                    this.army.getArmy().get(i).setDefense((this.army.getArmy().get(i).getDefense()+this.defenseBonus));
+                    this.army.getArmy().get(i).setSpeed((this.army.getArmy().get(i).getSpeed()+this.speedBonus));
             }
             this.mercenary_camp.CreateMercenaryCamp();
-
         }
 
 }
