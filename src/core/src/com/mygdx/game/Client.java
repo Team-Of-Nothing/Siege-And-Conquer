@@ -1,3 +1,4 @@
+package com.mygdx.game;
 import java.net.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -62,16 +63,6 @@ public class Client {
     }
 
 
-
-    public static void main(String args[])
-    {
-        Client client = new Client();
-        client.connect("20.117.180.142", 2137);
-        client.getFromServer(); //will listen till respond
-        client.sendToServer();
-
-
-    }
 
 };
 
