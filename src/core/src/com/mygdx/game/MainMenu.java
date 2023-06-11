@@ -63,7 +63,6 @@ public class MainMenu implements Screen{
             buttonInactive,
             buttonActive, // something has to be wrong with this
             null,font));
-            buttonPlay.getLabel().setColor(Color.GOLD);
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {

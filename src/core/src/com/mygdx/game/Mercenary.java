@@ -1,9 +1,8 @@
 package com.mygdx.game;
 
+import java.io.File;
 
-
-
-public class Mercenary{
+public class Mercenary {
 
     private int id;
     private int speed;
@@ -24,8 +23,26 @@ public class Mercenary{
         return speed;
     }
 
-    public void setStats(int id){
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+    public int getAttack() {
+        return attack;
+    }
 
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    public void setStats(int id){
         switch (id)
         {
             case 1:
@@ -84,25 +101,6 @@ public class Mercenary{
         }
     }
 
-    public void setSpeed(int speed) {
-            this.speed = speed;
-
-    }
-    public int getAttack() {
-        return attack;
-    }
-
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
 
 
     public void attack(Mercenary enemy) {
@@ -115,6 +113,7 @@ public class Mercenary{
         this.attack *= bonus;
         this.defense *= bonus;
     }
+
 
 
 }
