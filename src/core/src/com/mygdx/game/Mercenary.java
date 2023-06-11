@@ -1,35 +1,93 @@
 package com.mygdx.game;
 
-public class Mercenary {
 
-    private String name;
+
+
+public class Mercenary{
+
+    private int id;
     private int speed;
     private int attack;
     private int defense;
 
-    public Mercenary(String name, int speed, int attack, int defense) {
-        this.name = name;
-        this.speed = speed;
-        this.attack = attack;
-        this.defense = defense;
+    public Mercenary (int id) {
+        this.id = id;
+        this.setStats(id);
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
     }
 
     public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setStats(int id){
+
+        switch (id)
+        {
+            case 1:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 2:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 3:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 4:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 5:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 6:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 7:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 8:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 9:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            case 10:
+                this.speed = 2;
+                this.attack = 1;
+                this.defense = 50;
+                break;
+            default:
+                break;
+
+        }
     }
 
+    public void setSpeed(int speed) {
+            this.speed = speed;
+
+    }
     public int getAttack() {
         return attack;
     }
@@ -51,13 +109,12 @@ public class Mercenary {
         enemy.setDefense(enemy.getDefense() - this.attack);
     }
 
-    public void upgradeStats() {
+    public void Merge() {
         double bonus = 1.5;
         this.speed *= bonus;
         this.attack *= bonus;
         this.defense *= bonus;
     }
-
 
 
 }

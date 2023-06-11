@@ -1,10 +1,15 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
@@ -18,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class MainMenu implements Screen{
 
     // mainly for access to batch
-    SAC game;
+    final private SAC game;
 
     // manages UI
     Stage stage;
@@ -28,7 +33,7 @@ public class MainMenu implements Screen{
     // manages UI size
     Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 
-    MainMenu(SAC game)
+    MainMenu(final SAC game)
     {
         this.game = game;
         stage = new Stage(viewport, game.batch);
@@ -59,6 +64,14 @@ public class MainMenu implements Screen{
             buttonActive, // something has to be wrong with this
             null,font));
             buttonPlay.getLabel().setColor(Color.GOLD);
+        buttonPlay.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen(game));
+                dispose();
+            }
+        });
+        buttonPlay.getLabel().setColor(Color.GOLD);
         
 
         ImageTextButton buttonOptions = new ImageTextButton("Options", new ImageTextButton.ImageTextButtonStyle(
@@ -106,12 +119,47 @@ public class MainMenu implements Screen{
     public void show() {
         // TODO Auto-generated method stub
     }
-
+    static float time = 0;
     @Override
     public void render(float delta) {
         
+
+
+        // clear screen using gdx utils
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act(delta);
+        Texture test = new Texture("tets.png");
+        TextureRegion[][] tmp = TextureRegion.split(test, test.getWidth()/4, test.getHeight());
+        TextureRegion[] frames = new TextureRegion[4];
+        for (int i = 0; i < 4; i++)
+        {
+            frames[i] = tmp[0][i];
+        }
+        Animation<TextureRegion> animation = new Animation<TextureRegion>(1/5f,frames);
+
+
+        time += delta;
+        Sprite sprite = new Sprite(animation.getKeyFrame(time, true));
+    
+        Vector2 pos = new Vector2(sprite.getX(), sprite.getY());
+        viewport.unproject(pos);
+        sprite.setPosition(240, 115);
+
+        sprite.setSize(100, 100);
+        
+
+        game.batch.begin();
+        // draw all texture regions using frames
+
+
+        // draw sprite
+        sprite.draw(game.batch);
+
+        game.batch.end();
+
+
+
     }
 
     @Override
