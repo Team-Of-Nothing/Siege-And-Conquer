@@ -1,35 +1,13 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-
 import java.io.File;
 
-public class Mercenary extends Actor {
+public class Mercenary {
 
     private int id;
     private int speed;
     private int attack;
     private int defense;
-
-    private File img;
-    private File mp3_attack;
-    private File mp3_death;
-
-
-    public File getMp3_attack() {
-        return mp3_attack;
-    }
-    public File setMp3(File mp3) {
-        return this.mp3_attack = mp3;
-    }
-    public File getMp3_death() {
-        return mp3_death;
-    }
-    public File setMp3_death(File mp3) {
-        return this.mp3_death = mp3;
-    }
-
-
 
     public Mercenary (int id) {
         this.id = id;
@@ -45,9 +23,26 @@ public class Mercenary extends Actor {
         return speed;
     }
 
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
     public void setStats(int id){
-        this.mp3_attack = new File("core/assets/"+id+"/attack.mp3");
-        this.mp3_death = new File("core/assets/death.mp3");
         switch (id)
         {
             case 1:
@@ -106,31 +101,11 @@ public class Mercenary extends Actor {
         }
     }
 
-    //Zwraca plik z obrazkiem akcji do animacji
-    public void Action(int action){
-        this.img = new File("core/assets/"+id+action+".png");
-    }
 
-    public void setSpeed(int speed) {
-            this.speed = speed;
 
+    public void attack(Mercenary enemy) {
+        enemy.setDefense(enemy.getDefense() - this.attack);
     }
-    public int getAttack() {
-        return attack;
-    }
-
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
 
     public void Merge() {
         double bonus = 1.5;
@@ -138,6 +113,7 @@ public class Mercenary extends Actor {
         this.attack *= bonus;
         this.defense *= bonus;
     }
+
 
 
 }

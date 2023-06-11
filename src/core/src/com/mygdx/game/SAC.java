@@ -10,14 +10,21 @@ public class SAC extends Game {
 	
 	@Override
 	public void create () {
+		try {
+			//client.connect("20.117.180.142", 2137);
+		} catch (Exception e) {
+			System.out.println("Connection failed");
+		}
 		batch = new SpriteBatch();
 		setScreen(new MainMenu(this));
-
+		
 	}
 
 	@Override
 	public void render () {
 		super.render();
+
+		
 	}
 	
 	@Override
