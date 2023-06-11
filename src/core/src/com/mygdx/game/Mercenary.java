@@ -132,13 +132,6 @@ public class Mercenary extends Actor {
     }
 
 
-
-
-
-    public void attack(Mercenary enemy) {
-        enemy.setDefense(enemy.getDefense() - this.attack);
-    }
-
     public void Merge() {
         double bonus = 1.5;
         this.speed *= bonus;
