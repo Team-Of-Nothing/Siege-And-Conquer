@@ -92,7 +92,8 @@ public class Player {
                     this.army.getArmy().get(i).setDefense((this.army.getArmy().get(i).getDefense()+this.defenseBonus));
                     this.army.getArmy().get(i).setSpeed((this.army.getArmy().get(i).getSpeed()+this.speedBonus));
             }
-            this.mercenary_camp.CreateMercenaryCamp();
         }
+
+
 
 }

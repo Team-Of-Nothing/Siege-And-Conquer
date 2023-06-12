@@ -14,6 +14,12 @@ public class Mercenary {
         this.setStats(id);
     }
 
+    public Mercenary (int id, int speed, int attack, int defesne) {
+        this.id = id;
+        this.speed = speed;
+        this.attack = attack;
+        this.defense = defesne;
+    }
 
     public int getId() {
         return id;
