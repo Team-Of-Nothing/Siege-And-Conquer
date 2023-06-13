@@ -37,9 +37,6 @@ public class Battle {
         return result;
     }
 
-    public ArrayList<Mercenary> setArmy(Player player){
-        return player.getArmy();
-    }
 
     int[] queue(Army army) {
         int pos = 0;
