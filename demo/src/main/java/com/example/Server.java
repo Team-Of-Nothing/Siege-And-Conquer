@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
+import org.json.JSONArray;
+
 // mvn exec:java -Dexec.mainClass=com.example.Server
 //  komenda do odpalenia tego gówna
 
@@ -17,8 +19,7 @@ public class Server {
     private CyclicBarrier cyclicBarrier;
 
     private int numberOfPlayers;
-
-    private String[] armyStats;
+    JSONArray playersData = new JSONArray();
 
     Server(int port, int number_of_players){
         this.port=port;
@@ -26,12 +27,10 @@ public class Server {
     }
 
     public void start(){
-        armyStats = new String[numberOfPlayers];
         cyclicBarrier = new CyclicBarrier(numberOfPlayers+1);
-
         try{
             serverSocket = new ServerSocket(port);
-            System.out.println("Server listening on port x");
+            System.out.println("Server listening on port "+port);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,7 +44,7 @@ public class Server {
         for(int i = 0; i<numberOfPlayers; i++){
             clientSockets[i] = serverSocket.accept();
             System.out.println("Client"+(i+1)+"connected!");
-            clientHandlers[i] = new ClientHandler(clientSockets[i], cyclicBarrier, armyStats[i]);
+            clientHandlers[i] = new ClientHandler(clientSockets[i], cyclicBarrier);
             threads[i] = new Thread(clientHandlers[i]);
             threads[i].start();
         }
@@ -55,16 +54,13 @@ public class Server {
             while(cyclicBarrier.getNumberWaiting()!=numberOfPlayers){
                 continue;
             }
+
+            //getting array of json objects, each json object contains data about army and obtained passives
             for(int i = 0; i<numberOfPlayers; i++){
-                armyStats[i]=clientHandlers[i].getArmyInfomration();
+                playersData.put(clientHandlers[i].getPlayerInformation());
             }
-            for(int i = 0; i<numberOfPlayers; i++){
-                System.out.println(armyStats[i]);
-            }
-            //some calculations about battle who wins and opponets army to let client display the battle
-            for(int i = 0; i<numberOfPlayers; i++){
-                clientHandlers[i].setArmyInfomration("player "+i+1);
-            }
+            System.out.println(playersData);
+            //DO WHOLE LOGIC HERE :( >>>
             try {
                 cyclicBarrier.await();
             } catch (InterruptedException e) {
