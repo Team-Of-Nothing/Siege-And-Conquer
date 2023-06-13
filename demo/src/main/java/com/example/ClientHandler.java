@@ -5,26 +5,24 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import org.json.JSONObject;
-import java.util.Objects;
-import java.util.Random;
-
-
-
+// import org.json.JSONObject;
+import java.util.Timer;
+import java.util.TimerTask;
 public class ClientHandler implements Runnable {
 
     private boolean response;
     private OutputStream out;
     private InputStream in;
-    private JSONObject jsonData;
-    private Socket clientSocket;
+    Socket clientSocket;
 
     private CyclicBarrier barrier;
 
-    ClientHandler(Socket socket, CyclicBarrier barrier) {
+    private String armyInfomration;
+    ClientHandler(Socket socket, CyclicBarrier barrier, String stats){
         this.clientSocket = socket;
         this.barrier = barrier;
-        try {
+        this.armyInfomration = stats;
+        try{
             out = socket.getOutputStream();
             in = socket.getInputStream();
         } catch (IOException e) {
@@ -34,40 +32,16 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        byte[] buffer = new byte[1000];
-        while (clientSocket.isConnected()) {
-            int bytesRead;
-            try{
-                bytesRead = in.read(buffer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            String jasonData = new String(buffer, 0, bytesRead, StandardCharsets.UTF_8);
-            jsonData = new JSONObject(jasonData);
-            System.out.println(jsonData);
-            if (Objects.equals(jsonData.getString("operation"), "refresh")) {
-                Random random = new Random();
-                int size = jsonData.getInt("size");
-                jsonData.clear();
-                jsonData.put("operation", "refresh");
-                for (int i = 0; i < size; i++) {
-                    jsonData.put(String.valueOf(i), random.nextInt(10) + 1);
-                }
-                    String jsonString = jsonData.toString();
-                    byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
-                    try {
-                        out.write(jsonDataBytes);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+            byte[] buffer = new byte[1000];
+            // JSONObject jsonObject;
+            while(clientSocket.isConnected()){
 
-                continue;
-            }
-            if(Objects.equals(jsonData.getString("operation"), "end")){
-                String jsonString = jsonData.toString();
-                byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
                 try {
-                    out.write(jsonDataBytes);
+                    int bytesRead = in.read(buffer);
+                    // String jasonData = new String(buffer,0, bytesRead, StandardCharsets.UTF_8);
+                    // jsonObject = new JSONObject(jasonData);
+
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -80,11 +54,13 @@ public class ClientHandler implements Runnable {
                 }
             }
 
-        }
-
     }
 
-    public JSONObject getPlayerInformation(){
-        return jsonData;
+    public String getArmyInfomration(){
+        return armyInfomration;
+    }
+
+    public void setArmyInfomration(String armyInfomration){
+        this.armyInfomration = armyInfomration;
     }
 }
