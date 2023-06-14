@@ -69,6 +69,17 @@ public class Player {
             return gold;
         }
 
+        public void addBonuses(Mercenary mercenary){
+            mercenary.setAttack(mercenary.getAttack()+this.attackBonus);
+            mercenary.setDefense(mercenary.getDefense()+this.defenseBonus);
+            mercenary.setSpeed(mercenary.getSpeed()+this.speedBonus);
+        }
+
+        public void eraseBonuses(Mercenary mercenary){
+            mercenary.setAttack(mercenary.getAttack()-this.attackBonus);
+            mercenary.setDefense(mercenary.getDefense()-this.defenseBonus);
+            mercenary.setSpeed(mercenary.getSpeed()-this.speedBonus);
+        }
         public void addGold() {
             this.gold += 500+this.goldBonus*50;
         }
@@ -79,12 +90,15 @@ public class Player {
             }
             if((this.army.getArmy().get(index2)==null)) {
                 this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
+                this.addBonuses(this.army.getArmy().get(index2));
                 this.mercenary_camp.removeMercenary(index);
                 this.gold -= 100;
                 return;
             }
             else if(this.army.getArmy().get(index2).getId() == this.mercenary_camp.getMercenary_camp().get(index).getId()) {
+                this.eraseBonuses(this.army.getArmy().get(index2));
                 this.getArmy().get(index2).merge();
+                this.addBonuses(this.army.getArmy().get(index2));
                 this.mercenary_camp.removeMercenary(index);
                 this.gold -= 100;
                 return;
@@ -98,6 +112,27 @@ public class Player {
             this.gold += 50;
         }
 
+
+        public void swapMercenary(int index1, int index2) {
+        Mercenary temp = this.army.getArmy().get(index1);
+        if(this.army.getArmy().get(index2) == null) {
+            this.army.addMercenary(temp, index2);
+            this.army.removeMercenary(index1);
+            return;
+         }
+        else if(this.army.getArmy().get(index2).getId() == temp.getId()) {
+            eraseBonuses(this.army.getArmy().get(index2));
+            this.army.getArmy().get(index2).merge();
+            addBonuses(this.army.getArmy().get(index2));
+            this.army.removeMercenary(index1);
+            return;
+        }
+        else {
+            this.army.addMercenary(this.army.getArmy().get(index2), index1);
+            this.army.addMercenary(temp, index2);
+            return;
+        }
+        }
         public void newTurn() {
             addGold();
             for (int i = 0; i <this.army.getArmy().size(); i++) {
