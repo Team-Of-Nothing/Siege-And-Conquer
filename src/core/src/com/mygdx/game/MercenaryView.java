@@ -13,23 +13,24 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import com.badlogic.gdx.utils.Array;
 
-public class MercenaryView extends  Actor  {
-    Sprite sprite;
+public class MercenaryView extends Actor  {
+    private Sprite sprite;
     
     private Sound mp3_attack;
     static private Sound mp3_death = Gdx.audio.newSound(Gdx.files.internal("death.mp3"));
     private int id;
-    Texture idle;
-    Texture attack;
-    Texture death;
-    Texture walk;
-    Texture damaged;
-    float time = 0;
-    int action = 0; // 0 = idle, 1 = attack, 2 = death, 3 = walk, 4 = damaged
-    boolean flip = false;
-    Array<Animation<TextureRegion>> animations;
+    private Texture idle;
+    private Texture attack;
+    private Texture death;
+    private Texture walk;
+    private Texture damaged;
+    private float time = 0;
+    private int action = 0; // 0 = idle, 1 = attack, 2 = death, 3 = walk, 4 = damaged
+    private boolean flip = false;
+    private Array<Animation<TextureRegion>> animations;
 
     public MercenaryView (int id) {
+        System.out.println("MercenaryView");
         this.id = id;
         idle = new Texture( "./"+ id +"/1.png");
         attack = new Texture("./" + id +"/2.png");
@@ -78,18 +79,21 @@ public class MercenaryView extends  Actor  {
             played = false;
         }
 
-        if (this.action == 1 && !played) {
+        if (action == 1 && !played) {
             mp3_attack.play();
+            System.out.println("attack");
             played = true;
         }
-        if (this.action == 2 && !played) {
-            mp3_death.play();
+        if (action == 2 && !played) {
+            
+            System.out.println("death"+mp3_death.play());
             played = true;
+
         }
 
 
         this.action = action;
-        System.out.println("action: " + action +" " + animations.get(2).isAnimationFinished(time) + " " + time );
+        //System.out.println("action: " + action +" " + animations.get(2).isAnimationFinished(time) + " " + time );
     }
 
     public void attack() {
@@ -171,7 +175,6 @@ public class MercenaryView extends  Actor  {
         walk.dispose();
         damaged.dispose();
         mp3_attack.dispose();
-        mp3_death.dispose();
     }
 
 }
