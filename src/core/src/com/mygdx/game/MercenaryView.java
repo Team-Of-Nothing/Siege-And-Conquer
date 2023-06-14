@@ -39,8 +39,8 @@ public class MercenaryView extends Actor  {
         damaged = new Texture("./" + id +"/5.png");
         sprite = new Sprite(idle);
         mp3_attack = Gdx.audio.newSound(Gdx.files.internal("./" + id +"/attack.mp3"));
-        sprite.setPosition(200, 200);
-        sprite.setSize(200,200);
+        //sprite.setPosition(200, 200);
+        sprite.setSize(100,100);
         //array of animations of frames for each mercenary type
         final int numberOfFrames[][] = {{7,7,8,5,5,7,7,6,5,5},{4,4,9,4,4,4,5,4,4,4},{5,6,4,4,5,5,4,4,4,4},{8,8,8,6,6,6,8,6,6,6},{3,3,4,2,2,3,2,2,3,2}};
 
@@ -70,7 +70,7 @@ public class MercenaryView extends Actor  {
     }
 
     boolean played = false;
-    public void setAction(int action) {
+    private void setAction(int action) {
         
         if (this.action == 2 && animations.get(2).isAnimationFinished(time)) return; // death animation is finished, do nothing
 
@@ -81,12 +81,10 @@ public class MercenaryView extends Actor  {
 
         if (action == 1 && !played) {
             mp3_attack.play();
-            System.out.println("attack");
             played = true;
         }
         if (action == 2 && !played) {
-            
-            System.out.println("death"+mp3_death.play());
+            mp3_death.play();
             played = true;
 
         }
@@ -115,10 +113,13 @@ public class MercenaryView extends Actor  {
         setAction(4);
     }
 
-    public void setPos(int x, int y) {
+    public void setPos(float x, float y) {
         sprite.setPosition(x, y);
     }
 
+    public void setSize(float width, float height) {
+        sprite.setSize(width, height);
+    }
     public void flip() {
         
         flip = !flip;
