@@ -107,7 +107,7 @@ public class Mercenary {
         enemy.setDefense(enemy.getDefense() - this.attack);
     }
 
-    public void Merge() {
+    public void merge() {
         this.speed *= 1.5;
         this.attack *= 1.5;
         this.defense *= 1.5;

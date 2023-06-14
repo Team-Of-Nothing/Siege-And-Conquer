@@ -74,9 +74,23 @@ public class Player {
         }
 
         public void buyMercenary(int index,int index2) {
-            this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
-            this.mercenary_camp.removeMercenary(index);
-            this.gold -= 100;
+            if(this.gold < 100) {
+                return;
+            }
+            if((this.army.getArmy().get(index2)==null)) {
+                this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
+                this.mercenary_camp.removeMercenary(index);
+                this.gold -= 100;
+                return;
+            }
+            else if(this.army.getArmy().get(index2).getId() == this.mercenary_camp.getMercenary_camp().get(index).getId()) {
+                this.getArmy().get(index2).merge();
+                this.mercenary_camp.removeMercenary(index);
+                this.gold -= 100;
+                return;
+            }
+
+
         }
 
         public void sellMercenary(int index) {
