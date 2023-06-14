@@ -103,15 +103,11 @@ public class Mercenary {
 
 
 
-    public void attack(Mercenary enemy) {
-        enemy.setDefense(enemy.getDefense() - this.attack);
-    }
 
-    public void Merge() {
-        double bonus = 1.5;
-        this.speed *= bonus;
-        this.attack *= bonus;
-        this.defense *= bonus;
+    public void merge() {
+        this.speed *= 1.5;
+        this.attack *= 1.5;
+        this.defense *= 1.5;
     }
 
 
