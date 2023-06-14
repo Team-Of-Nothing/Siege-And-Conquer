@@ -14,6 +14,7 @@ public class Battle {
     private final Army army1;
 
     private final Army army2;
+    private int kolejka = 1;
 
 
     private final int result;
@@ -35,6 +36,10 @@ public class Battle {
     //Zwraca 0 jeśli wygrał Player1, 1 jeśli wygrał Player2
     public int getResult(){
         return result;
+    }
+
+    public void setKolejka(int kolejka){
+        this.kolejka = kolejka;
     }
 
 
@@ -61,7 +66,6 @@ public class Battle {
     }
 
     public int fight(Army army1, int[] army1Queue, Army army2, int[] army2Queue) {
-        int kolejka = 1;
         while (!army1.getArmy().isEmpty()  && !army2.getArmy().isEmpty()) {
             int i = 0;
             int j = 0;
