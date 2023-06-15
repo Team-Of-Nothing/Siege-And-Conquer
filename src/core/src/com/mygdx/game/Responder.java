@@ -2,9 +2,7 @@ package com.mygdx.game;
 import java.net.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
 import org.json.JSONObject;
 
@@ -16,7 +14,8 @@ public class Responder implements Runnable {
     private Mercenary_camp mercenary_camp = new Mercenary_camp();
     private Army enemyArmy = new Army();
     private String enemyName;
-    private boolean win;
+    private boolean first;
+    private boolean respond = false;
 
     Responder(Socket socket){
         this.socket = socket;
@@ -50,7 +49,7 @@ public class Responder implements Runnable {
                 id = dataJson.getInt(key);
                 mercenary_camp.addMercenary(new Mercenary(id), i);
             }
-            
+            respond = true;
         }
         if(Objects.equals(dataJson.getString("operation"), "end")){
             String key;
@@ -63,7 +62,13 @@ public class Responder implements Runnable {
                 enemyArmy.army.add(i, new Mercenary(data.getInt("id"), data.getInt("speed"), data.getInt("attack"), data.getInt("defense")));
             }
             enemyName = dataJson.getString("player");
-            // win = data.getBoolean("win");
+            if(dataJson.getInt("start")==1){
+                this.first = true;
+            }
+            else{
+                this.first = false;
+            }
+            this.respond = true;
         }
         }
     }
@@ -79,8 +84,16 @@ public class Responder implements Runnable {
         return this.enemyName;
     }
 
-    public boolean getFightResult(){
-        return this.win;
+    public boolean getAttackPriority(){
+        return this.first;
+    }
+
+    public synchronized boolean getReposndStatus(){
+        return this.respond;
+    }
+
+    public void resetRespondStatus(){
+        this.respond = false;
     }
 }
 

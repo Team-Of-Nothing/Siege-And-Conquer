@@ -4,8 +4,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 
@@ -24,7 +22,6 @@ public class Client {
     public void connect(String address, int port){
         try {
             socket = new Socket(address, port);
-            // in = socket.getInputStream();
             out = socket.getOutputStream();
         } catch (IOException e) {
             throw new RuntimeException(e);
