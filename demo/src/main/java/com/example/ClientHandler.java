@@ -22,6 +22,10 @@ public class ClientHandler implements Runnable {
 
     private CyclicBarrier barrier;
 
+    private int turn = 1;
+
+    private int pull = 6;
+
     ClientHandler(Socket socket, CyclicBarrier barrier) {
         this.clientSocket = socket;
         this.barrier = barrier;
@@ -37,6 +41,9 @@ public class ClientHandler implements Runnable {
     public void run() {
         byte[] buffer = new byte[1000];
         while (clientSocket.isConnected()) {
+            if(turn % 2 == 0){
+                this.pull+=2;
+            }
             int bytesRead;
             try{
                 bytesRead = in.read(buffer);
@@ -52,7 +59,7 @@ public class ClientHandler implements Runnable {
                 jsonData.clear();
                 jsonData.put("operation", "refresh");
                 for (int i = 0; i < size; i++) {
-                    jsonData.put(String.valueOf(i), random.nextInt(10) + 1);
+                    jsonData.put(String.valueOf(i), random.nextInt(pull) + 1);
                 }
                     String jsonString = jsonData.toString();
                     byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
@@ -65,13 +72,6 @@ public class ClientHandler implements Runnable {
                 continue;
             }
             if(Objects.equals(jsonData.getString("operation"), "end")){
-                String jsonString = jsonData.toString();
-                byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
-                try {
-                    out.write(jsonDataBytes);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
                 try {
                     barrier.await();
                 } catch (BrokenBarrierException e) {
@@ -79,7 +79,15 @@ public class ClientHandler implements Runnable {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                String jsonString = jsonData.toString();
+                byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
+                try {
+                    out.write(jsonDataBytes);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            turn++;
 
         }
 
@@ -87,5 +95,9 @@ public class ClientHandler implements Runnable {
 
     public JSONObject getPlayerInformation(){
         return jsonData;
+    }
+
+    void setPlayerInformation(JSONObject jsonData){
+        this.jsonData = jsonData;
     }
 }
