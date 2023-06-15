@@ -2,7 +2,7 @@ package com.mygdx.game;
 import java.net.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
+import java.util.ArrayList;
 import java.util.Scanner;
 import org.json.JSONObject;
 
@@ -12,31 +12,37 @@ public class Client {
     OutputStream out;
     InputStream in;
 
-    JSONObject jsonObject;
+    JSONObject dataJson;
 
     public Client(){
 
-        jsonObject = new JSONObject();
-        jsonObject.put("warrior", 1);
-        jsonObject.put("mage", 1);
-        jsonObject.put("passives", "attack");
+        dataJson = new JSONObject();
     }
 
     public void connect(String address, int port){
         try {
             socket = new Socket(address, port);
-            in = socket.getInputStream();
             out = socket.getOutputStream();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void sendToServer(){
-        String jsonData = jsonObject.toString();
+    public void endTurn(ArrayList<Mercenary> army, String name){
+        dataJson.clear();
+        dataJson.put("operation", "end");
+        dataJson.put("player", name);
+        dataJson.put("size", army.size());
+        for(int i = 0; i<army.size(); i++){
+            JSONObject unit = new JSONObject();
+            unit.put("id", army.get(i).getId());
+            unit.put("attack", army.get(i).getAttack());
+            unit.put("defense", army.get(i).getDefense());
+            unit.put("speed", army.get(i).getSpeed());
+            dataJson.put(String.valueOf(i),unit);
+        }
+        String jsonData = dataJson.toString();
         byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
-        String response = null;
-
         Scanner scanncer = new Scanner(System.in);
         String armyInformation = scanncer.nextLine();
         try {
@@ -46,24 +52,21 @@ public class Client {
         }
     }
 
-    public void getFromServer(){
-
+    public void refreshShop(){
+        dataJson.clear();
         byte[] buffer = new byte[1000];
-
         int bytesRead = 0;
+        dataJson.clear();
+        dataJson.put("operation", "refresh");
+        dataJson.put("size", 5);
+        String jsonData = dataJson.toString();
+        byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
         try {
-            bytesRead = in.read(buffer);
+            out.write(jsonDataBytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        String jasonData = new String(buffer,0, bytesRead, StandardCharsets.UTF_8);
-        jsonObject = new JSONObject(jasonData);
-        System.out.println(jasonData);
     }
-
-
-
 };
 
 

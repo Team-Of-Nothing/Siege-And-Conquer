@@ -151,4 +151,6 @@ public class Player {
             this.mercenary_camp.CreateMercenaryCamp();
         }
 
+
+
 }
