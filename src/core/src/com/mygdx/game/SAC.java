@@ -5,9 +5,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SAC extends Game {
 	public SpriteBatch batch;
-	private Client client = new Client();
+	//private Client client = new Client();
 
+	public SAC(){
+		//client.connect("20.117.180.142", 2137);
+		//sendDataToServer();
+		
+	}
 	
+	public void sendDataToServer() {
+		//client.sendToServer();
+
+	}
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

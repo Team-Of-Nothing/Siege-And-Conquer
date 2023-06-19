@@ -1,65 +1,6 @@
 package com.mygdx.game;
 import java.net.*;
 import java.io.*;
-<<<<<<< HEAD
-import java.util.Scanner;
-
-
-//TODO OGOLNIE CALOSC
-public class Client {
-
-    static final int PORT = 8080;
-
-    public static void main(String[] args) {
-
-        Socket clientSocket;
-        PrintWriter out;
-        BufferedReader in;
-        Scanner keyboard;
-
-        //setup
-        try {
-            clientSocket = new Socket("10.0.0.4", PORT);
-            out = new PrintWriter(clientSocket.getOutputStream(),true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            keyboard = new Scanner(System.in);
-        } catch (IOException e) {
-            return;
-        }
-        new ClientWaiterForServer(clientSocket, in).start();
-        System.out.println("Send Notifications, Format is [notification|time] \n");
-
-        while (clientSocket.isConnected()) {
-            String[] buffer = keyboard.nextLine().split("\\|");
-
-            try {
-                if (buffer.length != 2 || buffer[0].equals("")) {
-                    throw new EmptyStringException("Empty");
-                }
-                long temp = Long.parseLong(buffer[1]);
-                if(temp < 0){
-                    System.out.println("Incorrect time input. Time cannot be less than 0s");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Incorrect input format");
-                continue;
-            } catch(EmptyStringException exc) {
-                System.out.println("You missed something! Try [notification|time]");
-                continue;
-            }
-            out.println(buffer[0] + "|" + buffer[1]);
-            System.out.println("Notification Send");
-        }
-
-    }
-
-}
-class EmptyStringException extends Exception{
-    public EmptyStringException(String s){
-        super(s);
-    }
-}
-=======
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Scanner;
@@ -76,9 +17,18 @@ public class Client {
     public Client(){
 
         jsonObject = new JSONObject();
-        jsonObject.put("warrior", 1);
-        jsonObject.put("mage", 1);
-        jsonObject.put("passives", "attack");
+        // jsonObject.put("warrior", 1);
+        // jsonObject.put("mage", 1);
+        // jsonObject.put("passives", "attack");
+
+        //Mercenary wojak = new Mercenary(1);
+        // 0 - 15, 15 - 40
+        jsonObject.put("a", 1);
+        jsonObject.put("b", 2);
+        jsonObject.put("c", 2);
+
+        
+
     }
 
     public void connect(String address, int port){
@@ -93,16 +43,23 @@ public class Client {
 
     public void sendToServer(){
         String jsonData = jsonObject.toString();
+        System.out.println(jsonData);
+
         byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
         String response = null;
 
-        Scanner scanncer = new Scanner(System.in);
-        String armyInformation = scanncer.nextLine();
+
+
+
+        Scanner scanner = new Scanner(System.in);
+        String armyInformation = scanner.nextLine();
+        
         try {
             out.write(jsonDataBytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        
     }
 
     public void getFromServer(){
@@ -126,4 +83,3 @@ public class Client {
 };
 
 
->>>>>>> master

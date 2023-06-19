@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MainMenu implements Screen{
 
-    // mainly for access to batch
+    // mainly for access to ~
     final private SAC game;
 
     // manages UI
@@ -71,16 +71,16 @@ public class MainMenu implements Screen{
         buttonPlay.getLabel().setColor(Color.GOLD);
         
 
-        ImageTextButton buttonOptions = new ImageTextButton("Options", new ImageTextButton.ImageTextButtonStyle(
+        ImageTextButton settingsButton = new ImageTextButton("Settings", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
             null,font));
 
-        buttonOptions.addListener(new ClickListener(){
+        settingsButton.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 
-                stage.addActor(new SettingsBox());
+                stage.addActor(new SettingsBox(game.batch));
                 //fucking idiot
                 //group.setLayoutEnabled(false);
                 group.setVisible(false);
@@ -89,7 +89,7 @@ public class MainMenu implements Screen{
             }
         });
 
-            buttonOptions.getLabel().setColor(Color.GOLD);
+            settingsButton.getLabel().setColor(Color.GOLD);
 
 
         ImageTextButton buttonExit = new ImageTextButton("Exit", new ImageTextButton.ImageTextButtonStyle(
@@ -112,14 +112,14 @@ public class MainMenu implements Screen{
 
   
         group.addActor(buttonPlay);
-        group.addActor(buttonOptions);
+        group.addActor(settingsButton);
         group.addActor(buttonExit);
         group.getPrefWidth();
 
 
        // group.addActor(menuFrame);
 
-       stage.addActor(menuFrame);
+        stage.addActor(menuFrame);
 
         stage.addActor(group);
 
@@ -137,8 +137,9 @@ public class MainMenu implements Screen{
     @Override
     public void render(float delta) {
         
-        stage.draw();
         stage.act(delta);
+        
+        stage.draw();
     }
 
     @Override

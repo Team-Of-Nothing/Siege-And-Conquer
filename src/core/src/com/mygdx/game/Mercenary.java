@@ -1,14 +1,6 @@
 package com.mygdx.game;
 
-<<<<<<< HEAD
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
-public class Mercenary extends Actor {
-=======
-import com.badlogic.gdx.scenes.scene2d.Actor;
->>>>>>> master
 
 import java.io.File;
 
@@ -19,15 +11,6 @@ public class Mercenary extends Actor {
     private int attack;
     private int defense;
 
-<<<<<<< HEAD
-    public Image img;
-
-    public Mercenary(String name, int speed, int attack, int defense, Image img) {
-        this.name = name;
-        this.speed = speed;
-        this.attack = attack;
-        this.defense = defense;
-=======
     private File img;
     private File mp3_attack;
     private File mp3_death;
@@ -35,7 +18,6 @@ public class Mercenary extends Actor {
 
     public File getMp3_attack() {
         return mp3_attack;
->>>>>>> master
     }
     public File setMp3(File mp3) {
         return this.mp3_attack = mp3;

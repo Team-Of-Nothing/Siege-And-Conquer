@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -10,7 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -24,8 +31,7 @@ public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
     BitmapFont font = new BitmapFont();
-    SpriteBatch spriteBatch;
-    public Animation<TextureRegion> attackAnimation;
+    //SpriteBatch spriteBatch;
     GameScreen(final SAC game){
 
         this.game = game;
@@ -49,8 +55,13 @@ public class GameScreen implements Screen {
         buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
 
-
-
+        
+        // ImageTextButton.ImageTextButtonStyle imageTextButtonStyle =
+        // new ImageTextButton.ImageTextButtonStyle(
+        //         Drawable up,
+        //         Drawable down,
+        //         Drawable checked,
+        //         BitmapFont font);
 
         ImageTextButton returnButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
                 buttonInactive,
@@ -64,30 +75,57 @@ public class GameScreen implements Screen {
         });
         returnButton.getLabel().setColor(Color.GOLD);
 
-       /* Texture test = new Texture("./Lightning Mage/Attack_2.png");
-        TextureRegion[][] tmp = TextureRegion.split(test, test.getWidth()/4, test.getHeight());
-        TextureRegion[] frames = new TextureRegion[4];
-        for (int i = 0; i < 4; i++)
-        {
-            frames[i] = tmp[0][i];
-        }
-        idleAnimation = new Animation<>(1 / 5f, frames);
+        
+        //battleButton.setText("Waiting for other players");
+        // Skin skin = new Skin();
+        // skin.add("default", new Texture("blue-button.png"));
+        // //skin.add("active", new Texture("blue-button.png"));
+        
+        // //TextButtonStyle buttonStyle = skin.get("default", TextButtonStyle.class);
 
-        // Instantiate a SpriteBatch for drawing and reset the elapsed animation
-        // time to 0
-        spriteBatch = new SpriteBatch();
-        stateTime = 0f;*/
+        // final TextButton button = new TextButton("Ewwww! Touch me!", skin);
+        // //button.getSkin().get("active", Texture.class);
+        // button.addListener(new ClickListener() {
+        //     @Override
+        //     public void clicked(InputEvent event, float x, float y) {
+        //         super.clicked(event, x, y);
+        //         if (button.isChecked())
+        //         {
+        //             //button.setSkin(skin); //skin.get("active", Texture.class);
+        //             button.setText("Now I am unchecked!");
+        //         }
+        //         else
+        //         {
+        //             button.setText("Now I am checked!");
+        //         }
+        //     }
+        // });
 
-        //Image warrior1jpg= new Image(new  Texture("./Lightning Mage/Idle.png"));
+        // LabelStyle labelStyle = new LabelStyle();
+        
+        // final Label label = new Label("Waiting..", labelStyle);
 
-        //Mercenary warrior1 = new Mercenary("kulak", 5,5, 5, warrior1jpg);
+        final ImageTextButton battleButton = new ImageTextButton("Ready!", new ImageTextButton.ImageTextButtonStyle(
+            buttonInactive,
+            buttonActive,
+            null,font));
+            battleButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                battleButton.setText("Waiting..");
+                
+                //todo send info do servera a ten battle screen dopiero jak response 
 
-        //stage.addActor(warrior1jpg);
-
-        TextureAtlas atlas = null;
-        attackAnimation = new Animation<TextureRegion>(0.033f, atlas.findRegions("running"), Animation.PlayMode.LOOP);
+                //game.setScreen(new BattleScreen(game));
+                //dispose();
+            }
+        });
+        //Label label = new Label("Waiting..", buttonInactive);
+        //battleButton.setLabel("dwad");
+        battleButton.getLabel().setColor(Color.GOLD);
 
         group.addActor(returnButton);
+        group.addActor(battleButton);
+
         stage.addActor(group);
 
         // don't forget to call this to be able to handle stage inputs
@@ -103,17 +141,10 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(16384);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear screen
-        //stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-
-        // Get current frame of animation for the current stateTime
-        //TextureRegion currentFrame = idleAnimation.getKeyFrame(stateTime, true);
-        //spriteBatch.begin();
-        //spriteBatch.draw(currentFrame, 50, 50); // Draw current frame at (50, 50)
-        //spriteBatch.end();
-
-        stage.act(delta);
+        
         stage.draw();
+        stage.act(delta);
+    
     }
 
     @Override
@@ -138,9 +169,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        
         stage.dispose();
         font.dispose();
-        spriteBatch.dispose();
+        //spriteBatch.dispose();
         System.out.println("\ndispose SceneA");
     }
 }
