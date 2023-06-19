@@ -17,31 +17,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 final public class SettingsBox extends VerticalGroup{
-    //set visible na actor
     
     BitmapFont font = new BitmapFont();
     Batch batchtmp;
-    
     Texture frame;
-
     Image menuFrame;
     TextureRegionDrawable background;
     Music music;
-
 
     SettingsBox(Batch batch){
 
         this.batchtmp = batch;
         
-        
-
         this.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
         this.setPosition((Gdx.app.getGraphics().getWidth()/2) - (this.getWidth()/2), (Gdx.app.getGraphics().getHeight()/2) - (this.getHeight()/2));
         this.setDebug(true);
 
         //Image setPosition nie dziala bo grupa ;)
-        
-
         background = new TextureRegionDrawable(new Texture("menuframe.png"));
         background.setMinWidth(Gdx.app.getGraphics().getWidth()*540/2560);
         background.setMinHeight(Gdx.app.getGraphics().getHeight()*820/1440);
@@ -55,21 +47,12 @@ final public class SettingsBox extends VerticalGroup{
         buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
 
-
-
-        
-
         //this.setFillParent(true);
         music = Gdx.audio.newMusic(Gdx.files.internal("death.mp3"));
         ImageTextButton buttonSoundOnOff = new ImageTextButton("Sound On/Off", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
-            null,font)){
-                @Override
-                public float getMinWidth(){return 0;}
-                @Override
-                public float getMinHeight(){return 0;}
-            };
+            null,font));
         buttonSoundOnOff.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
@@ -89,22 +72,11 @@ final public class SettingsBox extends VerticalGroup{
         ImageTextButton buttonExit = new ImageTextButton("Exit", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
-            null,font)){
-
-
-                @Override
-                public float getMinWidth(){return 0;}
-                @Override
-                public float getMinHeight(){return 0;}
-            };
+            null,font));
             this.addActor(buttonExit);
 
         buttonExit.addListener(new CustomCLickListener(this));
         buttonSoundOnOff.getLabel().setColor(Color.GOLD);
-
-        
-        
-
     }
     
     @Override
