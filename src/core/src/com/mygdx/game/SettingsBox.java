@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 final public class SettingsBox extends VerticalGroup{
     
@@ -33,7 +34,7 @@ final public class SettingsBox extends VerticalGroup{
         
         this.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
         this.setPosition((Gdx.app.getGraphics().getWidth()/2) - (this.getWidth()/2), (Gdx.app.getGraphics().getHeight()/2) - (this.getHeight()/2));
-        this.setDebug(true);
+        //this.setDebug(true);
 
         //Image setPosition nie dziala bo grupa ;)
         background = new TextureRegionDrawable(new Texture("menuframe.png"));
@@ -69,7 +70,7 @@ final public class SettingsBox extends VerticalGroup{
         });
         buttonSoundOnOff.getLabel().setColor(Color.GOLD);
         this.addActor(buttonSoundOnOff);
-
+        
         ImageTextButton buttonExit = new ImageTextButton("Exit", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
@@ -78,6 +79,8 @@ final public class SettingsBox extends VerticalGroup{
 
         buttonExit.addListener(new CustomCLickListener(this));
         buttonSoundOnOff.getLabel().setColor(Color.GOLD);
+        this.align(Align.center);
+        this.space(Gdx.app.getGraphics().getHeight()*50/1440);
     }
     
     @Override

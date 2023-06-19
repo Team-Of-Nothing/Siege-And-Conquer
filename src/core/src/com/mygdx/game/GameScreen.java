@@ -36,7 +36,6 @@ public class GameScreen implements Screen {
     //SpriteBatch spriteBatch;
     GameScreen(final SAC game){
         this.game = game;
-        System.out.println("\nshow SceneA");
         stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
 
         Image background = new Image(new Texture("Miasto.png"));

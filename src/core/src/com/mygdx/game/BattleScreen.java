@@ -28,19 +28,11 @@ public class BattleScreen implements Screen {
     BattleScreen(final SAC game){
 
         this.game = game;
-        System.out.println("\nshow Battle Scene");
         stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
 
         Image background = new Image(new Texture("Walka_Scena.png"));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
-
-
-
-        
-
-        
-
 
         // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);

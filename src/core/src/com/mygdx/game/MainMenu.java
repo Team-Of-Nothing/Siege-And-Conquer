@@ -43,7 +43,7 @@ public class MainMenu implements Screen{
         group = new VerticalGroup();
         group.setPosition(Gdx.app.getGraphics().getWidth()*260/2560, Gdx.app.getGraphics().getHeight()*320/1440);
         group.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
-        group.setDebug(true);
+        //group.setDebug(true);
 
         menuFrame = new Image(new Texture("menuframe.png"));
         menuFrame.setPosition(Gdx.app.getGraphics().getWidth()*260/2560, Gdx.app.getGraphics().getHeight()*320/1440 );
