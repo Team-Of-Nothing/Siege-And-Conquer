@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
 public class ArmyView extends Actor {
@@ -30,7 +31,7 @@ public class ArmyView extends Actor {
 
 
 
-    ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset)
+    ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
     {
         this(mercenaryIDs);
         this.startingX += xOffset;
@@ -49,23 +50,24 @@ public class ArmyView extends Actor {
                 for (int i = 0; i < mercenaryViews.size; i++)
         {
 
-            // TODO one day refactor code below to use mercenaryPositions and mercenarySizes
-            mercenaryViews.get(i).setPos(midX+(endingX-midX)*(-1*i%2),startingY-i*(startingY-endingY)/5 );
-            mercenaryViews.get(i).setSize(0.1f*gfxwidth,0.1f*gfxwidth);
+            // TODO make one function doing both
+            mercenaryViews.get(i).setPos(mercenaryPositions.get(i) );
+            mercenaryViews.get(i).setSize(mercenarySizes.get(i));
+            stage.addActor(mercenaryViews.get(i));
             
-            System.out.println(mercenaryViews.get(i).getX()+","+ mercenaryViews.get(i).getY());
         }
     }
 
+// idk why this exists
     private ArmyView(Array<Integer> mercenaryIDs)
     {
         for (int i = 0; i < mercenaryIDs.size; i++)
         {
             mercenaryViews.insert(i, new MercenaryView(mercenaryIDs.get(i)));
         }
-
     }
 
+    // not used anymore but might be useful in the future, though it didn't work as intended
     void resize(float width,float height)
     {
         this.gfxheight = height;
@@ -86,14 +88,16 @@ public class ArmyView extends Actor {
         }
     } 
     
+    // not sure if that's a good idea
     @Override
     public boolean addListener (EventListener listener) 
     {
+        boolean ret = true;
         for (int i = 0; i < mercenaryViews.size; i++)
         {
-            mercenaryViews.get(i).addListener(listener);
+            ret &= mercenaryViews.get(i).addListener(listener);
         }
-        return true;
+        return ret;
     }
 
 
@@ -105,16 +109,14 @@ public class ArmyView extends Actor {
         }
         super.act(delta);
     }
-    Texture highlightTexture = new Texture("pajeczyna.png");
+    static Texture highlightTexture = new Texture("pajeczyna.png");
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-            for (int i = 0; i < 5; i++) // max size of mercenaryViews
+            for (int i = 0; i < 5; i++) // TODO max size of mercenaryViews 
         {
-            if (highlight)
+            if (highlight) // highlight is(should be set) true when the armyView is a marketPlace
             {
-
-
                 float x = mercenaryPositions.get(i).x;
                 float y = mercenaryPositions.get(i).y;
                 float width = mercenarySizes.get(i).x;
@@ -127,26 +129,13 @@ public class ArmyView extends Actor {
 
         for (int i = 0; i < mercenaryViews.size; i++)
         {
-            if (highlight)
-            {
-
-
-                float x = mercenaryViews.get(i).getX();
-                float y = mercenaryViews.get(i).getY();
-                float width = mercenaryViews.get(i).getWidth();
-                float height = mercenaryViews.get(i).getHeight();
-
-                batch.draw(highlightTexture, x-width*0.1f, y - height/2, width, height);
-            }
-            
-            mercenaryViews.get(i).draw(batch, parentAlpha);
+             mercenaryViews.get(i).draw(batch, parentAlpha);
         }
     }
 
     void setHighlight(boolean b)
     {
         this.highlight = b;
-
     }
     
     void flip()
@@ -156,29 +145,5 @@ public class ArmyView extends Actor {
             mercenaryViews.get(i).flip();
         }
     }
-
-
-    public void printActors()
-    {
-        for (int i = 0; i < mercenaryViews.size; i++)
-        {
-            System.out.println(mercenaryViews.get(i).getX()+"; "+ mercenaryViews.get(i).getY());
-            System.out.println(mercenaryViews.get(i).getWidth()+"; "+ mercenaryViews.get(i).getHeight());
-            System.out.println("\n");
-            mercenaryViews.get(i).debug();
-           // mercenaryViews.get(i).drawDebug(null);
-           ShapeRenderer shapeRenderer = new ShapeRenderer();
-              shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-              shapeRenderer.setAutoShapeType(true);
-                shapeRenderer.setColor(Color.GREEN);
-                 shapeRenderer.rect(mercenaryViews.get(i).getX(), mercenaryViews.get(i).getY(), mercenaryViews.get(i).getWidth(), mercenaryViews.get(i).getHeight());
-                mercenaryViews.get(i).drawDebug(shapeRenderer);
-                 shapeRenderer.end();
-
-                 mercenaryViews.get(i).toFront();
-
-        }
-    }
-    
 
 }

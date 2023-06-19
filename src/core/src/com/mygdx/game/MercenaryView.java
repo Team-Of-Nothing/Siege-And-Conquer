@@ -1,7 +1,4 @@
 package com.mygdx.game;
-
-import java.io.Console;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -10,9 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 
 public class MercenaryView extends Actor  {
@@ -63,7 +61,7 @@ public class MercenaryView extends Actor  {
                 frames[i] = tmp[0][i];
             }
             if (j == 1)
-            animations.insert(j,new Animation<TextureRegion>(1f/numberOfFrames[j][id-1],frames)); 
+                animations.insert(j,new Animation<TextureRegion>(1f/numberOfFrames[j][id-1],frames)); 
             else animations.insert(j,new Animation<TextureRegion>(1/5f,frames));
         }
         
@@ -73,6 +71,12 @@ public class MercenaryView extends Actor  {
         animations.get(3).setPlayMode(Animation.PlayMode.LOOP);
         animations.get(4).setPlayMode(Animation.PlayMode.NORMAL);
         
+    }
+
+    // TODO i think sprite is drawn from center where actor is drawn from bottom left
+    public void moveTo(float x,float y){
+        sprite.setPosition(x, y);
+        this.setPosition(x, y);
     }
 
     boolean played = false;
@@ -123,11 +127,21 @@ public class MercenaryView extends Actor  {
         sprite.setPosition(x, y);
         this.setPosition(x, y);
     }
-    // first call setSize then setPos just to be sure
+    public void setPos(Vector2 v)
+    {
+        sprite.setPosition(v.x, v.y);
+        this.setPosition(v.x, v.y);
+    } 
+    // first call setPos before calling this
     public void setSize(float width, float height) {
         sprite.setSize(width, height);
         this.setBounds(sprite.getX(), sprite.getY(), width, height);
     }
+        public void setSize(Vector2 v) {
+        sprite.setSize(v.x, v.y);
+        this.setBounds(sprite.getX(), sprite.getY(), v.x, v.y);
+    }
+
     public void flip() {
         
         flip = !flip;
@@ -169,8 +183,6 @@ public class MercenaryView extends Actor  {
 
     }
 
-
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.draw(batch);
@@ -187,5 +199,4 @@ public class MercenaryView extends Actor  {
         damaged.dispose();
         mp3_attack.dispose();
     }
-
 }

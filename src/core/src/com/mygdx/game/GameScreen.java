@@ -1,20 +1,17 @@
 package com.mygdx.game;
-
-import javax.swing.plaf.TreeUI;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -26,18 +23,17 @@ public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
     private Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
-    Array<Integer> mockIDs = new Array<>(new Integer[]{1, 2, 3, 4,5});
-    ArmyView armyView = new ArmyView(mockIDs,0,0);
-    ArmyView armyView2 = new ArmyView(mockIDs,300,0);
+    Array<Integer> mockIDs = new Array<>(new Integer[]{1, 2, 3,4,5});
+    ArmyView armyView;
+    ArmyView armyView2;
     
-
-
     BitmapFont font = new BitmapFont();
     GameScreen(final SAC game){
-
         this.game = game;
-        System.out.println("\nshow SceneA");
         stage = new Stage(viewport, game.batch);
+
+        armyView = new ArmyView(mockIDs,0,0,stage);
+        armyView2 = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
 
         Image background = new Image(new Texture("Miasto.png"));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
@@ -73,32 +69,14 @@ public class GameScreen implements Screen {
         group.addActor(returnButton);
         stage.addActor(group);
         stage.addActor(armyView);
-        stage.setDebugAll(true);
-
-
-        armyView.addListener(new ClickListener()
-        {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("clicked");
-            }
-        });
-        armyView2.addListener(new ClickListener()
-        {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("clickedarmy2");
-            }
-        });
-    
         stage.addActor(armyView2);
-
+        stage.setDebugAll(true);
 
         // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
 
 
-
+        armyView2.setHighlight(true);
 
 
     }
@@ -113,39 +91,13 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(16384);
         stage.act(delta);
         stage.draw();
-
-
-
-       
-
-        // game.batch.begin();
-        // //mercenary code is just a test, feel free to remove it/ adjust it to your needs
-
-        // armyView.act(delta);
-        // armyView.draw(game.batch, delta);
-        // armyView2.act(delta);
-
-
-        armyView2.setHighlight(true);
-        // armyView2.draw(game.batch, delta);
-        // game.batch.end();
         
         if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-            System.out.println("\n\n");
-
+            System.out.println("\n\n\n\n");
         }
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             game.setScreen(new MainMenu(game));
             dispose();
-        }
-    
-        if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-            // get mouse position print it
-            Vector2 v = viewport.unproject(new Vector2( Gdx.input.getX(), Gdx.input.getY()));
-            System.out.println(v);
-            armyView.printActors();
-            
-
         }
     
     }
@@ -153,8 +105,6 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width,height);
-
-
     }
 
     @Override
