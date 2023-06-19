@@ -48,7 +48,6 @@ public class MercenaryView extends Actor  {
 
         sprite = new Sprite(idle);
         mp3_attack = Gdx.audio.newSound(Gdx.files.internal("./" + id +"/attack.mp3"));
-        //sprite.setPosition(200, 200);
         sprite.setSize(100,100);
         //array of animations of frames for each mercenary type
         final int numberOfFrames[][] = {{7,7,8,5,5,7,7,6,5,5},{4,4,9,4,4,4,5,4,4,4},{5,6,4,4,5,5,4,4,4,4},{8,8,8,6,6,6,8,6,6,6},{3,3,4,2,2,3,2,2,3,2}};
@@ -73,8 +72,6 @@ public class MercenaryView extends Actor  {
         animations.get(2).setPlayMode(Animation.PlayMode.NORMAL);
         animations.get(3).setPlayMode(Animation.PlayMode.LOOP);
         animations.get(4).setPlayMode(Animation.PlayMode.NORMAL);
-        
-
         
     }
 
@@ -124,10 +121,12 @@ public class MercenaryView extends Actor  {
 
     public void setPos(float x, float y) {
         sprite.setPosition(x, y);
+        this.setPosition(x, y);
     }
-
+    // first call setSize then setPos just to be sure
     public void setSize(float width, float height) {
         sprite.setSize(width, height);
+        this.setBounds(sprite.getX(), sprite.getY(), width, height);
     }
     public void flip() {
         
@@ -145,6 +144,7 @@ public class MercenaryView extends Actor  {
         
     }
 
+    
     @Override
     public void act(float delta) {
         
@@ -168,6 +168,7 @@ public class MercenaryView extends Actor  {
 
 
     }
+
 
 
     @Override

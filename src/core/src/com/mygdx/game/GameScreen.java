@@ -1,11 +1,14 @@
 package com.mygdx.game;
 
+import javax.swing.plaf.TreeUI;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,8 +26,10 @@ public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
     private Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
-    Array<Integer> mockIDs = new Array<>(new Integer[]{1, 2, 3, 4, 5});
-    ArmyView armyView = new ArmyView(mockIDs);
+    Array<Integer> mockIDs = new Array<>(new Integer[]{1, 2, 3, 4,5});
+    ArmyView armyView = new ArmyView(mockIDs,0,0);
+    ArmyView armyView2 = new ArmyView(mockIDs,300,0);
+    
 
 
     BitmapFont font = new BitmapFont();
@@ -50,9 +55,7 @@ public class GameScreen implements Screen {
         buttonActive.setMinWidth(Gdx.app.getGraphics().getWidth()*320/2560);
         buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
-
-
-
+        
 
         ImageTextButton returnButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
                 buttonInactive,
@@ -69,6 +72,27 @@ public class GameScreen implements Screen {
 
         group.addActor(returnButton);
         stage.addActor(group);
+        stage.addActor(armyView);
+        stage.setDebugAll(true);
+
+
+        armyView.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("clicked");
+            }
+        });
+        armyView2.addListener(new ClickListener()
+        {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("clickedarmy2");
+            }
+        });
+    
+        stage.addActor(armyView2);
+
 
         // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
@@ -94,27 +118,42 @@ public class GameScreen implements Screen {
 
        
 
-        game.batch.begin();
-        //mercenary code is just a test, feel free to remove it/ adjust it to your needs
+        // game.batch.begin();
+        // //mercenary code is just a test, feel free to remove it/ adjust it to your needs
 
-        armyView.act(delta);
-        armyView.draw(game.batch, delta);
-        game.batch.end();
+        // armyView.act(delta);
+        // armyView.draw(game.batch, delta);
+        // armyView2.act(delta);
+
+
+        armyView2.setHighlight(true);
+        // armyView2.draw(game.batch, delta);
+        // game.batch.end();
         
-        if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+        if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
             System.out.println("\n\n");
 
         }
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             game.setScreen(new MainMenu(game));
             dispose();
         }
+    
+        if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+            // get mouse position print it
+            Vector2 v = viewport.unproject(new Vector2( Gdx.input.getX(), Gdx.input.getY()));
+            System.out.println(v);
+            armyView.printActors();
+            
+
+        }
+    
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width,height);
-        armyView.resize(width,height);
+
 
     }
 
