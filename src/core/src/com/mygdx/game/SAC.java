@@ -10,7 +10,7 @@ public class SAC extends Game {
 	public SpriteBatch batch;
 	private Client client = new Client();
 	private final static String DEFAULT_BACKGROUND_MUSIC = "castle.mp3";
-	public static Music backgroundMusic;
+	public Music backgroundMusic; //nie moze byc static bo create() nie jest
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
