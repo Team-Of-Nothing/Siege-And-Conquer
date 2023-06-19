@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MainMenu implements Screen{
 
-    // mainly for access to ~
+    // mainly for access to batch
     final private SAC game;
 
     // manages UI
