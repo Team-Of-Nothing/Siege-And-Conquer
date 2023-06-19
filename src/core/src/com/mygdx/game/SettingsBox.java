@@ -1,4 +1,5 @@
 package com.mygdx.game;
+import com.mygdx.game.SAC;
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -23,8 +24,9 @@ final public class SettingsBox extends VerticalGroup{
     Texture frame;
     Image menuFrame;
     TextureRegionDrawable background;
-    Music music;
+    SAC s = (SAC)Gdx.app.getApplicationListener();
 
+    
     SettingsBox(Batch batch){
 
         this.batchtmp = batch;
@@ -48,7 +50,6 @@ final public class SettingsBox extends VerticalGroup{
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
 
         //this.setFillParent(true);
-        music = Gdx.audio.newMusic(Gdx.files.internal("death.mp3"));
         ImageTextButton buttonSoundOnOff = new ImageTextButton("Sound On/Off", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
@@ -57,10 +58,10 @@ final public class SettingsBox extends VerticalGroup{
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 //wlacz/wylacz
-                if(music.isPlaying()){
-                    music.pause();
+                if(s.backgroundMusic.isPlaying()){
+                    s.backgroundMusic.pause();
                 } else{
-                    music.play();              
+                    s.backgroundMusic.play();              
                 }    
 
 
@@ -83,30 +84,12 @@ final public class SettingsBox extends VerticalGroup{
     public void act(float delta) {
         super.act(delta);
     }
-    
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batchtmp, parentAlpha);
-
-        batchtmp.end();
         
-        batchtmp.begin();
-        
-       // batchtmp.flush();
-        
-        // batchtmp.enableBlending();
-        // Color c = batchtmp.getColor();
-        // batchtmp.setColor(c.r, c.g, c.b, 0.5f); //set alpha to 1
-        // batchtmp.disableBlending();
-
         menuFrame.getDrawable().draw(batchtmp,  this.getX(),  this.getY(), menuFrame.getWidth(), menuFrame.getHeight());
-        //batchtmp.end();
-
-        
-
+        super.draw(batch, parentAlpha);
     }
-
     public class CustomCLickListener extends ClickListener{
         
         SettingsBox settings;

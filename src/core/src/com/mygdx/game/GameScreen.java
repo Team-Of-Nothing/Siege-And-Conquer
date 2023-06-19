@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,9 +32,9 @@ public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
     BitmapFont font = new BitmapFont();
+
     //SpriteBatch spriteBatch;
     GameScreen(final SAC game){
-
         this.game = game;
         System.out.println("\nshow SceneA");
         stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
@@ -55,14 +56,6 @@ public class GameScreen implements Screen {
         buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
 
-        
-        // ImageTextButton.ImageTextButtonStyle imageTextButtonStyle =
-        // new ImageTextButton.ImageTextButtonStyle(
-        //         Drawable up,
-        //         Drawable down,
-        //         Drawable checked,
-        //         BitmapFont font);
-
         ImageTextButton returnButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
                 buttonInactive,
                 buttonActive, // something has to be wrong with this
@@ -75,60 +68,23 @@ public class GameScreen implements Screen {
         });
         returnButton.getLabel().setColor(Color.GOLD);
 
-        
-        //battleButton.setText("Waiting for other players");
-        // Skin skin = new Skin();
-        // skin.add("default", new Texture("blue-button.png"));
-        // //skin.add("active", new Texture("blue-button.png"));
-        
-        // //TextButtonStyle buttonStyle = skin.get("default", TextButtonStyle.class);
-
-        // final TextButton button = new TextButton("Ewwww! Touch me!", skin);
-        // //button.getSkin().get("active", Texture.class);
-        // button.addListener(new ClickListener() {
-        //     @Override
-        //     public void clicked(InputEvent event, float x, float y) {
-        //         super.clicked(event, x, y);
-        //         if (button.isChecked())
-        //         {
-        //             //button.setSkin(skin); //skin.get("active", Texture.class);
-        //             button.setText("Now I am unchecked!");
-        //         }
-        //         else
-        //         {
-        //             button.setText("Now I am checked!");
-        //         }
-        //     }
-        // });
-
-        // LabelStyle labelStyle = new LabelStyle();
-        
-        // final Label label = new Label("Waiting..", labelStyle);
-
         final ImageTextButton battleButton = new ImageTextButton("Ready!", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive,
             null,font));
             battleButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                battleButton.setText("Waiting..");
-                
+                //battleButton.setText("Waiting.."); //to sie przyda ;)
                 //todo send info do servera a ten battle screen dopiero jak response 
-
-                //game.setScreen(new BattleScreen(game));
-                //dispose();
+                game.setScreen(new BattleScreen(game));
+                dispose();
             }
         });
-        //Label label = new Label("Waiting..", buttonInactive);
-        //battleButton.setLabel("dwad");
         battleButton.getLabel().setColor(Color.GOLD);
 
         group.addActor(returnButton);
         group.addActor(battleButton);
-
         stage.addActor(group);
-
-        // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
     }
 
