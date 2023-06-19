@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.io.Console;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -32,11 +34,18 @@ public class MercenaryView extends Actor  {
     public MercenaryView (int id) {
         System.out.println("MercenaryView");
         this.id = id;
+        try {
         idle = new Texture( "./"+ id +"/1.png");
         attack = new Texture("./" + id +"/2.png");
         death = new Texture("./" + id +"/3.png");
         walk = new Texture("./" + id +"/4.png");
         damaged = new Texture("./" + id +"/5.png");
+        }
+        catch(Exception e)
+        {
+            System.out.println("Failed to load all mercenary id:"+id+" resources");
+        }
+
         sprite = new Sprite(idle);
         mp3_attack = Gdx.audio.newSound(Gdx.files.internal("./" + id +"/attack.mp3"));
         //sprite.setPosition(200, 200);
