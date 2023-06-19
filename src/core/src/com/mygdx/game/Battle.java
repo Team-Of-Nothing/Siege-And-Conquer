@@ -121,10 +121,15 @@ public class Battle {
 
 
     public void attack(Mercenary ally, Mercenary enemy) {
+        MercenaryView allyView = new MercenaryView(ally.getId());
+        MercenaryView enemyView= new MercenaryView(enemy.getId());
+        allyView.attack();
         if (ally.getAttack() > enemy.getDefense()) {
             enemy.setDefense(0);
+            enemyView.death();
         } else {
             enemy.setDefense(enemy.getDefense() - ally.getAttack());
+            enemyView.damaged();
         }
     }
 }
