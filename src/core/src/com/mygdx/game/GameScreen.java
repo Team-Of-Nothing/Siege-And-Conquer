@@ -32,13 +32,14 @@ public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
     BitmapFont font = new BitmapFont();
+    final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
 
     //SpriteBatch spriteBatch;
     GameScreen(final SAC game){
         this.game = game;
         stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
 
-        Image background = new Image(new Texture("Miasto.png"));
+        Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 

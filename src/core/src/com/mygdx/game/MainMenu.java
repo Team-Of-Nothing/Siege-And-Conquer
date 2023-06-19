@@ -25,6 +25,7 @@ public class MainMenu implements Screen{
     Stage stage;
     Image menuFrame;
     VerticalGroup group;
+    final static private String DEFAULT_MAIN_SCREEN_BACKGROUND = "background.jpg";
 
     BitmapFont font = new BitmapFont();
     
@@ -36,7 +37,7 @@ public class MainMenu implements Screen{
         this.game = game;
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
-        Image background = new Image(new Texture("background.jpg"));
+        Image background = new Image(new Texture(DEFAULT_MAIN_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 

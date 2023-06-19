@@ -27,15 +27,12 @@ final public class SettingsBox extends VerticalGroup{
     TextureRegionDrawable background;
     SAC s = (SAC)Gdx.app.getApplicationListener();
 
-    
     SettingsBox(Batch batch){
 
         this.batchtmp = batch;
-        
         this.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
         this.setPosition((Gdx.app.getGraphics().getWidth()/2) - (this.getWidth()/2), (Gdx.app.getGraphics().getHeight()/2) - (this.getHeight()/2));
         //this.setDebug(true);
-
         //Image setPosition nie dziala bo grupa ;)
         background = new TextureRegionDrawable(new Texture("menuframe.png"));
         background.setMinWidth(Gdx.app.getGraphics().getWidth()*540/2560);
@@ -58,14 +55,11 @@ final public class SettingsBox extends VerticalGroup{
         buttonSoundOnOff.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                //wlacz/wylacz
                 if(s.backgroundMusic.isPlaying()){
                     s.backgroundMusic.pause();
                 } else{
                     s.backgroundMusic.play();              
                 }    
-
-
             }
         });
         buttonSoundOnOff.getLabel().setColor(Color.GOLD);
@@ -73,7 +67,7 @@ final public class SettingsBox extends VerticalGroup{
         
         ImageTextButton buttonExit = new ImageTextButton("Exit", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
-            buttonActive, // something has to be wrong with this
+            buttonActive,
             null,font));
             this.addActor(buttonExit);
 
@@ -89,7 +83,6 @@ final public class SettingsBox extends VerticalGroup{
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        
         menuFrame.getDrawable().draw(batchtmp,  this.getX(),  this.getY(), menuFrame.getWidth(), menuFrame.getHeight());
         super.draw(batch, parentAlpha);
     }
@@ -103,15 +96,11 @@ final public class SettingsBox extends VerticalGroup{
 
         @Override
         public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-            
             //System.out.println(event.getTarget().getParent());
-            
-            //nie da sie...
             settings.setVisible(false);
             settings.getParent().getChild(2).setVisible(true);
             settings.getParent().getChild(1).setVisible(true);
         }
-
     }
 }
 

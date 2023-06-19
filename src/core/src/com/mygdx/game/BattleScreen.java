@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class BattleScreen implements Screen {
     final private Stage stage;
     final public SAC game;
+    final static private String DEFAULT_BATTLE_SCREEN_BACKGROUND = "Walka_Scena.png";
     BitmapFont font = new BitmapFont();
     //SpriteBatch spriteBatch;
     BattleScreen(final SAC game){
@@ -30,11 +31,10 @@ public class BattleScreen implements Screen {
         this.game = game;
         stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
 
-        Image background = new Image(new Texture("Walka_Scena.png"));
+        Image background = new Image(new Texture(DEFAULT_BATTLE_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 
-        // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
     }
 
