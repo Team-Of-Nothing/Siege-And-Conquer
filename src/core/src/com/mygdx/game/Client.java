@@ -17,18 +17,9 @@ public class Client {
     public Client(){
 
         jsonObject = new JSONObject();
-        // jsonObject.put("warrior", 1);
-        // jsonObject.put("mage", 1);
-        // jsonObject.put("passives", "attack");
-
-        //Mercenary wojak = new Mercenary(1);
-        // 0 - 15, 15 - 40
-        jsonObject.put("a", 1);
-        jsonObject.put("b", 2);
-        jsonObject.put("c", 2);
-
-        
-
+        jsonObject.put("warrior", 1);
+        jsonObject.put("mage", 1);
+        jsonObject.put("passives", "attack");
     }
 
     public void connect(String address, int port){
@@ -43,13 +34,9 @@ public class Client {
 
     public void sendToServer(){
         String jsonData = jsonObject.toString();
-        System.out.println(jsonData);
 
         byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
         String response = null;
-
-
-
 
         Scanner scanner = new Scanner(System.in);
         String armyInformation = scanner.nextLine();
