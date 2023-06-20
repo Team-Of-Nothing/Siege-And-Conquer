@@ -13,21 +13,26 @@ public class SAC extends Game {
 	public Music backgroundMusic; //nie moze byc static bo create() nie jest
 	protected Player player = new Player("Player");
 
+	private Responder responder;
+
 	@Override
 	public void create () {
-		player.getArmy().add(0, new Mercenary(4));
-		player.getArmy().add(1, new Mercenary(5));
-		player.getArmy().add(2,new Mercenary(6));
+		player.getArmy().add(0, new Mercenary(8));
+		player.getArmy().add(1, new Mercenary(3));
+		player.getArmy().add(2,new Mercenary(1));
+		player.getArmy().add(3,new Mercenary(6));
+		player.getArmy().add(4,new Mercenary(7));
 		try {
 			client.connect("20.117.180.142", 2137);
-			Responder responder = new Responder(client.socket);
+			responder = new Responder(client.socket);
 			Thread thread = new Thread(responder);
 			thread.start();
 			client.refreshShop();
 			while(responder.getReposndStatus()!=true){
 			}
+			responder.resetRespondStatus();
 			player.setMercenaryCamp(responder.getMerceneryCamp());
-			//client.endTurn(player.getArmy(), player.getName());
+			client.endTurn(player.getArmy(), player.getName());
 			while(responder.getReposndStatus()!=true){
 			}
 			responder.resetRespondStatus();
@@ -47,6 +52,10 @@ public class SAC extends Game {
 		setScreen(new MainMenu(this));
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(DEFAULT_BACKGROUND_MUSIC));
 		backgroundMusic.play();
+	}
+
+	public Responder getResponder(){
+		return responder;
 	}
 
 	@Override
