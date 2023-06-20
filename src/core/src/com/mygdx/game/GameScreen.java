@@ -39,11 +39,12 @@ public class GameScreen implements Screen {
     ArmyView marketView;
     ArmyView armyView;
     
+    final static private String COST_OF_PASSIVES = "200";
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
 
         MercenaryView mercenaryView = new MercenaryView(8);
-    MercenaryView mercenaryView2 = new MercenaryView(1);
+        MercenaryView mercenaryView2 = new MercenaryView(1);
 
     GameScreen(final SAC game){
         this.game = game;
@@ -56,15 +57,58 @@ public class GameScreen implements Screen {
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 
-        
-        //group.setDebug(true);
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.WHITE;
 
+        int[] costs_offsets = {65, -15};
+        int[] counter_offsets = {27, -7};
+        int[] money_table_offsets = {65, -5};
+
+        ImageButton moneyTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_koszt_passives.png")))));        
+        moneyTable.setPosition(Gdx.app.getGraphics().getWidth()*1150/2560, Gdx.app.getGraphics().getHeight()*1315/1440);
+        moneyTable.setSize(Gdx.app.getGraphics().getWidth()*230/2560, Gdx.app.getGraphics().getHeight()*140/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(moneyTable);
+
+        Label moneyAmount = new Label(COST_OF_PASSIVES, labelStyle);
+        moneyAmount.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        moneyAmount.setPosition(moneyTable.getX()+money_table_offsets[0], moneyTable.getY()+money_table_offsets[1]);
+        stage.addActor(moneyAmount);
+
+        //HEARTS
+        ImageButton[] arrayOfHearts = new ImageButton[5];
+        int hp = SAC.player.getHp();
+        for(int i = 0; i < hp; i++){
+            arrayOfHearts[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Heart.png")))));  
+            arrayOfHearts[i].setPosition((((Gdx.app.getGraphics().getWidth()*1470))/2560)+(i*60), Gdx.app.getGraphics().getHeight()*1320/1440);
+            arrayOfHearts[i].setSize(Gdx.app.getGraphics().getWidth()*60/2560, Gdx.app.getGraphics().getHeight()*60/1440);
+            stage.addActor(arrayOfHearts[i]);
+        }
+        //HEARTS
+
+        //group.setDebug(true);
         
         addBattleButton();
         addSetttingsButton();
 
+        
+
+        ImageButton CostOfPassiveTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("money_table.png")))));        
+        CostOfPassiveTable.setPosition(Gdx.app.getGraphics().getWidth()*2350/2560, Gdx.app.getGraphics().getHeight()*1360/1440);
+        CostOfPassiveTable.setSize(Gdx.app.getGraphics().getWidth()*200/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(CostOfPassiveTable);
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label CostOfPassive = new Label(COST_OF_PASSIVES, labelStyle);
+        CostOfPassive.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        CostOfPassive.setPosition(CostOfPassiveTable.getX()+costs_offsets[0], CostOfPassiveTable.getY()+costs_offsets[1]);
+        stage.addActor(CostOfPassive);
+
+
+
+
         addPassiveDefenceButton();
- 
         ImageButton defenceCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
         defenceCounterTable.addListener(new ClickListener(){
             @Override
@@ -75,19 +119,14 @@ public class GameScreen implements Screen {
         defenceCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
         stage.addActor(defenceCounterTable);
-
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = font;
-        labelStyle.fontColor = Color.WHITE;
-        
-        //int p = SAC.player.getAttackBonus();
-        Label defenceCounter = new Label("2137", labelStyle);
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label defenceCounter = new Label("2", labelStyle);
         defenceCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        defenceCounter.setPosition(Gdx.app.getGraphics().getWidth()*2505/2560, Gdx.app.getGraphics().getHeight()*1190/1440);
-
+        defenceCounter.setPosition(defenceCounterTable.getX()+counter_offsets[0], defenceCounterTable.getY()+counter_offsets[1]);
         stage.addActor(defenceCounter);
+        
 
-
+        
 
         addPassiveSpeedButton();
         ImageButton speedCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
@@ -99,7 +138,15 @@ public class GameScreen implements Screen {
         speedCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1050/1440);
         speedCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
+
         stage.addActor(speedCounterTable);
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label speedCounter = new Label("1", labelStyle);
+        speedCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        speedCounter.setPosition(speedCounterTable.getX()+counter_offsets[0], speedCounterTable.getY()+counter_offsets[1]);
+        stage.addActor(speedCounter);
+
+
 
 
         addPassiveAttackButton();
@@ -113,6 +160,16 @@ public class GameScreen implements Screen {
         attackCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
         stage.addActor(attackCounterTable);
+
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label attackCounter = new Label("3", labelStyle);
+        attackCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        attackCounter.setPosition(attackCounterTable.getX()+counter_offsets[0], attackCounterTable.getY()+counter_offsets[1]);
+        stage.addActor(attackCounter);
+
+
+
+
         addPassiveGoldButton();
         ImageButton goldCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
         goldCounterTable.addListener(new ClickListener(){
@@ -125,6 +182,11 @@ public class GameScreen implements Screen {
         //settingsButton.setDebug(true);
         stage.addActor(goldCounterTable);
 
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label goldCounter = new Label("7", labelStyle);
+        goldCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        goldCounter.setPosition(goldCounterTable.getX()+counter_offsets[0], goldCounterTable.getY()+counter_offsets[1]);
+        stage.addActor(goldCounter);
 
 
 
@@ -133,10 +195,7 @@ public class GameScreen implements Screen {
         stage.addActor(armyView);
         //stage.setDebugAll(true);
 
-        // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
-
-
         armyView.setHighlight(true);
         
         marketView.addListener(new ClickListener() {
@@ -183,9 +242,8 @@ public class GameScreen implements Screen {
 
     private void addBattleButton() {
         VerticalGroup group = new VerticalGroup();
-        group.setPosition(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
-        group.setSize(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
-
+        group.setPosition(Gdx.app.getGraphics().getWidth()*2290/2560, Gdx.app.getGraphics().getHeight()*90/1440);
+        group.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*50/1440);
         TextureRegionDrawable buttonInactive = new TextureRegionDrawable(new Texture ("blue-button.png"));
         TextureRegionDrawable buttonActive = new TextureRegionDrawable(new Texture("blue-button_active.png"));
 

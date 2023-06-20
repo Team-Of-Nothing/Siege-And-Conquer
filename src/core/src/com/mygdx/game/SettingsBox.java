@@ -91,7 +91,7 @@ final public class SettingsBox extends VerticalGroup{
         if((!parentScreen.getClass().getSimpleName().toString().equals("MainMenu"))){
             ImageTextButton backToMenuButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
                 buttonInactive,
-                buttonActive, // something has to be wrong with this
+                buttonActive,
                 null,font));
                 backToMenuButton.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {
