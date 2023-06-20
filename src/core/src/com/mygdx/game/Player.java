@@ -48,16 +48,44 @@ public class Player {
     }
 
     public void increaseAttackBonus() {
-        this.attackBonus += 1;
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
+
+            this.attackBonus += 1;
+            for(Mercenary mercenary : this.army.getArmy()){
+                mercenary.setAttack(mercenary.getAttack()+1);
+            }
     }
     public void increaseDefenseBonus() {
-        this.defenseBonus += 1;
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
+
+            this.defenseBonus += 1;
+            for(Mercenary mercenary : this.army.getArmy()){
+                mercenary.setDefense(mercenary.getDefense()+1);
+            }
     }
     public void increaseSpeedBonus() {
-        this.speedBonus += 1;
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
+
+            this.speedBonus += 1;
+            for(Mercenary mercenary : this.army.getArmy()){
+                mercenary.setSpeed(mercenary.getSpeed()+1);
+            }
     }
     public void increaseGoldBonus() {
-        this.goldBonus += 1;
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
+            this.goldBonus += 1;
     }
 
 
@@ -69,14 +97,42 @@ public class Player {
             return gold;
         }
 
+        public void addBonuses(Mercenary mercenary){
+            mercenary.setAttack(mercenary.getAttack()+this.attackBonus);
+            mercenary.setDefense(mercenary.getDefense()+this.defenseBonus);
+            mercenary.setSpeed(mercenary.getSpeed()+this.speedBonus);
+        }
+
+        public void eraseBonuses(Mercenary mercenary){
+            mercenary.setAttack(mercenary.getAttack()-this.attackBonus);
+            mercenary.setDefense(mercenary.getDefense()-this.defenseBonus);
+            mercenary.setSpeed(mercenary.getSpeed()-this.speedBonus);
+        }
         public void addGold() {
             this.gold += 500+this.goldBonus*50;
         }
 
         public void buyMercenary(int index,int index2) {
-            this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
-            this.mercenary_camp.removeMercenary(index);
-            this.gold -= 100;
+            if(this.gold < 100) {
+                return;
+            }
+            if((this.army.getArmy().get(index2)==null)) {
+                this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
+                this.addBonuses(this.army.getArmy().get(index2));
+                this.mercenary_camp.removeMercenary(index);
+                this.gold -= 100;
+                return;
+            }
+            else if(this.army.getArmy().get(index2).getId() == this.mercenary_camp.getMercenary_camp().get(index).getId()) {
+                this.eraseBonuses(this.army.getArmy().get(index2));
+                this.getArmy().get(index2).merge();
+                this.addBonuses(this.army.getArmy().get(index2));
+                this.mercenary_camp.removeMercenary(index);
+                this.gold -= 100;
+                return;
+            }
+
+
         }
 
         public void sellMercenary(int index) {
@@ -84,15 +140,31 @@ public class Player {
             this.gold += 50;
         }
 
+
+        public void swapMercenary(int index1, int index2) {
+        Mercenary temp = this.army.getArmy().get(index1);
+        if(this.army.getArmy().get(index2) == null) {
+            this.army.addMercenary(temp, index2);
+            this.army.removeMercenary(index1);
+            return;
+         }
+        else if(this.army.getArmy().get(index2).getId() == temp.getId()) {
+            eraseBonuses(this.army.getArmy().get(index2));
+            this.army.getArmy().get(index2).merge();
+            addBonuses(this.army.getArmy().get(index2));
+            this.army.removeMercenary(index1);
+            return;
+        }
+        else {
+            this.army.addMercenary(this.army.getArmy().get(index2), index1);
+            this.army.addMercenary(temp, index2);
+            return;
+        }
+        }
         public void newTurn() {
             addGold();
-            for (int i = 0; i <this.army.getArmy().size(); i++) {
-                    this.army.getArmy().get(i).setStats((this.army.getArmy().get(i).getId()));
-                    this.army.getArmy().get(i).setAttack((this.army.getArmy().get(i).getAttack()+this.attackBonus));
-                    this.army.getArmy().get(i).setDefense((this.army.getArmy().get(i).getDefense()+this.defenseBonus));
-                    this.army.getArmy().get(i).setSpeed((this.army.getArmy().get(i).getSpeed()+this.speedBonus));
-            }
-            this.mercenary_camp.CreateMercenaryCamp();
         }
+
+
 
 }

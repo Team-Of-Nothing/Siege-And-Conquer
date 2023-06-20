@@ -1,5 +1,4 @@
 package com.mygdx.game;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.Gdx;
@@ -27,9 +26,10 @@ public class MainMenu implements Screen{
 
     // manages UI
     Stage stage;
-
+    Image menuFrame;
+    VerticalGroup group;
+    final static private String DEFAULT_MAIN_SCREEN_BACKGROUND = "background.jpg";
     BitmapFont font = new BitmapFont();
-    
     // manages UI size
     Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 
@@ -38,16 +38,16 @@ public class MainMenu implements Screen{
         this.game = game;
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
-        Image background = new Image(new Texture("background.jpg"));
+        Image background = new Image(new Texture(DEFAULT_MAIN_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 
-        VerticalGroup group = new VerticalGroup();
+        group = new VerticalGroup();
         group.setPosition(Gdx.app.getGraphics().getWidth()*260/2560, Gdx.app.getGraphics().getHeight()*320/1440);
         group.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
-        group.setDebug(true);
+        //group.setDebug(true);
 
-        Image menuFrame = new Image(new Texture("menuframe.png"));
+        menuFrame = new Image(new Texture("menuframe.png"));
         menuFrame.setPosition(Gdx.app.getGraphics().getWidth()*260/2560, Gdx.app.getGraphics().getHeight()*320/1440 );
         menuFrame.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
 
@@ -72,12 +72,26 @@ public class MainMenu implements Screen{
         });
         buttonPlay.getLabel().setColor(Color.GOLD);
         
-
-        ImageTextButton buttonOptions = new ImageTextButton("Options", new ImageTextButton.ImageTextButtonStyle(
+        ImageTextButton settingsButton = new ImageTextButton("Settings", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
             null,font));
-            buttonOptions.getLabel().setColor(Color.GOLD);
+
+        final Screen actualScreen = this;
+        settingsButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                
+                stage.addActor(new SettingsBox(actualScreen, game.batch));
+                //fucking idiot
+                //group.setLayoutEnabled(false);
+                group.setVisible(false);
+                menuFrame.setVisible(false); //make it invisible
+                
+            }
+        });
+
+            settingsButton.getLabel().setColor(Color.GOLD);
 
 
         ImageTextButton buttonExit = new ImageTextButton("Exit", new ImageTextButton.ImageTextButtonStyle(
@@ -100,20 +114,14 @@ public class MainMenu implements Screen{
 
   
         group.addActor(buttonPlay);
-        group.addActor(buttonOptions);
+        group.addActor(settingsButton);
         group.addActor(buttonExit);
         group.getPrefWidth();
 
-
-       // group.addActor(menuFrame);
-
-       stage.addActor(menuFrame);
-
+        stage.addActor(menuFrame);
         stage.addActor(group);
 
     }
-
-
     @Override
     public void show() {
         // TODO Auto-generated method stub
@@ -122,43 +130,8 @@ public class MainMenu implements Screen{
     @Override
     public void render(float delta) {
         
-
-
-        // clear screen using gdx utils
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act(delta);
-        Texture test = new Texture("tets.png");
-        TextureRegion[][] tmp = TextureRegion.split(test, test.getWidth()/4, test.getHeight());
-        TextureRegion[] frames = new TextureRegion[4];
-        for (int i = 0; i < 4; i++)
-        {
-            frames[i] = tmp[0][i];
-        }
-        Animation<TextureRegion> animation = new Animation<TextureRegion>(1/5f,frames);
-
-
-        time += delta;
-        Sprite sprite = new Sprite(animation.getKeyFrame(time, true));
-    
-        Vector2 pos = new Vector2(sprite.getX(), sprite.getY());
-        viewport.unproject(pos);
-        sprite.setPosition(240, 115);
-
-        sprite.setSize(100, 100);
-        
-
-        game.batch.begin();
-        // draw all texture regions using frames
-
-
-        // draw sprite
-        sprite.draw(game.batch);
-
-        game.batch.end();
-
-
-
     }
 
     @Override
@@ -188,6 +161,4 @@ public class MainMenu implements Screen{
         font.dispose();
         // TODO Auto-generated method stub
     }
-
-    
 }
