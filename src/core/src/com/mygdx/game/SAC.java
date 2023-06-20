@@ -30,6 +30,10 @@ public class SAC extends Game {
 			}
 			
 			System.out.println("game started");
+			client.refreshShop();
+			while(responder.getReposndStatus()!=true){
+			}
+			player.setMercenaryCamp(responder.getMerceneryCamp());
 			client.endTurn(player.getArmy(), player.getName());
 			while(responder.getReposndStatus()!=true){
 			}
@@ -43,25 +47,7 @@ public class SAC extends Game {
 				System.out.println(army.army.get(i).getSpeed());
 				System.out.println();
 			}
-			client.endBattle(player.getHp());
-			while(responder.isNextTurn()==false){
-				continue;
-			}
-			System.out.println("nastepna tura sie zaczyna :)");
-			client.endTurn(player.getArmy(), player.getName());
 
-			while(responder.getReposndStatus()!=true){
-			}
-			responder.resetRespondStatus();
-			army = responder.getEnemyArmy();
-			System.out.println(responder.getEnemyName());
-			for(int i = 0; i<responder.getEnemyArmy().army.size(); i++){
-				System.out.println(army.army.get(i).getId());
-				System.out.println(army.army.get(i).getAttack());
-				System.out.println(army.army.get(i).getDefense());
-				System.out.println(army.army.get(i).getSpeed());
-				System.out.println();
-			}
 			
 		} catch (Exception e) {
 			System.out.println("Connection failed");

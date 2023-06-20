@@ -58,8 +58,6 @@ public class Client {
         byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
         String response = null;
 
-        Scanner scanner = new Scanner(System.in);
-        String armyInformation = scanner.nextLine();
         
         try {
             out.write(jsonDataBytes);
