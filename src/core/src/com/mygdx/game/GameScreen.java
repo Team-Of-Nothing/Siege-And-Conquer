@@ -1,10 +1,10 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -31,10 +31,13 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
+
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
 
-    //SpriteBatch spriteBatch;
+        MercenaryView mercenaryView = new MercenaryView(8);
+    MercenaryView mercenaryView2 = new MercenaryView(1);
+
     GameScreen(final SAC game){
         this.game = game;
         stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
@@ -86,21 +89,57 @@ public class GameScreen implements Screen {
         group.addActor(battleButton);
         stage.addActor(group);
         Gdx.input.setInputProcessor(stage);
+
+
+        mercenaryView2.flip();
     }
 
 
     @Override
     public void show() {
-
+                
     }
 
+    static int id = 3;
+
+
+    static int counter = 0;
     @Override
     public void render(float delta) {
+        
         Gdx.gl.glClear(16384);
         
         stage.draw();
         stage.act(delta);
-    
+        stage.draw();
+        mercenaryView.setPos(200, 200);
+
+        if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+            counter++;
+            mercenaryView.attack();
+            if (counter < 4){
+            mercenaryView2.damaged();
+            }
+            else mercenaryView2.death();
+        }
+        mercenaryView2.setPos(300, 200);
+
+        game.batch.begin();
+        //mercenary code is just a test, feel free to remove it/ adjust it to your needs
+        mercenaryView.act(delta);
+        mercenaryView.draw(game.batch, delta);
+        mercenaryView2.act(delta);
+        mercenaryView2.draw(game.batch, delta);
+        game.batch.end();
+        
+        if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+            System.out.println("\n\n");
+
+        }
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+            game.setScreen(new MainMenu(game));
+            dispose();
+        }
     }
 
     @Override
@@ -128,7 +167,7 @@ public class GameScreen implements Screen {
         
         stage.dispose();
         font.dispose();
-        //spriteBatch.dispose();
-        System.out.println("\ndispose SceneA");
+        mercenaryView.dispose();
+        mercenaryView2.dispose();
     }
 }
