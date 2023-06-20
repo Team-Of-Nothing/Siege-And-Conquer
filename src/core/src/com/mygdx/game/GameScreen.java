@@ -56,133 +56,78 @@ public class GameScreen implements Screen {
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 
-        VerticalGroup group = new VerticalGroup();
-        group.setPosition(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
-        group.setSize(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
+        
         //group.setDebug(true);
 
-        TextureRegionDrawable buttonInactive = new TextureRegionDrawable(new Texture ("blue-button.png"));
-        TextureRegionDrawable buttonActive = new TextureRegionDrawable(new Texture("blue-button_active.png"));
+        
+        addBattleButton();
+        addSetttingsButton();
 
-        buttonInactive.setMinWidth(Gdx.app.getGraphics().getWidth()*320/2560);
-        buttonActive.setMinWidth(Gdx.app.getGraphics().getWidth()*320/2560);
-        buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
-        buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
-
-        ImageTextButton returnButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
-                buttonInactive,
-                buttonActive, // something has to be wrong with this
-                null,font));
-        returnButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainMenu(game));
-                dispose();
-            }
-        });
-        returnButton.getLabel().setColor(Color.GOLD);
-
-        final ImageTextButton battleButton = new ImageTextButton("Ready!", new ImageTextButton.ImageTextButtonStyle(
-            buttonInactive,
-            buttonActive,
-            null,font));
-            battleButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                //battleButton.setText("Waiting.."); //to sie przyda ;)
-                //todo send info do servera a ten battle screen dopiero jak response 
-                game.setScreen(new BattleScreen(game));
-                dispose();
-            }
-        });
-        battleButton.getLabel().setColor(Color.GOLD);
-
-        //SETTINGS BUTTON
-        TextureRegionDrawable settingsbuttonInactive = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Settings_Button.png"))));
-        TextureRegionDrawable settingsbuttonActive = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Settings_Button_active.png"))));
-        ImageButtonStyle style = new ImageButtonStyle();
-        style.up           = settingsbuttonActive;
-        style.down         = settingsbuttonInactive;
-        ImageButton settingsButton = new ImageButton(style); 
-        final Screen actualScreen = this;
-        settingsButton.addListener(new ClickListener(){
+        addPassiveDefenceButton();
+ 
+        ImageButton defenceCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+        defenceCounterTable.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                stage.addActor(new SettingsBox(actualScreen, game.batch));
             }
         });
-        settingsButton.setPosition(Gdx.app.getGraphics().getWidth()*30/2560, Gdx.app.getGraphics().getHeight()*1290/1440);
-        settingsButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        defenceCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1200/1440);
+        defenceCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
-        stage.addActor(settingsButton);
-        //SETTINGS BUTTON
+        stage.addActor(defenceCounterTable);
 
-        //SPEED PASIVE BUTTON
-        TextureRegionDrawable passiveSpeedButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Pasive_speed.png"))));
-        ImageButton passiveSpeedButton = new ImageButton(passiveSpeedButtonImage); 
-        settingsButton.addListener(new ClickListener(){
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.WHITE;
+        String temp = "2137";
+        Label defenceCounter = new Label(temp, labelStyle);
+        defenceCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        defenceCounter.setPosition(Gdx.app.getGraphics().getWidth()*2505/2560, Gdx.app.getGraphics().getHeight()*1190/1440);
+
+        stage.addActor(defenceCounter);
+
+
+
+        addPassiveSpeedButton();
+        ImageButton speedCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+        defenceCounterTable.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                SAC.player.increaseSpeedBonus();
             }
         });
-        passiveSpeedButton.setPosition(Gdx.app.getGraphics().getWidth()*1900/2560, Gdx.app.getGraphics().getHeight()*900/1440);
-        passiveSpeedButton.setSize(Gdx.app.getGraphics().getWidth()*500/2560, Gdx.app.getGraphics().getHeight()*500/1440);
-        //passiveSpeedButton.setDebug(true);
-        stage.addActor(passiveSpeedButton);
-        //SPEED PASIVE BUTTON
+        speedCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1050/1440);
+        speedCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(speedCounterTable);
 
-        //ATACK PASIVE BUTTON
-        TextureRegionDrawable passiveAtackButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Pasive_speed.png"))));
-        ImageButton passiveAtackButton = new ImageButton(passiveAtackButtonImage); 
-        settingsButton.addListener(new ClickListener(){
+
+        addPassiveAttackButton();
+        ImageButton attackCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+        defenceCounterTable.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                SAC.player.increaseAttackBonus();
             }
         });
-        passiveAtackButton.setPosition(Gdx.app.getGraphics().getWidth()*1900/2560, Gdx.app.getGraphics().getHeight()*800/1440);
-        passiveAtackButton.setSize(Gdx.app.getGraphics().getWidth()*500/2560, Gdx.app.getGraphics().getHeight()*500/1440);
-        //passiveSpeedButton.setDebug(true);
-        stage.addActor(passiveAtackButton);
-        //ATACK PASIVE BUTTON
-
-        //ARMOUR PASIVE BUTTON
-        TextureRegionDrawable passiveArmourButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Pasive_speed.png"))));
-        ImageButton passiveArmourButton = new ImageButton(passiveArmourButtonImage); 
-        settingsButton.addListener(new ClickListener(){
+        attackCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*900/1440);
+        attackCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(attackCounterTable);
+        addPassiveGoldButton();
+        ImageButton goldCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+        goldCounterTable.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                SAC.player.increaseAttackBonus();
             }
         });
-        passiveArmourButton.setPosition(Gdx.app.getGraphics().getWidth()*1900/2560, Gdx.app.getGraphics().getHeight()*700/1440);
-        passiveArmourButton.setSize(Gdx.app.getGraphics().getWidth()*500/2560, Gdx.app.getGraphics().getHeight()*500/1440);
-        //passiveSpeedButton.setDebug(true);
-        stage.addActor(passiveArmourButton);
-        //ARMOUR PASIVE BUTTON
-
-        //GOLD PASIVE BUTTON
-        TextureRegionDrawable passiveGoldButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Pasive_speed.png"))));
-        ImageButton passiveGoldButton = new ImageButton(passiveGoldButtonImage); 
-        settingsButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                SAC.player.increaseAttackBonus();
-            }
-        });
-        passiveGoldButton.setPosition(Gdx.app.getGraphics().getWidth()*1900/2560, Gdx.app.getGraphics().getHeight()*600/1440);
-        passiveGoldButton.setSize(Gdx.app.getGraphics().getWidth()*500/2560, Gdx.app.getGraphics().getHeight()*500/1440);
-        //passiveSpeedButton.setDebug(true);
-        stage.addActor(passiveGoldButton);
-        //GOLD PASIVE BUTTON
+        goldCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*750/1440);
+        goldCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(goldCounterTable);
 
 
 
 
 
-
-        group.addActor(returnButton);
-        group.addActor(battleButton);
-        stage.addActor(group);
         stage.addActor(marketView);
         stage.addActor(armyView);
         //stage.setDebugAll(true);
@@ -212,6 +157,119 @@ public class GameScreen implements Screen {
 
 
     }
+
+
+
+    private void addSetttingsButton(){
+        TextureRegionDrawable settingsbuttonInactive = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Settings_Button.png"))));
+        TextureRegionDrawable settingsbuttonActive = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Settings_Button_active.png"))));
+        ImageButtonStyle style = new ImageButtonStyle();
+        style.up           = settingsbuttonActive;
+        style.down         = settingsbuttonInactive;
+        ImageButton settingsButton = new ImageButton(style); 
+        final Screen actualScreen = this;
+        settingsButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                stage.addActor(new SettingsBox(actualScreen, game.batch));
+            }
+        });
+        settingsButton.setPosition(Gdx.app.getGraphics().getWidth()*30/2560, Gdx.app.getGraphics().getHeight()*1290/1440);
+        settingsButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(settingsButton);
+    }
+
+    private void addBattleButton() {
+        VerticalGroup group = new VerticalGroup();
+        group.setPosition(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
+        group.setSize(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
+
+        TextureRegionDrawable buttonInactive = new TextureRegionDrawable(new Texture ("blue-button.png"));
+        TextureRegionDrawable buttonActive = new TextureRegionDrawable(new Texture("blue-button_active.png"));
+
+        buttonInactive.setMinWidth(Gdx.app.getGraphics().getWidth()*320/2560);
+        buttonActive.setMinWidth(Gdx.app.getGraphics().getWidth()*320/2560);
+        buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
+        buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
+        final ImageTextButton battleButton = new ImageTextButton("Ready!", new ImageTextButton.ImageTextButtonStyle(
+            buttonInactive,
+            buttonActive,
+            null,font));
+            battleButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                //battleButton.setText("Waiting.."); //to sie przyda ;)
+                //todo send info do servera a ten battle screen dopiero jak response 
+                game.setScreen(new BattleScreen(game));
+                dispose();
+            }
+        });
+        battleButton.getLabel().setColor(Color.GOLD);
+        group.addActor(battleButton);
+        stage.addActor(group);
+
+    }
+
+    private void addPassiveDefenceButton(){
+        TextureRegionDrawable passiveDefenceButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("defence_pasive.jpg"))));
+        ImageButton passiveDefenceButton = new ImageButton(passiveDefenceButtonImage); 
+        passiveDefenceButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                SAC.player.increaseDefenseBonus();
+            }
+        });
+        passiveDefenceButton.setPosition(Gdx.app.getGraphics().getWidth()*2350/2560, Gdx.app.getGraphics().getHeight()*1200/1440);
+        passiveDefenceButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //passiveSpeedButton.setDebug(true);
+        stage.addActor(passiveDefenceButton);
+    }
+    
+    private void addPassiveSpeedButton(){
+        TextureRegionDrawable passiveSpeedButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("speed_pasive.jpg"))));
+        ImageButton passiveSpeedButton = new ImageButton(passiveSpeedButtonImage); 
+        passiveSpeedButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                SAC.player.increaseSpeedBonus();
+            }
+        });
+        passiveSpeedButton.setPosition(Gdx.app.getGraphics().getWidth()*2350/2560, Gdx.app.getGraphics().getHeight()*1050/1440);
+        passiveSpeedButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //passiveSpeedButton.setDebug(true);
+        stage.addActor(passiveSpeedButton);
+    }
+
+    private void addPassiveAttackButton(){
+        TextureRegionDrawable passiveAtackButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("attack_passive.jpg"))));
+        ImageButton passiveAtackButton = new ImageButton(passiveAtackButtonImage); 
+        passiveAtackButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                SAC.player.increaseAttackBonus();
+            }
+        });
+        passiveAtackButton.setPosition(Gdx.app.getGraphics().getWidth()*2350/2560, Gdx.app.getGraphics().getHeight()*900/1440);
+        passiveAtackButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //passiveSpeedButton.setDebug(true);
+        stage.addActor(passiveAtackButton);
+    }
+
+    private void addPassiveGoldButton(){
+        TextureRegionDrawable passiveGoldButtonImage = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("money_pasive.jpg"))));
+        ImageButton passiveGoldButton = new ImageButton(passiveGoldButtonImage); 
+        passiveGoldButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                SAC.player.increaseGoldBonus();
+            }
+        });
+        passiveGoldButton.setPosition(Gdx.app.getGraphics().getWidth()*2350/2560, Gdx.app.getGraphics().getHeight()*750/1440);
+        passiveGoldButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //passiveSpeedButton.setDebug(true);
+        stage.addActor(passiveGoldButton);
+    }
+
 
 
     @Override

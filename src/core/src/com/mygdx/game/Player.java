@@ -165,6 +165,18 @@ public class Player {
             addGold();
         }
 
-
+        public int getAttackBonus() {
+            return attackBonus;
+        }
+        public int getDefenseBonus() {
+            return defenseBonus;
+        }
+    
+        public int getSpeedBonus() {
+            return speedBonus;
+        }
+        public int getGoldBonus() {
+            return goldBonus;
+        }
 
 }
