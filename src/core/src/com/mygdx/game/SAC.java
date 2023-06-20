@@ -13,13 +13,8 @@ public class SAC extends Game {
 		player.getArmy().add(0, new Mercenary(1));
 		player.getArmy().add(1, new Mercenary(5));
 		player.getArmy().add(2,new Mercenary(6));
-		player.defeat();
-		player.defeat();
-		player.defeat();
-		player.defeat();
-		player.defeat();
 		try {
-			client.connect("localhost", 2137);
+			client.connect("20.117.180.142", 2137);
 			Responder responder = new Responder(client.socket);
 			Thread thread = new Thread(responder);
 			thread.start();
@@ -28,6 +23,7 @@ public class SAC extends Game {
 			while(responder.isGameStarted()==false){
 				continue;
 			}
+			
 			System.out.println("game started");
 			client.endTurn(player.getArmy(), player.getName());
 			while(responder.getReposndStatus()!=true){
