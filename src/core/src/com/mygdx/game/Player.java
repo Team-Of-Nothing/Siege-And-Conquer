@@ -48,6 +48,10 @@ public class Player {
     }
 
     public void increaseAttackBonus() {
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
 
             this.attackBonus += 1;
             for(Mercenary mercenary : this.army.getArmy()){
@@ -55,6 +59,10 @@ public class Player {
             }
     }
     public void increaseDefenseBonus() {
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
 
             this.defenseBonus += 1;
             for(Mercenary mercenary : this.army.getArmy()){
@@ -62,6 +70,10 @@ public class Player {
             }
     }
     public void increaseSpeedBonus() {
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
 
             this.speedBonus += 1;
             for(Mercenary mercenary : this.army.getArmy()){
@@ -69,7 +81,10 @@ public class Player {
             }
     }
     public void increaseGoldBonus() {
-
+        if(this.gold < 200) {
+            return;
+        }
+        this.gold -= 200;
             this.goldBonus += 1;
     }
 
@@ -148,7 +163,6 @@ public class Player {
         }
         public void newTurn() {
             addGold();
-            this.mercenary_camp.CreateMercenaryCamp();
         }
 
 

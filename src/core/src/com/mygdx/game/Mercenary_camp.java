@@ -9,6 +9,12 @@ public class Mercenary_camp {
         public Mercenary_camp() {
             this.mercenary_camp = new ArrayList<Mercenary>();
             this.mercenary_camp.ensureCapacity(5);
+
+        }
+
+
+public void addMercenary(Mercenary mercenary , int index) {
+            this.mercenary_camp.set(index, mercenary);
         }
 
         public ArrayList<Mercenary> getMercenary_camp() {

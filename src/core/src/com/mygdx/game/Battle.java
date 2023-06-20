@@ -72,20 +72,18 @@ public class Battle {
             int k = 0;
             int l = 0;
             while (i < army1.getArmy().size() && j < army2.getArmy().size()) {
-                if (army1.getArmy().get(army1Queue[i]) != null && army2.getArmy().get(army2Queue[j]) != null) {
+                if (army1.getArmy().get(army1Queue[i]).getDefense()!=0 && army2.getArmy().get(army2Queue[j]).getDefense()!=0 ){
 
                     kolejka*=-1;
                     if (army1.getArmy().get(army1Queue[i]).getSpeed() > army2.getArmy().get(army2Queue[j]).getSpeed()) {
                         attack(army1.getArmy().get(army1Queue[i]), army2.getArmy().get(l));
                         if (army2.getArmy().get(l).getDefense() <= 0) {
-                            army2.removeMercenary(l);
                             l++;
                         }
                         i++;
                     } else if (army1.getArmy().get(army1Queue[i]).getSpeed() < army2.getArmy().get(army2Queue[j]).getSpeed()) {
                         attack(army2.getArmy().get(army2Queue[j]), army1.getArmy().get(k));
                         if (army1.getArmy().get(k).getDefense() <= 0) {
-                            army1.removeMercenary(k);
                             k++;
                         }
                         j++;
@@ -93,21 +91,19 @@ public class Battle {
                         if (kolejka == 1) {
                             attack(army1.getArmy().get(army1Queue[i]), army2.getArmy().get(l));
                             if (army2.getArmy().get(l).getDefense() <= 0) {
-                                army2.removeMercenary(l);
                                 l++;
                             }
                             i++;
                         } else {
                             attack(army2.getArmy().get(army2Queue[j]), army1.getArmy().get(k));
                             if (army1.getArmy().get(k).getDefense() <= 0) {
-                                army1.removeMercenary(k);
                                 k++;
                             }
                             j++;
                         }
                     }
 
-                } else if (army1.getArmy().get(army1Queue[i]) == null) {
+                } else if (army1.getArmy().get(army1Queue[i]).getDefense()==0) {
                     i++;
                 } else {
                     j++;
@@ -125,10 +121,15 @@ public class Battle {
 
 
     public void attack(Mercenary ally, Mercenary enemy) {
+        MercenaryView allyView = new MercenaryView(ally.getId());
+        MercenaryView enemyView= new MercenaryView(enemy.getId());
+        allyView.attack();
         if (ally.getAttack() > enemy.getDefense()) {
             enemy.setDefense(0);
+            enemyView.death();
         } else {
             enemy.setDefense(enemy.getDefense() - ally.getAttack());
+            enemyView.damaged();
         }
     }
 }
