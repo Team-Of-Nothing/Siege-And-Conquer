@@ -25,9 +25,7 @@ public class MainMenu implements Screen{
     Image menuFrame;
     VerticalGroup group;
     final static private String DEFAULT_MAIN_SCREEN_BACKGROUND = "background.jpg";
-
     BitmapFont font = new BitmapFont();
-    
     // manages UI size
     Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 
@@ -70,17 +68,17 @@ public class MainMenu implements Screen{
         });
         buttonPlay.getLabel().setColor(Color.GOLD);
         
-
         ImageTextButton settingsButton = new ImageTextButton("Settings", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
             null,font));
 
+        final Screen actualScreen = this;
         settingsButton.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 
-                stage.addActor(new SettingsBox(game.batch));
+                stage.addActor(new SettingsBox(actualScreen, game.batch));
                 //fucking idiot
                 //group.setLayoutEnabled(false);
                 group.setVisible(false);
@@ -116,19 +114,10 @@ public class MainMenu implements Screen{
         group.addActor(buttonExit);
         group.getPrefWidth();
 
-
-       // group.addActor(menuFrame);
-
         stage.addActor(menuFrame);
-
         stage.addActor(group);
 
     }
-
-
-    
-
-
     @Override
     public void show() {
         // TODO Auto-generated method stub
@@ -138,7 +127,6 @@ public class MainMenu implements Screen{
     public void render(float delta) {
         
         stage.act(delta);
-        
         stage.draw();
     }
 
@@ -169,6 +157,4 @@ public class MainMenu implements Screen{
         font.dispose();
         // TODO Auto-generated method stub
     }
-
-    
 }

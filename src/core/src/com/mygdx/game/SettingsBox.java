@@ -1,7 +1,11 @@
 package com.mygdx.game;
 import com.mygdx.game.SAC;
+
+import java.lang.reflect.Type;
+
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -26,8 +30,11 @@ final public class SettingsBox extends VerticalGroup{
     Image menuFrame;
     TextureRegionDrawable background;
     SAC s = (SAC)Gdx.app.getApplicationListener();
+    Screen parentScreen;
 
-    SettingsBox(Batch batch){
+    SettingsBox(Screen screen, Batch batch){
+
+        parentScreen = screen;
 
         this.batchtmp = batch;
         this.setSize(Gdx.app.getGraphics().getWidth()*540/2560, Gdx.app.getGraphics().getHeight()*820/1440);
@@ -96,10 +103,14 @@ final public class SettingsBox extends VerticalGroup{
 
         @Override
         public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-            //System.out.println(event.getTarget().getParent());
-            settings.setVisible(false);
-            settings.getParent().getChild(2).setVisible(true);
-            settings.getParent().getChild(1).setVisible(true);
+            //System.out.println(parentScreen.getClass().getSimpleName().toString());
+            //wylaczanie przyciskow tylko jak MainMenu, mozna dodać niżej kolejne ify jak bedzie trzeba cos innego usuwać
+            if(parentScreen.getClass().getSimpleName().toString().equals("MainMenu")){
+                settings.setVisible(false);
+                settings.getParent().getChild(2).setVisible(true);
+                settings.getParent().getChild(1).setVisible(true);
+                System.out.println(parentScreen.getClass().getSimpleName());
+            }
         }
     }
 }
