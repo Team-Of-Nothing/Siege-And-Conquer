@@ -14,7 +14,6 @@ public class Mercenary_camp {
 
 
 
-
         public ArrayList<Mercenary> getMercenary_camp() {
             return mercenary_camp;
         }
