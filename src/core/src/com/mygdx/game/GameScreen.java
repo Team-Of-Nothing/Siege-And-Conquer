@@ -1,5 +1,4 @@
 package com.mygdx.game;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -21,7 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 
@@ -31,7 +32,11 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
-
+    private Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
+    Array<Integer> mockIDs = new Array<>(new Integer[]{4, 7, 2,3,9});
+    ArmyView marketView;
+    ArmyView armyView;
+    
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
 
@@ -40,7 +45,10 @@ public class GameScreen implements Screen {
 
     GameScreen(final SAC game){
         this.game = game;
-        stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
+        stage = new Stage(viewport, game.batch);
+
+        marketView = new ArmyView(mockIDs,0,0,stage);
+        armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
 
         Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
@@ -58,6 +66,9 @@ public class GameScreen implements Screen {
         buttonActive.setMinWidth(Gdx.app.getGraphics().getWidth()*320/2560);
         buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
+
+
+
 
         ImageTextButton returnButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
                 buttonInactive,
@@ -88,10 +99,34 @@ public class GameScreen implements Screen {
         group.addActor(returnButton);
         group.addActor(battleButton);
         stage.addActor(group);
+        stage.addActor(marketView);
+        stage.addActor(armyView);
+        stage.setDebugAll(true);
+
+        // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
 
 
-        mercenaryView2.flip();
+        armyView.setHighlight(true);
+        
+        marketView.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                MercenaryView a  = (MercenaryView)event.getTarget();
+                
+                for (int i = 0; i < marketView.getSize();i++)
+                {
+                    if (a == marketView.getMercenaryView(i))
+                    {
+                        System.out.println("position in army: " + i);
+                        return;
+                    }
+                }
+                
+
+            }
+        });
+
+
     }
 
 
@@ -100,10 +135,6 @@ public class GameScreen implements Screen {
                 
     }
 
-    static int id = 3;
-
-
-    static int counter = 0;
     @Override
     public void render(float delta) {
         
@@ -112,39 +143,20 @@ public class GameScreen implements Screen {
         stage.draw();
         stage.act(delta);
         stage.draw();
-        mercenaryView.setPos(200, 200);
-
-        if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-            counter++;
-            mercenaryView.attack();
-            if (counter < 4){
-            mercenaryView2.damaged();
-            }
-            else mercenaryView2.death();
-        }
-        mercenaryView2.setPos(300, 200);
-
-        game.batch.begin();
-        //mercenary code is just a test, feel free to remove it/ adjust it to your needs
-        mercenaryView.act(delta);
-        mercenaryView.draw(game.batch, delta);
-        mercenaryView2.act(delta);
-        mercenaryView2.draw(game.batch, delta);
-        game.batch.end();
         
-        if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-            System.out.println("\n\n");
-
+        if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+            System.out.println("\n\n\n\n");
         }
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             game.setScreen(new MainMenu(game));
             dispose();
         }
+    
     }
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width,height);
     }
 
     @Override
@@ -167,7 +179,5 @@ public class GameScreen implements Screen {
         
         stage.dispose();
         font.dispose();
-        mercenaryView.dispose();
-        mercenaryView2.dispose();
     }
 }
