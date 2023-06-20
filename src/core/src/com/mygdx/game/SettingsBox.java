@@ -104,13 +104,12 @@ final public class SettingsBox extends VerticalGroup{
         @Override
         public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
             //System.out.println(parentScreen.getClass().getSimpleName().toString());
-            //wylaczanie przyciskow tylko jak MainMenu, mozna dodać niżej kolejne ify jak bedzie trzeba cos innego usuwać
-            if(parentScreen.getClass().getSimpleName().toString().equals("MainMenu")){
+            //if(parentScreen.getClass().getSimpleName().toString().equals("MainMenu")){
                 settings.setVisible(false);
                 settings.getParent().getChild(2).setVisible(true);
                 settings.getParent().getChild(1).setVisible(true);
                 System.out.println(parentScreen.getClass().getSimpleName());
-            }
+            //}
         }
     }
 }

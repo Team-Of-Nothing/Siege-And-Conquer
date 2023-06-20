@@ -112,7 +112,6 @@ public class MainMenu implements Screen{
             group.space(Gdx.app.getGraphics().getHeight()*50/1440);
             
 
-  
         group.addActor(buttonPlay);
         group.addActor(settingsButton);
         group.addActor(buttonExit);
