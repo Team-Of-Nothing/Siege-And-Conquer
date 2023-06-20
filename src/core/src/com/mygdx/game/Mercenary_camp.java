@@ -15,19 +15,12 @@ public class Mercenary_camp {
         public Mercenary_camp() {
             this.mercenary_camp = new ArrayList<Mercenary>();
             this.mercenary_camp.ensureCapacity(5);
-            CreateMercenaryCamp();
         }
 
-        public void CreateMercenaryCamp() {
-        if(mercenary_camp.isEmpty()){
-            int size = 5;
-            for (int i = 0; i < size; i++) {
-                this.mercenary_camp.add(new Mercenary(this.getRandomInt()));
-            }}
-        else{
-            this.mercenary_camp.clear();
+
+        public void addMercenary(Mercenary mercenary) {
+            this.mercenary_camp.add(mercenary);
         }
-    }
 
         public ArrayList<Mercenary> getMercenary_camp() {
             return mercenary_camp;

@@ -163,7 +163,6 @@ public class Player {
         }
         public void newTurn() {
             addGold();
-            this.mercenary_camp.CreateMercenaryCamp();
         }
 
 }
