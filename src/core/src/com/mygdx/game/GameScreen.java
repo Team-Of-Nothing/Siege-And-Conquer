@@ -2,37 +2,47 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.ImageTextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 
 
+//import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+//import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
 public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
 
     BitmapFont font = new BitmapFont();
+    final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
 
         MercenaryView mercenaryView = new MercenaryView(8);
     MercenaryView mercenaryView2 = new MercenaryView(1);
 
     GameScreen(final SAC game){
-
         this.game = game;
-        System.out.println("\nshow SceneA");
         stage = new Stage(new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight()));
 
-        Image background = new Image(new Texture("Miasto.png"));
+        Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 
@@ -49,9 +59,6 @@ public class GameScreen implements Screen {
         buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
 
-
-
-
         ImageTextButton returnButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
                 buttonInactive,
                 buttonActive, // something has to be wrong with this
@@ -64,16 +71,30 @@ public class GameScreen implements Screen {
         });
         returnButton.getLabel().setColor(Color.GOLD);
 
+        final ImageTextButton battleButton = new ImageTextButton("Ready!", new ImageTextButton.ImageTextButtonStyle(
+            buttonInactive,
+            buttonActive,
+            null,font));
+            battleButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                //battleButton.setText("Waiting.."); //to sie przyda ;)
+                //todo send info do servera a ten battle screen dopiero jak response 
+                game.setScreen(new BattleScreen(game));
+                dispose();
+            }
+        });
+        battleButton.getLabel().setColor(Color.GOLD);
 
         group.addActor(returnButton);
+        group.addActor(battleButton);
         stage.addActor(group);
-
-        // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
 
 
         mercenaryView2.flip();
     }
+
+
     @Override
     public void show() {
                 
@@ -87,6 +108,8 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         
         Gdx.gl.glClear(16384);
+        
+        stage.draw();
         stage.act(delta);
         stage.draw();
         mercenaryView.setPos(200, 200);
@@ -141,6 +164,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        
         stage.dispose();
         font.dispose();
         mercenaryView.dispose();
