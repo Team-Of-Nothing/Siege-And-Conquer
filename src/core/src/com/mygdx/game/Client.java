@@ -43,13 +43,17 @@ public class Client {
         }
         String jsonData = dataJson.toString();
         byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
-        Scanner scanncer = new Scanner(System.in);
-        String armyInformation = scanncer.nextLine();
+        String response = null;
+
+        Scanner scanner = new Scanner(System.in);
+        String armyInformation = scanner.nextLine();
+        
         try {
             out.write(jsonDataBytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        
     }
 
     public void refreshShop(){

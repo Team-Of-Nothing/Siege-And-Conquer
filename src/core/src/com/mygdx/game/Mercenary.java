@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import java.io.File;
-
 public class Mercenary {
 
     private int id;

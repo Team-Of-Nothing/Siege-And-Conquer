@@ -14,6 +14,7 @@ public class Mercenary_camp {
 
 
         public void addMercenary(Mercenary mercenary , int index) {
+
             this.mercenary_camp.set(index, mercenary);
         }
 
