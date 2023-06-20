@@ -14,7 +14,7 @@ public class Mercenary_camp {
 
 
 public void addMercenary(Mercenary mercenary , int index) {
-            this.mercenary_camp.set(index, mercenary);
+            this.mercenary_camp.add(index, mercenary);
         }
 
         public ArrayList<Mercenary> getMercenary_camp() {

@@ -36,19 +36,39 @@ public class GameScreen implements Screen {
     Array<Integer> mockIDs = new Array<>(new Integer[]{4, 7, 2,3,9});
     ArmyView marketView;
     ArmyView armyView;
+
+    int ShopIndex = -1;
+    int ArmyIndex = -1;
     
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
-
-        MercenaryView mercenaryView = new MercenaryView(8);
-    MercenaryView mercenaryView2 = new MercenaryView(1);
 
     GameScreen(final SAC game){
         this.game = game;
         stage = new Stage(viewport, game.batch);
 
-        marketView = new ArmyView(mockIDs,0,0,stage);
-        armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
+        float Offsetxwidth = Gdx.graphics.getWidth();
+        Offsetxwidth= Offsetxwidth/2.4f;
+
+        // possibly refactor into standalone function
+        Array<Integer> armyIDs = new Array <Integer>(game.player.getArmy().size());
+        for (int i = 0; i < game.player.getArmy().size(); i++) {
+        armyIDs.add(game.player.getArmy().get(i).getId());
+        }
+        Array<Integer> marketIDs = new Array <Integer>(game.player.getMercenary_camp().size());
+        for (int i = 0; i < game.player.getMercenary_camp().size(); i++) {
+        marketIDs.add(game.player.getMercenary_camp().get(i).getId());
+        }
+
+
+        armyView = new ArmyView(armyIDs,Offsetxwidth,0,stage); // TODO not hard coded ;(
+        
+        if (marketIDs.size > 0)
+            marketView = new ArmyView(marketIDs,0,0,stage);
+        else
+            marketView = new ArmyView(mockIDs,0,0,stage);
+
+
 
         Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
@@ -109,27 +129,46 @@ public class GameScreen implements Screen {
 
         armyView.setHighlight(true);
         
+
         marketView.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 MercenaryView a  = (MercenaryView)event.getTarget();
                 
+
                 for (int i = 0; i < marketView.getSize();i++)
                 {
                     if (a == marketView.getMercenaryView(i))
                     {
-                        System.out.println("position in army: " + i);
+                        
+                        System.out.println("position in shop: " + i);
+                        ShopIndex = i;
                         return;
                     }
                 }
+            }
+        });
+
+        armyView.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                MercenaryView a  = (MercenaryView)event.getTarget();
                 
 
+                for (int i = 0; i < armyView.getSize();i++)
+                {
+                    if (a == armyView.getMercenaryView(i))
+                    {
+                        
+                        System.out.println("position in armyView: " + i);
+                        ArmyIndex = i;
+                        return;
+                    }
+                }
             }
         });
 
 
+
     }
-
-
     @Override
     public void show() {
                 
@@ -143,6 +182,45 @@ public class GameScreen implements Screen {
         stage.draw();
         stage.act(delta);
         stage.draw();
+
+
+        if (ShopIndex != -1 && ArmyIndex != -1)
+        {
+
+            if (game.player.buyMercenary(ShopIndex, ArmyIndex))
+            {
+                float Offsetxwidth = Gdx.graphics.getWidth();
+                Offsetxwidth= Offsetxwidth/2.4f;
+                marketView.removeMercenary(ShopIndex);
+                
+                Array<Integer> armyIds = new Array <Integer>(game.player.getArmy().size());
+                for (int i = 0; i < game.player.getArmy().size(); i++)
+                    armyIds.add(game.player.getArmy().get(i).getId());
+                armyView.dispose();
+                armyView = new ArmyView(armyIds,Offsetxwidth,0,stage); // TODO not hard coded ;(
+                armyView.setHighlight(true);
+                armyView.addListener(new ClickListener() {
+                    public void clicked(InputEvent event, float x, float y) {
+                        MercenaryView a  = (MercenaryView)event.getTarget();
+                        
+
+                        for (int i = 0; i < armyView.getSize();i++)
+                        {
+                            if (a == armyView.getMercenaryView(i))
+                            {
+                                
+                                System.out.println("position in armyView: " + i);
+                                ArmyIndex = i;
+                                return;
+                            }
+                        }
+                    }
+                });
+            }
+                ShopIndex = -1;
+                ArmyIndex = -1;
+
+        }
         
         if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
             System.out.println("\n\n\n\n");

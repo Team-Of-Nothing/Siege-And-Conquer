@@ -29,7 +29,7 @@ public class ArmyView extends Actor {
 
 
 
-    ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
+ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
     {
         this(mercenaryIDs);
         this.startingX += xOffset;
@@ -40,8 +40,8 @@ public class ArmyView extends Actor {
 
         for (int i = 0; i < MERCENARY_MAX_SIZE; i++) // max size of mercenaryViews
         {
-            mercenaryPositions.insert(i, new Vector2(midX+(endingX-midX)*(-1*i%2),startingY-i*(startingY-endingY)/MERCENARY_MAX_SIZE));
-            mercenarySizes.insert(i, new Vector2(0.1f*gfxwidth,0.1f*gfxwidth));
+            mercenaryPositions.insert(i, new Vector2(midX+gfxwidth*0.1f *(-1*i%2),startingY-i*gfxheight*0.09f));
+            mercenarySizes.insert(i, new Vector2(0.1f*gfxwidth,0.17f*gfxheight));
         }
 
 
@@ -63,6 +63,10 @@ public class ArmyView extends Actor {
         {
             mercenaryViews.insert(i, new MercenaryView(mercenaryIDs.get(i)));
         }
+    }
+     public void update()
+    {
+
     }
 
     // not used anymore but might be useful in the future, though it didn't work as intended
@@ -109,6 +113,11 @@ public class ArmyView extends Actor {
         return mercenaryViews.get(i);
     }
 
+    public void removeMercenary(int index)
+    {
+        this.getParent().removeActor(mercenaryViews.get(index));
+        mercenaryViews.removeIndex(index);
+    }
 
     @Override
     public void act(float delta) {
@@ -154,5 +163,17 @@ public class ArmyView extends Actor {
             mercenaryViews.get(i).flip();
         }
     }
+
+    public void dispose() {
+
+        int size = mercenaryViews.size;
+        for (int i = 0; i < size; i++)
+        {
+            removeMercenary(i);
+        
+        }
+        this.getParent().removeActor(this);
+    }
+
 
 }
