@@ -22,17 +22,17 @@ public class GameScreen implements Screen {
     final private Stage stage;
     final public SAC game;
     private Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
-    Array<Integer> mockIDs = new Array<>(new Integer[]{1, 2, 3,4,5});
+    Array<Integer> mockIDs = new Array<>(new Integer[]{4, 7, 2,3,9});
+    ArmyView marketView;
     ArmyView armyView;
-    ArmyView armyView2;
     
     BitmapFont font = new BitmapFont();
     GameScreen(final SAC game){
         this.game = game;
         stage = new Stage(viewport, game.batch);
 
-        armyView = new ArmyView(mockIDs,0,0,stage);
-        armyView2 = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
+        marketView = new ArmyView(mockIDs,0,0,stage);
+        armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
 
         Image background = new Image(new Texture("Miasto.png"));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
@@ -67,15 +67,32 @@ public class GameScreen implements Screen {
 
         group.addActor(returnButton);
         stage.addActor(group);
+        stage.addActor(marketView);
         stage.addActor(armyView);
-        stage.addActor(armyView2);
         stage.setDebugAll(true);
 
         // don't forget to call this to be able to handle stage inputs
         Gdx.input.setInputProcessor(stage);
 
 
-        armyView2.setHighlight(true);
+        armyView.setHighlight(true);
+        
+        marketView.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                MercenaryView a  = (MercenaryView)event.getTarget();
+                
+                for (int i = 0; i < marketView.getSize();i++)
+                {
+                    if (a == marketView.getMercenaryView(i))
+                    {
+                        System.out.println("position in army: " + i);
+                        return;
+                    }
+                }
+                
+
+            }
+        });
 
 
     }

@@ -102,6 +102,10 @@ public class MercenaryView extends Actor  {
         //System.out.println("action: " + action +" " + animations.get(2).isAnimationFinished(time) + " " + time );
     }
 
+    public int getID() {
+        return id;
+    }
+
     public void attack() {
         //sprite.setColor(Color.RED);
         setAction(1);
