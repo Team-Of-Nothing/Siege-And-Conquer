@@ -79,8 +79,9 @@ public class GameScreen implements Screen {
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = font;
         labelStyle.fontColor = Color.WHITE;
-        String temp = "2137";
-        Label defenceCounter = new Label(temp, labelStyle);
+        
+        //int p = SAC.player.getAttackBonus();
+        Label defenceCounter = new Label("2137", labelStyle);
         defenceCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         defenceCounter.setPosition(Gdx.app.getGraphics().getWidth()*2505/2560, Gdx.app.getGraphics().getHeight()*1190/1440);
 
