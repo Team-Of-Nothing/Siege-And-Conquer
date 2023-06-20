@@ -15,7 +15,7 @@ public class SAC extends Game {
 
 	@Override
 	public void create () {
-		player.getArmy().add(0, new Mercenary(4));
+		player.getArmy().add(0, new Mercenary(1));
 		player.getArmy().add(1, new Mercenary(5));
 		player.getArmy().add(2,new Mercenary(6));
 		try {
@@ -23,6 +23,13 @@ public class SAC extends Game {
 			Responder responder = new Responder(client.socket);
 			Thread thread = new Thread(responder);
 			thread.start();
+			client.enterLobby();
+			System.out.println("waiting for players");
+			while(responder.isGameStarted()==false){
+				continue;
+			}
+			
+			System.out.println("game started");
 			client.endTurn(player.getArmy(), player.getName());
 			while(responder.getReposndStatus()!=true){
 			}
@@ -36,6 +43,26 @@ public class SAC extends Game {
 				System.out.println(army.army.get(i).getSpeed());
 				System.out.println();
 			}
+			client.endBattle(player.getHp());
+			while(responder.isNextTurn()==false){
+				continue;
+			}
+			System.out.println("nastepna tura sie zaczyna :)");
+			client.endTurn(player.getArmy(), player.getName());
+
+			while(responder.getReposndStatus()!=true){
+			}
+			responder.resetRespondStatus();
+			army = responder.getEnemyArmy();
+			System.out.println(responder.getEnemyName());
+			for(int i = 0; i<responder.getEnemyArmy().army.size(); i++){
+				System.out.println(army.army.get(i).getId());
+				System.out.println(army.army.get(i).getAttack());
+				System.out.println(army.army.get(i).getDefense());
+				System.out.println(army.army.get(i).getSpeed());
+				System.out.println();
+			}
+			
 		} catch (Exception e) {
 			System.out.println("Connection failed");
 		}

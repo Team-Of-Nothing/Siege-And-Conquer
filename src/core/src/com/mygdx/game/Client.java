@@ -2,6 +2,7 @@ package com.mygdx.game;
 import java.net.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Scanner;
 import org.json.JSONObject;
@@ -23,6 +24,18 @@ public class Client {
         try {
             socket = new Socket(address, port);
             out = socket.getOutputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void enterLobby(){
+        dataJson.clear();
+        dataJson.put("operation", "wait");
+        String jsonData = dataJson.toString();
+        byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
+        try {
+            out.write(jsonDataBytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -58,9 +71,6 @@ public class Client {
 
     public void refreshShop(){
         dataJson.clear();
-        byte[] buffer = new byte[1000];
-        int bytesRead = 0;
-        dataJson.clear();
         dataJson.put("operation", "refresh");
         dataJson.put("size", 5);
         String jsonData = dataJson.toString();
@@ -71,6 +81,22 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
+
+    public void endBattle(int playerHp){
+        dataJson.clear();
+        dataJson.put("operation", "endBattle");
+        dataJson.put("hp", playerHp);
+        String jsonData = dataJson.toString();
+        byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
+        Scanner scanncer = new Scanner(System.in);
+        String armyInformation = scanncer.nextLine();
+        try {
+            out.write(jsonDataBytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 };
 
 
