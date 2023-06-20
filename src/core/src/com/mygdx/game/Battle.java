@@ -14,6 +14,7 @@ public class Battle {
     private final Army army1;
 
     private final Army army2;
+    private int kolejka = 1;
 
 
     private final int result;
@@ -37,9 +38,10 @@ public class Battle {
         return result;
     }
 
-    public ArrayList<Mercenary> setArmy(Player player){
-        return player.getArmy();
+    public void setKolejka(int kolejka){
+        this.kolejka = kolejka;
     }
+
 
     int[] queue(Army army) {
         int pos = 0;
@@ -67,33 +69,39 @@ public class Battle {
         while (!army1.getArmy().isEmpty()  && !army2.getArmy().isEmpty()) {
             int i = 0;
             int j = 0;
+            int k = 0;
+            int l = 0;
             while (i < army1.getArmy().size() && j < army2.getArmy().size()) {
                 if (army1.getArmy().get(army1Queue[i]) != null && army2.getArmy().get(army2Queue[j]) != null) {
 
+                    kolejka*=-1;
                     if (army1.getArmy().get(army1Queue[i]).getSpeed() > army2.getArmy().get(army2Queue[j]).getSpeed()) {
-                        attack(army1.getArmy().get(army1Queue[i]), army2.getArmy().get(j));
-                        if (army2.getArmy().get(j).getDefense() <= 0) {
-                            army2.removeMercenary(j);
+                        attack(army1.getArmy().get(army1Queue[i]), army2.getArmy().get(l));
+                        if (army2.getArmy().get(l).getDefense() <= 0) {
+                            army2.removeMercenary(l);
+                            l++;
                         }
                         i++;
                     } else if (army1.getArmy().get(army1Queue[i]).getSpeed() < army2.getArmy().get(army2Queue[j]).getSpeed()) {
-                        attack(army2.getArmy().get(army2Queue[j]), army1.getArmy().get(i));
-                        if (army1.getArmy().get(i).getDefense() <= 0) {
-                            army1.removeMercenary(i);
+                        attack(army2.getArmy().get(army2Queue[j]), army1.getArmy().get(k));
+                        if (army1.getArmy().get(k).getDefense() <= 0) {
+                            army1.removeMercenary(k);
+                            k++;
                         }
                         j++;
                     } else {
-                        int random = (int) (Math.random() * 2);
-                        if (random == 0) {
-                            attack(army1.getArmy().get(army1Queue[i]), army2.getArmy().get(j));
-                            if (army2.getArmy().get(j).getDefense() <= 0) {
-                                army2.removeMercenary(j);
+                        if (kolejka == 1) {
+                            attack(army1.getArmy().get(army1Queue[i]), army2.getArmy().get(l));
+                            if (army2.getArmy().get(l).getDefense() <= 0) {
+                                army2.removeMercenary(l);
+                                l++;
                             }
                             i++;
                         } else {
-                            attack(army2.getArmy().get(army2Queue[j]), army1.getArmy().get(i));
-                            if (army1.getArmy().get(i).getDefense() <= 0) {
-                                army1.removeMercenary(i);
+                            attack(army2.getArmy().get(army2Queue[j]), army1.getArmy().get(k));
+                            if (army1.getArmy().get(k).getDefense() <= 0) {
+                                army1.removeMercenary(k);
+                                k++;
                             }
                             j++;
                         }
@@ -106,7 +114,7 @@ public class Battle {
                 }
             }
         }
-        if (army1.getArmy().size() == 0) {
+        if (army1.getArmy().isEmpty()) {
             return 1;
         } else {
             return 0;

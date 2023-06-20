@@ -19,7 +19,7 @@ public class Army {
     }
 
     public void addMercenary(Mercenary mercenary, int index) {
-        this.army.add(index, mercenary);
+        this.army.set(index, mercenary);
     }
 
     public void removeMercenary(int index) {
@@ -27,11 +27,7 @@ public class Army {
     }
 
 
-    public void swapMercenary(int index1, int index2) {
-        Mercenary temp = this.army.get(index1);
-        this.army.set(index1, this.army.get(index2));
-        this.army.set(index2, temp);
-    }
+
 
     public void clearArmy() {
         this.army.clear();
