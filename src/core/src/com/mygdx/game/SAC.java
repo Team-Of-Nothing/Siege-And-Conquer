@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SAC extends Game {
 	public SpriteBatch batch;
-	private Client client = new Client();
+	protected Client client = new Client();
 	private final static String DEFAULT_BACKGROUND_MUSIC = "castle.mp3";
 	public Music backgroundMusic; //nie moze byc static bo create() nie jest
-	private Player player = new Player("Player");
+	protected Player player = new Player("Player");
 
 	@Override
 	public void create () {
@@ -82,5 +82,6 @@ public class SAC extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		backgroundMusic.dispose();
 	}
 }
