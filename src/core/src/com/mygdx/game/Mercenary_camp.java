@@ -13,9 +13,9 @@ public class Mercenary_camp {
 
 
 
-        public void addMercenary(Mercenary mercenary , int index) {
+public void addMercenary(Mercenary mercenary , int index) {
+            this.mercenary_camp.add(index, mercenary);
 
-            this.mercenary_camp.set(index, mercenary);
         }
 
 
