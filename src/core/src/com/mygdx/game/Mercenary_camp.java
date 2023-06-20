@@ -19,5 +19,10 @@ public class Mercenary_camp {
         public void removeMercenary(int index) {
             this.mercenary_camp.remove(index);
         }
+
+        public void addMercenary(Mercenary mercenary , int index) {
+            this.mercenary_camp.add(index, mercenary);
+
+        }
         
 }
