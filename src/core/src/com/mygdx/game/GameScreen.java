@@ -32,16 +32,22 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 //import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class GameScreen implements Screen {
+    private Sprite sprite;
     final private Stage stage;
     final public SAC game;
     private Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
     Array<Integer> mockIDs = new Array<>(new Integer[]{4, 7, 2,3,9});
     ArmyView marketView;
     ArmyView armyView;
+
+    private Texture wheelingCoin;
+
     
     final static private String COST_OF_PASSIVES = "200";
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
+    private Animation<TextureRegion> animation;
+
 
         MercenaryView mercenaryView = new MercenaryView(8);
         MercenaryView mercenaryView2 = new MercenaryView(1);
@@ -50,12 +56,30 @@ public class GameScreen implements Screen {
         this.game = game;
         stage = new Stage(viewport, game.batch);
 
+
         marketView = new ArmyView(mockIDs,0,0,stage);
         armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
 
         Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
+        wheelingCoin = new Texture(Gdx.files.internal("tabliczka_koszt_passives.png"));
+
+
+        sprite = new Sprite(wheelingCoin);
+        sprite.setSize(100,100);
+        final int numberOfFrames = 5;
+        
+        TextureRegion[][] tmp = TextureRegion.split(wheelingCoin, wheelingCoin.getWidth()/5, wheelingCoin.getHeight());
+        TextureRegion[] frames = new TextureRegion[numberOfFrames];
+        for (int i = 0; i < numberOfFrames; i++)
+        {
+            frames[i] = tmp[0][i];
+        }
+        
+        animation = new Animation<TextureRegion>(0.025f, frames);
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+
 
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = font;
