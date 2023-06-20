@@ -11,6 +11,9 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("SiegeAndConquer");
 		config.setWindowIcon("icon.png");
+		if (!java.lang.management.ManagementFactory.getRuntimeMXBean().
+    		getInputArguments().toString().contains("-agentlib:jdwp"))
+		config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode(Lwjgl3ApplicationConfiguration.getPrimaryMonitor()));
 		new Lwjgl3Application(new SAC(), config);
 	}
 }
