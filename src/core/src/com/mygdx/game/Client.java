@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 
 public class Client {
-    Socket socket;
+    public Socket socket;
     OutputStream out;
     InputStream in;
 

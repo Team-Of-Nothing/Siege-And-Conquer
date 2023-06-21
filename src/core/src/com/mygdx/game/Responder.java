@@ -6,6 +6,9 @@ import java.util.Objects;
 
 import org.json.JSONObject;
 
+import com.mygdx.game.Model.Army;
+import com.mygdx.game.Model.Mercenary_camp;
+
 public class Responder implements Runnable {
     
     private Socket socket;
@@ -20,7 +23,7 @@ public class Responder implements Runnable {
     private boolean nextTurn = false;
     private boolean gameWon = false;
 
-    Responder(Socket socket){
+    public Responder(Socket socket){
         this.socket = socket;
         try {
             in = socket.getInputStream();
@@ -46,7 +49,7 @@ public class Responder implements Runnable {
         if(Objects.equals(dataJson.getString("operation"), "refresh")){
             String key;
             int id;
-            mercenary_camp.mercenary_camp.clear();
+            mercenary_camp.getMercenary_camp().clear();
             for(int i = 0; i<5; i++){
                 key = String.valueOf(i);
                 id = dataJson.getInt(key);
@@ -56,13 +59,13 @@ public class Responder implements Runnable {
         }
         if(Objects.equals(dataJson.getString("operation"), "end")){
             String key;
-            enemyArmy.army.clear();
+            enemyArmy.getArmy().clear();
             int n = dataJson.getInt("size");
             JSONObject data = new JSONObject();
             for(int i = 0; i<n; i++){
                 key = String.valueOf(i);
                 data = dataJson.getJSONObject(key);
-                enemyArmy.army.add(i, new Mercenary(data.getInt("id"), data.getInt("speed"), data.getInt("attack"), data.getInt("defense")));
+                enemyArmy.getArmy().add(i, new Mercenary(data.getInt("id"), data.getInt("speed"), data.getInt("attack"), data.getInt("defense")));
             }
             enemyName = dataJson.getString("player");
             if(dataJson.getInt("start")==1){

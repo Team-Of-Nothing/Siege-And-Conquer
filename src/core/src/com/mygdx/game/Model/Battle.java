@@ -1,6 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.Model;
 
 import java.util.ArrayList;
+
+import com.mygdx.game.Mercenary;
 
 
 public class Battle {
@@ -44,7 +46,7 @@ public class Battle {
     }
 
 
-    int[] queue(ArrayList<Mercenary> army) {
+    public int[] queue(ArrayList<Mercenary> army) {
         int pos = 0;
         int z = 0;
         int[] queue = new int[army.size()];

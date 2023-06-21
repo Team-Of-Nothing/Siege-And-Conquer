@@ -1,5 +1,7 @@
-package com.mygdx.game;
+package com.mygdx.game.Model;
 import java.util.ArrayList;
+
+import com.mygdx.game.Mercenary;
 
 
 public class Mercenary_camp {

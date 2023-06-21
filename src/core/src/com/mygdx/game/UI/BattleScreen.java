@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.UI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Mercenary;
+import com.mygdx.game.SAC;
+import com.mygdx.game.Model.Battle;
 
 import java.util.ArrayList;
 

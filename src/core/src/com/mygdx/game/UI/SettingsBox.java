@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.UI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.game.SAC;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 final public class SettingsBox extends VerticalGroup{
     

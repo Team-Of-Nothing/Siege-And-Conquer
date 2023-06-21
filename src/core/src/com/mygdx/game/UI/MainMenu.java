@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.UI;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Responder;
+import com.mygdx.game.SAC;
 
 public class MainMenu implements Screen{
 
@@ -28,7 +30,7 @@ public class MainMenu implements Screen{
     // manages UI size
     Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
 
-    MainMenu(final SAC game)
+    public MainMenu(final SAC game)
     {
         this.game = game;
         stage = new Stage(viewport, game.batch);
@@ -67,7 +69,7 @@ public class MainMenu implements Screen{
                     return;
                 }
 			    game.responder = new Responder(game.client.socket);
-			    Thread thread = new Thread(game.responder);
+			    Thread thread = new Thread(game.getResponder());
 			    thread.start();
 			    game.client.enterLobby();
 			    System.out.println("waiting for players");

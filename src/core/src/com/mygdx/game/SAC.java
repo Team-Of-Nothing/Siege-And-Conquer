@@ -4,18 +4,20 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.Model.Player;
+import com.mygdx.game.UI.MainMenu;
 
 public class SAC extends Game {
 	public SpriteBatch batch;
-	protected Client client = new Client();
+	public Client client = new Client();
 	private final static String DEFAULT_BACKGROUND_MUSIC = "castle.mp3";
 	public Music backgroundMusic; //nie moze byc static bo create() nie jest
 
-	protected static Player player = new Player("Player");
+	public static Player player = new Player("Player");
 
-	protected Player enemy = new Player("Enemy");
+	public Player enemy = new Player("Enemy");
 
-	protected Responder responder;
+	public Responder responder;
 
 
 	@Override
