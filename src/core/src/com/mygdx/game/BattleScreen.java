@@ -7,16 +7,20 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 
 
@@ -58,6 +62,24 @@ public class BattleScreen implements Screen {
         //settingsButton.setDebug(true);
         stage.addActor(settingsButton);
         //SETTINGS BUTTON
+
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = font;
+
+        labelStyle.fontColor = Color.WHITE;
+        
+
+    
+        Label player1Name = new Label("PIS4R", labelStyle);
+        //player1Name.setSize(300, 300);
+        //player1Name.setPosition(Gdx.app.getGraphics().getWidth()*640/2560, Gdx.app.getGraphics().getHeight()*400/1440);
+        Group group = new Group();
+        group.addActor(player1Name);
+        //group.setScale(2f, 2f);
+        group.setPosition(Gdx.app.getGraphics().getWidth()*850/2560, Gdx.app.getGraphics().getHeight()*400/1440);
+        //useless but funny
+        //group.addAction(Actions.sequence(Actions.scaleTo(2f, 2f, 1f), Actions.scaleTo(1f, 1f, 1f)));
+        stage.addActor(group);
 
 
         Gdx.input.setInputProcessor(stage);

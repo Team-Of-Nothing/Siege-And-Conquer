@@ -32,7 +32,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 //import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class GameScreen implements Screen {
-    private Sprite sprite;
     final private Stage stage;
     final public SAC game;
     private Viewport viewport = new StretchViewport(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
@@ -40,22 +39,20 @@ public class GameScreen implements Screen {
     ArmyView marketView;
     ArmyView armyView;
 
-    private Texture wheelingCoin;
 
     
     final static private String COST_OF_PASSIVES = "200";
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
-    private Animation<TextureRegion> animation;
 
 
         MercenaryView mercenaryView = new MercenaryView(8);
         MercenaryView mercenaryView2 = new MercenaryView(1);
+        CoinView coinAnimation = new CoinView();
 
     GameScreen(final SAC game){
         this.game = game;
         stage = new Stage(viewport, game.batch);
-
 
         marketView = new ArmyView(mockIDs,0,0,stage);
         armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
@@ -63,23 +60,6 @@ public class GameScreen implements Screen {
         Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
-        wheelingCoin = new Texture(Gdx.files.internal("tabliczka_koszt_passives.png"));
-
-
-        sprite = new Sprite(wheelingCoin);
-        sprite.setSize(100,100);
-        final int numberOfFrames = 5;
-        
-        TextureRegion[][] tmp = TextureRegion.split(wheelingCoin, wheelingCoin.getWidth()/5, wheelingCoin.getHeight());
-        TextureRegion[] frames = new TextureRegion[numberOfFrames];
-        for (int i = 0; i < numberOfFrames; i++)
-        {
-            frames[i] = tmp[0][i];
-        }
-        
-        animation = new Animation<TextureRegion>(0.025f, frames);
-        animation.setPlayMode(Animation.PlayMode.LOOP);
-
 
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = font;
@@ -95,24 +75,19 @@ public class GameScreen implements Screen {
         //settingsButton.setDebug(true);
         stage.addActor(moneyTable);
 
-        Label moneyAmount = new Label(COST_OF_PASSIVES, labelStyle);
+        Label moneyAmount = new Label(Integer.toString(SAC.player.getGold()), labelStyle);
         moneyAmount.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         moneyAmount.setPosition(moneyTable.getX()+money_table_offsets[0], moneyTable.getY()+money_table_offsets[1]);
         stage.addActor(moneyAmount);
 
-        //HEARTS
-        ImageButton[] arrayOfHearts = new ImageButton[5];
-        int hp = SAC.player.getHp();
-        for(int i = 0; i < hp; i++){
-            arrayOfHearts[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Heart.png")))));  
-            arrayOfHearts[i].setPosition((((Gdx.app.getGraphics().getWidth()*1470))/2560)+(i*60), Gdx.app.getGraphics().getHeight()*1320/1440);
-            arrayOfHearts[i].setSize(Gdx.app.getGraphics().getWidth()*60/2560, Gdx.app.getGraphics().getHeight()*60/1440);
-            stage.addActor(arrayOfHearts[i]);
-        }
-        //HEARTS
+        coinAnimation.setPos(Gdx.app.getGraphics().getWidth()*1190/2560, Gdx.app.getGraphics().getHeight()*1335/1440);
+        coinAnimation.setSize(30, 30);
 
-        //group.setDebug(true);
+        stage.addActor(coinAnimation);
+
         
+        setHearts();
+
         addBattleButton();
         addSetttingsButton();
 
@@ -154,11 +129,6 @@ public class GameScreen implements Screen {
 
         addPassiveSpeedButton();
         ImageButton speedCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
-        defenceCounterTable.addListener(new ClickListener(){
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-            }
-        });
         speedCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1050/1440);
         speedCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
@@ -175,11 +145,7 @@ public class GameScreen implements Screen {
 
         addPassiveAttackButton();
         ImageButton attackCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
-        defenceCounterTable.addListener(new ClickListener(){
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-            }
-        });
+
         attackCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*900/1440);
         attackCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
@@ -196,11 +162,6 @@ public class GameScreen implements Screen {
 
         addPassiveGoldButton();
         ImageButton goldCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
-        goldCounterTable.addListener(new ClickListener(){
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-            }
-        });
         goldCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*750/1440);
         goldCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
@@ -353,6 +314,16 @@ public class GameScreen implements Screen {
         stage.addActor(passiveGoldButton);
     }
 
+    private void setHearts(){
+        ImageButton[] arrayOfHearts = new ImageButton[5];
+        int hp = SAC.player.getHp();
+        for(int i = 0; i < hp; i++){
+            arrayOfHearts[i] = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Heart.png")))));  
+            arrayOfHearts[i].setPosition((((Gdx.app.getGraphics().getWidth()*1470))/2560)+(i*60), Gdx.app.getGraphics().getHeight()*1320/1440);
+            arrayOfHearts[i].setSize(Gdx.app.getGraphics().getWidth()*60/2560, Gdx.app.getGraphics().getHeight()*60/1440);
+            stage.addActor(arrayOfHearts[i]);
+        }
+    }
 
 
     @Override
