@@ -94,19 +94,9 @@ public class GameScreen implements Screen {
 
         //int[] posOfMercenery = armyView.getMercenaryView(0).getpos();
 
-        for(int i = 0; i < SAC.player.getArmy().size(); i++){
-            int[] posOfMercenery = armyView.getMercenaryView(i).getpos();
-            Label[] labelList = new Label[3];
-            labelList[0] = new Label("defence: "+Integer.toString(SAC.player.getArmy().get(i).getDefense()), labelStyle);
-            labelList[0].setPosition( posOfMercenery[0],  posOfMercenery[1]);
-            stage.addActor(labelList[0]);
-            labelList[1] = new Label("attack : "+Integer.toString(SAC.player.getArmy().get(i).getAttack()), labelStyle);
-            labelList[1].setPosition( posOfMercenery[0],  posOfMercenery[1]-15);
-            stage.addActor(labelList[1]);
-            labelList[2] = new Label("speed : "+Integer.toString(SAC.player.getArmy().get(i).getSpeed()), labelStyle);
-            labelList[2].setPosition( posOfMercenery[0],  posOfMercenery[1]-30);
-            stage.addActor(labelList[2]);
-        }
+        addArmyStats();
+        
+        addShopArmyStats();
         for(int i = 0; i < SAC.player.getMercenary_camp().size(); i++){
             int[] posOfMercenery = marketView.getMercenaryView(i).getpos();
             Label[] labelList = new Label[3];
@@ -150,7 +140,40 @@ public class GameScreen implements Screen {
     private void addLabels(){
 
     }
+    private void addShopArmyStats(){
+        for(int i = 0; i < SAC.player.getMercenary_camp().size(); i++){
+            int[] posOfMercenery = marketView.getMercenaryView(i).getpos();
+            Label[] labelList = new Label[3];
+            labelList[0] = new Label("defence: "+Integer.toString(SAC.player.getMercenary_camp().get(i).getDefense()), labelStyle);
+            labelList[0].setPosition( posOfMercenery[0],  posOfMercenery[1]);
+            stage.addActor(labelList[0]);
+            labelList[1] = new Label("attack : "+Integer.toString(SAC.player.getMercenary_camp().get(i).getAttack()), labelStyle);
+            labelList[1].setPosition( posOfMercenery[0],  posOfMercenery[1]-15);
+            stage.addActor(labelList[1]);
+            labelList[2] = new Label("speed : "+Integer.toString(SAC.player.getMercenary_camp().get(i).getSpeed()), labelStyle);
+            labelList[2].setPosition( posOfMercenery[0],  posOfMercenery[1]-30);
+            stage.addActor(labelList[2]);
+        }
+    }
+    
 
+    private void addArmyStats(){
+        for(int i = 0; i < SAC.player.getArmy().size(); i++){
+            int[] posOfMercenery = armyView.getMercenaryView(i).getpos();
+            Label[] labelList = new Label[3];
+            labelList[0] = new Label("defence: "+Integer.toString(SAC.player.getArmy().get(i).getDefense()), labelStyle);
+            labelList[0].setPosition( posOfMercenery[0],  posOfMercenery[1]);
+            stage.addActor(labelList[0]);
+            labelList[1] = new Label("attack : "+Integer.toString(SAC.player.getArmy().get(i).getAttack()), labelStyle);
+            labelList[1].setPosition( posOfMercenery[0],  posOfMercenery[1]-15);
+            stage.addActor(labelList[1]);
+            labelList[2] = new Label("speed : "+Integer.toString(SAC.player.getArmy().get(i).getSpeed()), labelStyle);
+            labelList[2].setPosition( posOfMercenery[0],  posOfMercenery[1]-30);
+            stage.addActor(labelList[2]);
+        }
+    }
+
+    
     private void addMoneyInfoAndAnimation(){ //TODO RENDER
         ImageButton moneyTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_koszt_passives.png")))));        
         moneyTable.setPosition(Gdx.app.getGraphics().getWidth()*1150/2560, Gdx.app.getGraphics().getHeight()*1315/1440);
