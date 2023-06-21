@@ -198,6 +198,7 @@ public class GameScreen implements Screen {
                     armyIds.add(game.player.getArmy().get(i).getId());
                 armyView.dispose();
                 armyView = new ArmyView(armyIds,Offsetxwidth,0,stage); // TODO not hard coded ;(
+                stage.addActor(armyView);
                 armyView.setHighlight(true);
                 armyView.addListener(new ClickListener() {
                     public void clicked(InputEvent event, float x, float y) {

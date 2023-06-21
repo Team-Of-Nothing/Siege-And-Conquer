@@ -30,6 +30,8 @@ public class MercenaryView extends Actor  {
     public MercenaryView (int id) {
         System.out.println("MercenaryView");
         this.id = id;
+        if (id == -1) return;
+        
         try {
         idle = new Texture( "./"+ id +"/1.png");
         attack = new Texture("./" + id +"/2.png");
@@ -59,10 +61,10 @@ public class MercenaryView extends Actor  {
                 frames[i] = tmp[0][i];
             }
             if (j == 1)
-                animations.insert(j,new Animation<TextureRegion>(1f/numberOfFrames[j][id-1],frames)); 
+                animations.insert(j,new Animation<TextureRegion>(1f/numberOfFrames[j][id-1],frames)); // attack animation is faster (1sec)
             else animations.insert(j,new Animation<TextureRegion>(1/5f,frames));
         }
-        
+
         animations.get(0).setPlayMode(Animation.PlayMode.LOOP);
         animations.get(1).setPlayMode(Animation.PlayMode.NORMAL);
         animations.get(2).setPlayMode(Animation.PlayMode.NORMAL);
@@ -73,7 +75,8 @@ public class MercenaryView extends Actor  {
 
     // TODO i think sprite is drawn from center where actor is drawn from bottom left
     public void moveTo(float x,float y){
-        sprite.setPosition(x, y);
+        if (id != -1)
+            sprite.setPosition(x, y);
         this.setPosition(x, y);
     }
 
@@ -126,22 +129,55 @@ public class MercenaryView extends Actor  {
     }
 
     public void setPos(float x, float y) {
-        sprite.setPosition(x, y);
+        if (id != -1)
+            sprite.setPosition(x, y);
         this.setPosition(x, y);
     }
     public void setPos(Vector2 v)
     {
-        sprite.setPosition(v.x, v.y);
+        if (id != -1)
+            sprite.setPosition(v.x, v.y);
         this.setPosition(v.x, v.y);
     } 
+
     // first call setPos before calling this
     public void setSize(float width, float height) {
+        if (id != -1)
         sprite.setSize(width, height);
         this.setBounds(sprite.getX(), sprite.getY(), width, height);
     }
         public void setSize(Vector2 v) {
         sprite.setSize(v.x, v.y);
         this.setBounds(sprite.getX(), sprite.getY(), v.x, v.y);
+    }
+
+    public void setPosSize(Vector2 v1, Vector2 v2) {
+        setPosSize(v1.x,v1.y, v2.x, v2.y);
+    }
+    public void setPosSize(float x, float y, float width, float height) {
+        if (x == 0 || y == 0 )
+            {
+                this.setX(x);
+                this.setY(y);
+                if (id != -1)
+                    sprite.setPosition(x, y);
+            }
+            else if (width == 0 || height == 0)
+            {
+                super.setHeight(height);
+                super.setWidth(width);
+                if (id != -1)
+                    sprite.setSize(width, height);
+            }
+            else
+            {
+                this.setX(x);
+                this.setY(y);
+                this.setWidth(width);
+                this.setHeight(height);
+                if (id != -1)
+                    sprite.setBounds(x, y, width, height);
+            }
     }
 
     public void flip() {
@@ -163,7 +199,7 @@ public class MercenaryView extends Actor  {
     
     @Override
     public void act(float delta) {
-        
+        if (id == -1) return;
         super.act(delta);
         time += delta;
 
@@ -187,6 +223,7 @@ public class MercenaryView extends Actor  {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if (id != -1)
         sprite.draw(batch);
 
     }
