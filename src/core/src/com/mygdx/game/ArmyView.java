@@ -21,15 +21,15 @@ public class ArmyView extends Actor {
     float gfxwidth = Gdx.graphics.getWidth();
 
     // position related working only on one specific map
-        float startingX = gfxwidth*0.3f;
-        float endingX = startingX * 0.41f/0.3f;
+        float startingX = gfxwidth*0.32f;
+        float endingX = startingX * 0.48f/0.32f;
         float midX = (startingX+endingX)/2;
         float startingY = 0.5f * gfxheight;
         float endingY = startingY * 0.08f/0.5f;
 
 
 
-    ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
+ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
     {
         this(mercenaryIDs);
         this.startingX += xOffset;
@@ -40,8 +40,8 @@ public class ArmyView extends Actor {
 
         for (int i = 0; i < MERCENARY_MAX_SIZE; i++) // max size of mercenaryViews
         {
-            mercenaryPositions.insert(i, new Vector2(midX+(endingX-midX)*(-1*i%2),startingY-i*(startingY-endingY)/MERCENARY_MAX_SIZE));
-            mercenarySizes.insert(i, new Vector2(0.1f*gfxwidth,0.1f*gfxwidth));
+            mercenaryPositions.insert(i, new Vector2(midX+gfxwidth*0.1f *(-1*i%2),startingY-i*gfxheight*0.09f));
+            mercenarySizes.insert(i, new Vector2(0.1f*gfxwidth,0.17f*gfxheight));
         }
 
 
@@ -54,6 +54,14 @@ public class ArmyView extends Actor {
             stage.addActor(mercenaryViews.get(i));
             
         }
+
+        for (int i = mercenaryViews.size;i < MERCENARY_MAX_SIZE;i++)
+        {
+            mercenaryViews.insert(i, new MercenaryView(-1));
+            mercenaryViews.get(i).setPosSize(mercenaryPositions.get(i),mercenarySizes.get(i) );
+            stage.addActor(mercenaryViews.get(i));
+
+        }
     }
 
 // idk why this exists, cleaner code?
@@ -63,6 +71,10 @@ public class ArmyView extends Actor {
         {
             mercenaryViews.insert(i, new MercenaryView(mercenaryIDs.get(i)));
         }
+    }
+     public void update()
+    {
+
     }
 
     // not used anymore but might be useful in the future, though it didn't work as intended
@@ -91,7 +103,7 @@ public class ArmyView extends Actor {
         return mercenaryViews.size;
     }
 
-    // not sure if that's a good idea
+    // not sure if that's a good idea works though
     @Override
     public boolean addListener (EventListener listener) 
     {
@@ -109,6 +121,11 @@ public class ArmyView extends Actor {
         return mercenaryViews.get(i);
     }
 
+    public void removeMercenary(int index)
+    {
+        this.getParent().removeActor(mercenaryViews.get(index));
+        mercenaryViews.removeIndex(index);
+    }
 
     @Override
     public void act(float delta) {
@@ -154,5 +171,17 @@ public class ArmyView extends Actor {
             mercenaryViews.get(i).flip();
         }
     }
+
+    public void dispose() {
+
+        int size = mercenaryViews.size;
+        for (int i = size-1; i >= 0; i--)
+        {
+            removeMercenary(i);
+        
+        }
+        this.getParent().removeActor(this);
+    }
+
 
 }

@@ -39,16 +39,17 @@ public class GameScreen implements Screen {
     ArmyView marketView;
     ArmyView armyView;
 
-
+    int ShopIndex = -1;
+    int ArmyIndex = -1;
+    Label[] labelList = new Label[3];
     
     final static private String COST_OF_PASSIVES = "200";
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
 
-
-        MercenaryView mercenaryView = new MercenaryView(8);
-        MercenaryView mercenaryView2 = new MercenaryView(1);
-        CoinView coinAnimation = new CoinView();
+    MercenaryView mercenaryView = new MercenaryView(8);
+    MercenaryView mercenaryView2 = new MercenaryView(1);
+    CoinView coinAnimation = new CoinView();
 
     private LabelStyle labelStyle;
 
@@ -56,12 +57,33 @@ public class GameScreen implements Screen {
     protected int[] counter_offsets = {27, -7};
     protected int[] money_table_offsets = {65, -5};
 
+
     GameScreen(final SAC game){
         this.game = game;
         stage = new Stage(viewport, game.batch);
 
-        marketView = new ArmyView(mockIDs,0,0,stage);
-        armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
+        float Offsetxwidth = Gdx.graphics.getWidth();
+        Offsetxwidth= Offsetxwidth/2.6f;
+
+        // possibly refactor into standalone function
+        Array<Integer> armyIDs = new Array <Integer>(game.player.getArmy().size());
+        for (int i = 0; i < game.player.getArmy().size(); i++) {
+        armyIDs.add(game.player.getArmy().get(i).getId());
+        }
+        Array<Integer> marketIDs = new Array <Integer>(game.player.getMercenary_camp().size());
+        for (int i = 0; i < game.player.getMercenary_camp().size(); i++) {
+        marketIDs.add(game.player.getMercenary_camp().get(i).getId());
+        }
+
+
+        armyView = new ArmyView(armyIDs,Offsetxwidth,0,stage); // TODO not hard coded ;(
+
+        if (marketIDs.size > 0)
+            marketView = new ArmyView(marketIDs,0,0,stage);
+        else
+            marketView = new ArmyView(mockIDs,0,0,stage);
+
+
 
         Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
@@ -80,6 +102,7 @@ public class GameScreen implements Screen {
         addPassiveSpeedButton();
         addPassiveAttackButton();
         addPassiveGoldButton();
+
 
 
         stage.addActor(marketView);
@@ -120,24 +143,46 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         armyView.setHighlight(true);
         
+
         marketView.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 MercenaryView a  = (MercenaryView)event.getTarget();
                 
+
                 for (int i = 0; i < marketView.getSize();i++)
                 {
                     if (a == marketView.getMercenaryView(i))
                     {
-                        System.out.println("position in army: " + i);
+                        
+                        System.out.println("position in shop: " + i);
+                        ShopIndex = i;
                         return;
                     }
                 }
+
+            }
+        });
+
+        armyView.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                MercenaryView a  = (MercenaryView)event.getTarget();
+                
+
+                for (int i = 0; i < armyView.getSize();i++)
+                {
+                    if (a == armyView.getMercenaryView(i))
+                    {
+                        
+                        System.out.println("position in armyView: " + i);
+                        ArmyIndex = i;
+                        return;
+                    }
+                }
+
             }
         });
 
 
-    }
-    private void addLabels(){
 
     }
     private void addShopArmyStats(){
@@ -175,6 +220,7 @@ public class GameScreen implements Screen {
 
     
     private void addMoneyInfoAndAnimation(){ //TODO RENDER
+
         ImageButton moneyTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_koszt_passives.png")))));        
         moneyTable.setPosition(Gdx.app.getGraphics().getWidth()*1150/2560, Gdx.app.getGraphics().getHeight()*1315/1440);
         moneyTable.setSize(Gdx.app.getGraphics().getWidth()*230/2560, Gdx.app.getGraphics().getHeight()*140/1440);

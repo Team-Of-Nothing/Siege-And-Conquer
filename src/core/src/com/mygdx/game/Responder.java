@@ -16,6 +16,9 @@ public class Responder implements Runnable {
     private String enemyName;
     private boolean first;
     private boolean respond = false;
+    private boolean game = false;
+    private boolean nextTurn = false;
+    private boolean gameWon = false;
 
     Responder(Socket socket){
         this.socket = socket;
@@ -70,6 +73,15 @@ public class Responder implements Runnable {
             }
             this.respond = true;
         }
+        if(Objects.equals(dataJson.getString("operation"), "startGame")){
+            this.game = true;
+        }
+        if(Objects.equals(dataJson.getString("operation"), "nextTurn")){
+            this.nextTurn = true;
+        }
+        if(Objects.equals(dataJson.getString("operation"), "winGame")){
+            this.gameWon = true;
+        }
         }
     }
 
@@ -94,6 +106,18 @@ public class Responder implements Runnable {
 
     public void resetRespondStatus(){
         this.respond = false;
+    }
+
+    public synchronized boolean isGameStarted(){
+        return this.game;
+    }
+
+    public synchronized boolean isNextTurn(){
+        return this.nextTurn;
+    }
+
+    public synchronized boolean isGameWon(){
+        return this.gameWon;
     }
 }
 
