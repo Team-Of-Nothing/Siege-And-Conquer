@@ -61,17 +61,6 @@ public class BattleScreen implements Screen {
         settingsButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
         stage.addActor(settingsButton);
-        //SETTINGS BUTTON
-
-
-        
-        //group.setScale(2f, 2f);
-        //group.setPosition(Gdx.app.getGraphics().getWidth()*850/2560, Gdx.app.getGraphics().getHeight()*400/1440);
-        //useless but funny
-        //group.addAction(Actions.sequence(Actions.scaleTo(2f, 2f, 1f), Actions.scaleTo(1f, 1f, 1f)));
-        //stage.addActor(group);
-
-
         Gdx.input.setInputProcessor(stage);
     }
 

@@ -62,6 +62,8 @@ public class GameScreen implements Screen {
         marketView = new ArmyView(mockIDs,0,0,stage);
         armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
 
+        //TODO WYSWIETLANIE STATYSTYK NAD ARMIA
+
         Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
@@ -88,6 +90,10 @@ public class GameScreen implements Screen {
 
         addPassiveGoldButton();
         addPassiveGold();
+
+        
+
+
 
         stage.addActor(marketView);
         stage.addActor(armyView);
