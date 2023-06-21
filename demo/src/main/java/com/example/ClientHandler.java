@@ -28,6 +28,10 @@ public class ClientHandler implements Runnable {
 
     private boolean gameDone = false;
 
+    private boolean wating = false;
+
+    final int delayMs = 500;
+
     ClientHandler(Socket socket, CyclicBarrier barrier) {
         this.clientSocket = socket;
         this.barrier = barrier;
@@ -64,11 +68,12 @@ public class ClientHandler implements Runnable {
                     throw new RuntimeException(e);
                 }
             }
-            int bytesRead;
+            int bytesRead = 0;
             try{
                 bytesRead = in.read(buffer);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+//                throw new RuntimeException(e);
+                break;
             }
             String jasonData = new String(buffer, 0, bytesRead, StandardCharsets.UTF_8);
             jsonData = new JSONObject(jasonData);
@@ -92,11 +97,7 @@ public class ClientHandler implements Runnable {
                 continue;
             }
             if(Objects.equals(jsonData.getString("operation"), "end")){
-                try {
-                    barrier.await();
-                } catch (BrokenBarrierException e) {
-                } catch (InterruptedException e) {
-                }
+                waitForServer(delayMs);
                 System.out.println(jsonData);
                 String jsonString = jsonData.toString();
                 byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
@@ -108,12 +109,7 @@ public class ClientHandler implements Runnable {
                 continue;
             }
             if(Objects.equals(jsonData.getString("operation"), "wait")){
-                try {
-                    barrier.await();
-                } catch (BrokenBarrierException e) {
-                } catch (InterruptedException e) {
-
-                }
+                waitForServer(delayMs);
                 jsonData.clear();
                 jsonData.put("operation", "startGame");
                 String jsonString = jsonData.toString();
@@ -127,11 +123,14 @@ public class ClientHandler implements Runnable {
             }
             if(Objects.equals(jsonData.getString("operation"), "endBattle")){
                 if(jsonData.getInt("hp")==0){
-                    this.gameDone = true;
+                    jsonData.clear();
+                    jsonData.put("operation", "loseGame");
+                    String jsonString = jsonData.toString();
+                    byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
                     try {
-                        barrier.await();
-                    } catch (BrokenBarrierException e) {
-                    } catch (InterruptedException e) {
+                        out.write(jsonDataBytes);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                     try {
                         clientSocket.close();
@@ -141,13 +140,15 @@ public class ClientHandler implements Runnable {
                     break;
                 }
                 else{
-                    try {
-                        barrier.await();
-                    } catch (BrokenBarrierException e) {
-                    } catch (InterruptedException e) {
-                    }
+                    waitForServer(delayMs);
                     jsonData.clear();
-                    jsonData.put("operation", "nextTurn");
+                    if(gameDone){
+                        jsonData.put("operation", "gameWin");
+                        waitForServer(delayMs);
+                    }
+                    else{
+                        jsonData.put("operation", "nextTurn");
+                    }
                     String jsonString = jsonData.toString();
                     byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
                     try {
@@ -163,6 +164,16 @@ public class ClientHandler implements Runnable {
 
     }
 
+    private void waitForServer(int ms){
+        this.wating = true;
+        while(wating){
+            try {
+                Thread.sleep(ms);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
     public JSONObject getPlayerInformation(){
         return jsonData;
     }
@@ -171,7 +182,7 @@ public class ClientHandler implements Runnable {
         this.jsonData = jsonData;
     }
 
-    void  setCyclicBarrier(CyclicBarrier barrier){
+    void  setCyclicBarrier (CyclicBarrier barrier){
         this.barrier = barrier;
     }
 
@@ -179,7 +190,14 @@ public class ClientHandler implements Runnable {
         return this.gameDone;
     }
 
-    public void EndGame(){
+    public void  EndGame(){
         this.gameDone = true;
+    }
+
+    public boolean isWaiting(){
+        return this.wating;
+    }
+    public void resetWaiting(){
+        this.wating = false;
     }
 }

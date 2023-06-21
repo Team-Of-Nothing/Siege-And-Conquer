@@ -7,13 +7,16 @@ import java.io.IOException;
 
 public class App {
     public static void main(String[] args) {
-        Server server = new Server(2137,2);
+        Server server = new Server(2137,2);        
         server.start();
         try {
-            server.run();
+            while(true){
+                server.run();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        
     }
 }
 
