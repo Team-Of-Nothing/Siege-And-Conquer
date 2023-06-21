@@ -50,6 +50,11 @@ public class GameScreen implements Screen {
         MercenaryView mercenaryView2 = new MercenaryView(1);
         CoinView coinAnimation = new CoinView();
 
+    protected int[] costs_offsets = {65, -15};
+    protected int[] counter_offsets = {27, -7};
+    protected int[] money_table_offsets = {65, -5};
+    protected LabelStyle labelStyle = new LabelStyle();
+
     GameScreen(final SAC game){
         this.game = game;
         stage = new Stage(viewport, game.batch);
@@ -61,120 +66,28 @@ public class GameScreen implements Screen {
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
 
-        LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = font;
         labelStyle.fontColor = Color.WHITE;
 
-        int[] costs_offsets = {65, -15};
-        int[] counter_offsets = {27, -7};
-        int[] money_table_offsets = {65, -5};
-
-        ImageButton moneyTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_koszt_passives.png")))));        
-        moneyTable.setPosition(Gdx.app.getGraphics().getWidth()*1150/2560, Gdx.app.getGraphics().getHeight()*1315/1440);
-        moneyTable.setSize(Gdx.app.getGraphics().getWidth()*230/2560, Gdx.app.getGraphics().getHeight()*140/1440);
-        //settingsButton.setDebug(true);
-        stage.addActor(moneyTable);
-
-        Label moneyAmount = new Label(Integer.toString(SAC.player.getGold()), labelStyle);
-        moneyAmount.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        moneyAmount.setPosition(moneyTable.getX()+money_table_offsets[0], moneyTable.getY()+money_table_offsets[1]);
-        stage.addActor(moneyAmount);
-
-        coinAnimation.setPos(Gdx.app.getGraphics().getWidth()*1190/2560, Gdx.app.getGraphics().getHeight()*1335/1440);
-        coinAnimation.setSize(30, 30);
-
-        stage.addActor(coinAnimation);
-
-        
+        addMoneyInfoAndAnimation();
         setHearts();
 
         addBattleButton();
         addSetttingsButton();
 
+        addCostOfPasives();
         
-
-        ImageButton CostOfPassiveTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("money_table.png")))));        
-        CostOfPassiveTable.setPosition(Gdx.app.getGraphics().getWidth()*2350/2560, Gdx.app.getGraphics().getHeight()*1360/1440);
-        CostOfPassiveTable.setSize(Gdx.app.getGraphics().getWidth()*200/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        //settingsButton.setDebug(true);
-        stage.addActor(CostOfPassiveTable);
-        //Integer.toString(SAC.player.getAttackBonus());
-        Label CostOfPassive = new Label(COST_OF_PASSIVES, labelStyle);
-        CostOfPassive.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        CostOfPassive.setPosition(CostOfPassiveTable.getX()+costs_offsets[0], CostOfPassiveTable.getY()+costs_offsets[1]);
-        stage.addActor(CostOfPassive);
-
-
-
-
         addPassiveDefenceButton();
-        ImageButton defenceCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
-        defenceCounterTable.addListener(new ClickListener(){
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-            }
-        });
-        defenceCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1200/1440);
-        defenceCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        //settingsButton.setDebug(true);
-        stage.addActor(defenceCounterTable);
-        //Integer.toString(SAC.player.getAttackBonus());
-        Label defenceCounter = new Label("2", labelStyle);
-        defenceCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        defenceCounter.setPosition(defenceCounterTable.getX()+counter_offsets[0], defenceCounterTable.getY()+counter_offsets[1]);
-        stage.addActor(defenceCounter);
-        
-
-        
+        addDefencePassiveInfo();
 
         addPassiveSpeedButton();
-        ImageButton speedCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
-        speedCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1050/1440);
-        speedCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        //settingsButton.setDebug(true);
-
-        stage.addActor(speedCounterTable);
-        //Integer.toString(SAC.player.getAttackBonus());
-        Label speedCounter = new Label("1", labelStyle);
-        speedCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        speedCounter.setPosition(speedCounterTable.getX()+counter_offsets[0], speedCounterTable.getY()+counter_offsets[1]);
-        stage.addActor(speedCounter);
-
-
-
+        addSpeedPassiveInfo();
 
         addPassiveAttackButton();
-        ImageButton attackCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
-
-        attackCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*900/1440);
-        attackCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        //settingsButton.setDebug(true);
-        stage.addActor(attackCounterTable);
-
-        //Integer.toString(SAC.player.getAttackBonus());
-        Label attackCounter = new Label("3", labelStyle);
-        attackCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        attackCounter.setPosition(attackCounterTable.getX()+counter_offsets[0], attackCounterTable.getY()+counter_offsets[1]);
-        stage.addActor(attackCounter);
-
-
-
+        addAttackPassiveInfo();
 
         addPassiveGoldButton();
-        ImageButton goldCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
-        goldCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*750/1440);
-        goldCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        //settingsButton.setDebug(true);
-        stage.addActor(goldCounterTable);
-
-        //Integer.toString(SAC.player.getAttackBonus());
-        Label goldCounter = new Label("7", labelStyle);
-        goldCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
-        goldCounter.setPosition(goldCounterTable.getX()+counter_offsets[0], goldCounterTable.getY()+counter_offsets[1]);
-        stage.addActor(goldCounter);
-
-
-
+        addPassiveGold();
 
         stage.addActor(marketView);
         stage.addActor(armyView);
@@ -195,8 +108,6 @@ public class GameScreen implements Screen {
                         return;
                     }
                 }
-                
-
             }
         });
 
@@ -204,6 +115,90 @@ public class GameScreen implements Screen {
     }
 
 
+    private void addMoneyInfoAndAnimation(){
+        ImageButton moneyTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_koszt_passives.png")))));        
+        moneyTable.setPosition(Gdx.app.getGraphics().getWidth()*1150/2560, Gdx.app.getGraphics().getHeight()*1315/1440);
+        moneyTable.setSize(Gdx.app.getGraphics().getWidth()*230/2560, Gdx.app.getGraphics().getHeight()*140/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(moneyTable);
+        coinAnimation.setPos(Gdx.app.getGraphics().getWidth()*1190/2560, Gdx.app.getGraphics().getHeight()*1335/1440);
+        coinAnimation.setSize(30, 30);
+        stage.addActor(coinAnimation);
+
+        Label goldAmount = new Label(Integer.toString(SAC.player.getGold()), labelStyle);
+        //player1Name.setSize(300, 300);
+        goldAmount.setPosition(Gdx.app.getGraphics().getWidth()*1260/2560, Gdx.app.getGraphics().getHeight()*1344/1440);
+        stage.addActor(goldAmount);
+
+    }
+
+    private void addPassiveGold(){
+        ImageButton goldCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+        goldCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*750/1440);
+        goldCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(goldCounterTable);
+
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label goldCounter = new Label(Integer.toString(SAC.player.getGoldBonus()), labelStyle);
+        goldCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        goldCounter.setPosition(goldCounterTable.getX()+counter_offsets[0], goldCounterTable.getY()+counter_offsets[1]);
+        stage.addActor(goldCounter);
+    }
+
+    private void addAttackPassiveInfo(){
+        ImageButton attackCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+
+        attackCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*900/1440);
+        attackCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(attackCounterTable);
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label attackCounter = new Label(Integer.toString(SAC.player.getAttackBonus()), labelStyle);
+        attackCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        attackCounter.setPosition(attackCounterTable.getX()+counter_offsets[0], attackCounterTable.getY()+counter_offsets[1]);
+        stage.addActor(attackCounter);
+    }
+
+    private void addSpeedPassiveInfo(){
+        ImageButton speedCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+        speedCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1050/1440);
+        speedCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+
+        stage.addActor(speedCounterTable);
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label speedCounter = new Label(Integer.toString(SAC.player.getSpeedBonus()), labelStyle);
+        speedCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        speedCounter.setPosition(speedCounterTable.getX()+counter_offsets[0], speedCounterTable.getY()+counter_offsets[1]);
+        stage.addActor(speedCounter);
+    }
+
+    private void addDefencePassiveInfo(){
+        ImageButton defenceCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
+        defenceCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1200/1440);
+        defenceCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(defenceCounterTable);
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label defenceCounter = new Label(Integer.toString(SAC.player.getDefenseBonus()), labelStyle);
+        defenceCounter.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        defenceCounter.setPosition(defenceCounterTable.getX()+counter_offsets[0], defenceCounterTable.getY()+counter_offsets[1]);
+        stage.addActor(defenceCounter);
+    }
+
+    private void addCostOfPasives(){
+        ImageButton CostOfPassiveTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("money_table.png")))));        
+        CostOfPassiveTable.setPosition(Gdx.app.getGraphics().getWidth()*2350/2560, Gdx.app.getGraphics().getHeight()*1360/1440);
+        CostOfPassiveTable.setSize(Gdx.app.getGraphics().getWidth()*200/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        //settingsButton.setDebug(true);
+        stage.addActor(CostOfPassiveTable);
+        //Integer.toString(SAC.player.getAttackBonus());
+        Label CostOfPassive = new Label(COST_OF_PASSIVES, labelStyle);
+        CostOfPassive.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
+        CostOfPassive.setPosition(CostOfPassiveTable.getX()+costs_offsets[0], CostOfPassiveTable.getY()+costs_offsets[1]);
+        stage.addActor(CostOfPassive);
+    }
 
     private void addSetttingsButton(){
         TextureRegionDrawable settingsbuttonInactive = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Settings_Button.png"))));

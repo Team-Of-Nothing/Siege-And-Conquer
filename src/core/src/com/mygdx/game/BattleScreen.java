@@ -63,23 +63,13 @@ public class BattleScreen implements Screen {
         stage.addActor(settingsButton);
         //SETTINGS BUTTON
 
-        LabelStyle labelStyle = new LabelStyle();
-        labelStyle.font = font;
 
-        labelStyle.fontColor = Color.WHITE;
         
-
-    
-        Label player1Name = new Label("PIS4R", labelStyle);
-        //player1Name.setSize(300, 300);
-        //player1Name.setPosition(Gdx.app.getGraphics().getWidth()*640/2560, Gdx.app.getGraphics().getHeight()*400/1440);
-        Group group = new Group();
-        group.addActor(player1Name);
         //group.setScale(2f, 2f);
-        group.setPosition(Gdx.app.getGraphics().getWidth()*850/2560, Gdx.app.getGraphics().getHeight()*400/1440);
+        //group.setPosition(Gdx.app.getGraphics().getWidth()*850/2560, Gdx.app.getGraphics().getHeight()*400/1440);
         //useless but funny
         //group.addAction(Actions.sequence(Actions.scaleTo(2f, 2f, 1f), Actions.scaleTo(1f, 1f, 1f)));
-        stage.addActor(group);
+        //stage.addActor(group);
 
 
         Gdx.input.setInputProcessor(stage);
