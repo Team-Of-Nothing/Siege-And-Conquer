@@ -50,10 +50,11 @@ public class GameScreen implements Screen {
         MercenaryView mercenaryView2 = new MercenaryView(1);
         CoinView coinAnimation = new CoinView();
 
+    private LabelStyle labelStyle;
+
     protected int[] costs_offsets = {65, -15};
     protected int[] counter_offsets = {27, -7};
     protected int[] money_table_offsets = {65, -5};
-    protected LabelStyle labelStyle = new LabelStyle();
 
     GameScreen(final SAC game){
         this.game = game;
@@ -62,16 +63,12 @@ public class GameScreen implements Screen {
         marketView = new ArmyView(mockIDs,0,0,stage);
         armyView = new ArmyView(mockIDs,300,0,stage); // TODO not hard coded ;(
 
-        //TODO WYSWIETLANIE STATYSTYK NAD ARMIA
-
         Image background = new Image(new Texture(DEFAULT_GAME_SCREEN_BACKGROUND));
         background.setSize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         stage.addActor(background);
-
+        labelStyle = new LabelStyle();
         labelStyle.font = font;
         labelStyle.fontColor = Color.WHITE;
-
-        addMoneyInfoAndAnimation();
         setHearts();
 
         addBattleButton();
@@ -80,24 +77,55 @@ public class GameScreen implements Screen {
         addCostOfPasives();
         
         addPassiveDefenceButton();
-        addDefencePassiveInfo();
-
         addPassiveSpeedButton();
-        addSpeedPassiveInfo();
-
         addPassiveAttackButton();
-        addAttackPassiveInfo();
-
         addPassiveGoldButton();
-        addPassiveGold();
-
-        
-
 
 
         stage.addActor(marketView);
         stage.addActor(armyView);
         //stage.setDebugAll(true);
+
+        //idk what am doing rn want to show info about marcenery stats
+
+        //Label defenceInfo = new Label("COKOLWIEKKEKEKEKEK", labelStyle); //Integer.toString(SAC.player.getArmy().get(0).getDefense())
+        System.out.println("debug 5 rano"+SAC.player.getArmy().get(0).getDefense());
+        System.out.println("debug 5 rano emrcenery camp"+SAC.player.getMercenary_camp().size());
+
+        //int[] posOfMercenery = armyView.getMercenaryView(0).getpos();
+
+        for(int i = 0; i < SAC.player.getArmy().size(); i++){
+            int[] posOfMercenery = armyView.getMercenaryView(i).getpos();
+            Label[] labelList = new Label[3];
+            labelList[0] = new Label("defence: "+Integer.toString(SAC.player.getArmy().get(i).getDefense()), labelStyle);
+            labelList[0].setPosition( posOfMercenery[0],  posOfMercenery[1]);
+            stage.addActor(labelList[0]);
+            labelList[1] = new Label("attack : "+Integer.toString(SAC.player.getArmy().get(i).getAttack()), labelStyle);
+            labelList[1].setPosition( posOfMercenery[0],  posOfMercenery[1]-15);
+            stage.addActor(labelList[1]);
+            labelList[2] = new Label("speed : "+Integer.toString(SAC.player.getArmy().get(i).getSpeed()), labelStyle);
+            labelList[2].setPosition( posOfMercenery[0],  posOfMercenery[1]-30);
+            stage.addActor(labelList[2]);
+        }
+        for(int i = 0; i < SAC.player.getMercenary_camp().size(); i++){
+            int[] posOfMercenery = marketView.getMercenaryView(i).getpos();
+            Label[] labelList = new Label[3];
+            labelList[0] = new Label("defence: "+Integer.toString(SAC.player.getMercenary_camp().get(i).getDefense()), labelStyle);
+            labelList[0].setPosition( posOfMercenery[0],  posOfMercenery[1]);
+            stage.addActor(labelList[0]);
+            labelList[1] = new Label("attack : "+Integer.toString(SAC.player.getMercenary_camp().get(i).getAttack()), labelStyle);
+            labelList[1].setPosition( posOfMercenery[0],  posOfMercenery[1]-15);
+            stage.addActor(labelList[1]);
+            labelList[2] = new Label("speed : "+Integer.toString(SAC.player.getMercenary_camp().get(i).getSpeed()), labelStyle);
+            labelList[2].setPosition( posOfMercenery[0],  posOfMercenery[1]-30);
+            stage.addActor(labelList[2]);
+        }
+        
+
+        // Label ad1 = new Label(Integer.toString(6666), labelStyle);
+        // ad1.setPosition( posOfMercenery1[0],  posOfMercenery1[1]);
+        // stage.addActor(ad1);
+        //idk what am doing rn want to show info about marcenery stats
 
         Gdx.input.setInputProcessor(stage);
         armyView.setHighlight(true);
@@ -119,9 +147,11 @@ public class GameScreen implements Screen {
 
 
     }
+    private void addLabels(){
 
+    }
 
-    private void addMoneyInfoAndAnimation(){
+    private void addMoneyInfoAndAnimation(){ //TODO RENDER
         ImageButton moneyTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_koszt_passives.png")))));        
         moneyTable.setPosition(Gdx.app.getGraphics().getWidth()*1150/2560, Gdx.app.getGraphics().getHeight()*1315/1440);
         moneyTable.setSize(Gdx.app.getGraphics().getWidth()*230/2560, Gdx.app.getGraphics().getHeight()*140/1440);
@@ -138,7 +168,7 @@ public class GameScreen implements Screen {
 
     }
 
-    private void addPassiveGold(){
+    private void addPassiveGoldInfo(){ //TODO RENDER
         ImageButton goldCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
         goldCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*750/1440);
         goldCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
@@ -152,7 +182,7 @@ public class GameScreen implements Screen {
         stage.addActor(goldCounter);
     }
 
-    private void addAttackPassiveInfo(){
+    private void addAttackPassiveInfo(){ //TODO RENDER
         ImageButton attackCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
 
         attackCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*900/1440);
@@ -166,7 +196,7 @@ public class GameScreen implements Screen {
         stage.addActor(attackCounter);
     }
 
-    private void addSpeedPassiveInfo(){
+    private void addSpeedPassiveInfo(){ //TODO RENDER
         ImageButton speedCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
         speedCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1050/1440);
         speedCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
@@ -180,7 +210,7 @@ public class GameScreen implements Screen {
         stage.addActor(speedCounter);
     }
 
-    private void addDefencePassiveInfo(){
+    private void addDefencePassiveInfo(){ //TODO RENDER
         ImageButton defenceCounterTable = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("tabliczka_passives.png")))));        
         defenceCounterTable.setPosition(Gdx.app.getGraphics().getWidth()*2469/2560, Gdx.app.getGraphics().getHeight()*1200/1440);
         defenceCounterTable.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
@@ -341,6 +371,12 @@ public class GameScreen implements Screen {
         stage.act(delta);
         stage.draw();
         
+        addMoneyInfoAndAnimation();
+        addAttackPassiveInfo();
+        addDefencePassiveInfo();
+        addSpeedPassiveInfo();
+        addPassiveGoldInfo();
+
         if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
             System.out.println("\n\n\n\n");
         }
