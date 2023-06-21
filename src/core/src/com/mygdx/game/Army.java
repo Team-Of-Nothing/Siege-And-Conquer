@@ -18,7 +18,8 @@ public class Army {
     }
 
     public void addMercenary(Mercenary mercenary, int index) {
-        this.army.add(index, mercenary);
+        this.army.add(mercenary);
+        
     }
 
     public void removeMercenary(int index) {

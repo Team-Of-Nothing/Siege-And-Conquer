@@ -112,14 +112,6 @@ public class GameScreen implements Screen {
         stage.addActor(armyView);
         //stage.setDebugAll(true);
 
-        //idk what am doing rn want to show info about marcenery stats
-
-        //Label defenceInfo = new Label("COKOLWIEKKEKEKEKEK", labelStyle); //Integer.toString(SAC.player.getArmy().get(0).getDefense())
-        System.out.println("debug 5 rano"+SAC.player.getArmy().get(0).getDefense());
-        System.out.println("debug 5 rano emrcenery camp"+SAC.player.getMercenary_camp().size());
-
-        //int[] posOfMercenery = armyView.getMercenaryView(0).getpos();
-
         for(int i = 0; i < SAC.player.getArmy().size(); i++){
             int[] posOfMercenery = armyView.getMercenaryView(i).getpos();
             Label[] labelList = new Label[3];
@@ -328,6 +320,8 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 //battleButton.setText("Waiting.."); //to sie przyda ;)
                 //todo send info do servera a ten battle screen dopiero jak response 
+                game.client.endTurn(game.player.getArmy(),game.player.getName());
+                while(game.responder.getReposndStatus() != true);
                 game.setScreen(new BattleScreen(game));
                 dispose();
             }

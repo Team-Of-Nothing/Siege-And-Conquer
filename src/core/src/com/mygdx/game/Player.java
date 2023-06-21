@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
 
-        private final Army army;
+        private Army army;
         private Mercenary_camp mercenary_camp;
         private int gold;
         private int hp;
@@ -30,6 +30,9 @@ public class Player {
 
     public ArrayList<Mercenary> getArmy() {
         return this.army.getArmy();
+    }
+    public void initArmy(Army army){
+        this.army = army;
     }
 
     public void defeat() {
@@ -117,7 +120,7 @@ public class Player {
             catch(Exception e) 
            {
                 this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
-                this.addBonuses(this.army.getArmy().get(index2));
+                this.addBonuses(this.army.getArmy().get(this.army.getArmy().size()-1));
                 this.mercenary_camp.removeMercenary(index);
                 this.gold -= 100;
                 return true;
