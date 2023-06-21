@@ -90,7 +90,9 @@ public class BattleScreen implements Screen {
         for (int i = 0; i < game.player.getArmy().size(); i++) {
             army1IDs.add(game.player.getArmy().get(i).getId());
         }
+
         Array<Integer> army2IDs = new Array <Integer>(game.getResponder().getEnemyArmy().getArmy().size());
+        System.out.println("size :" + game.getResponder().getEnemyArmy().getArmy().size());
         for (int i = 0; i < game.getResponder().getEnemyArmy().getArmy().size(); i++) {
             army2IDs.add(game.getResponder().getEnemyArmy().getArmy().get(i).getId());
         }
@@ -113,7 +115,7 @@ public class BattleScreen implements Screen {
         group.setSize(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
         group.setDebug(true);
 
-
+        game.enemy.initArmy(game.responder.getEnemyArmy());
         for(int i = 0; i < game.enemy.getArmy().size(); i++){
             army2View.getMercenaryView(i).flip();
         }
@@ -263,17 +265,18 @@ public class BattleScreen implements Screen {
         }
 
 
-
-        
-        Gdx.gl.glClear(16384);
-        stage.draw();
-        stage.act(delta);
-        stage.draw();
         if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
             System.out.println("\n\n\n\n");
         }
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             game.setScreen(new MainMenu(game));
+            dispose();
+        }
+
+        if (k == ally.size() )
+        {
+            game.player.defeat();
+            game.setScreen(new GameScreen(game));
             dispose();
         }
 
