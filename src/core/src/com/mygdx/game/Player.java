@@ -16,9 +16,6 @@ public class Player {
         private int speedBonus;
         private int goldBonus;
 
-
-
-
         public Player(String name) {
             this.name = name;
             this.army = new Army();
@@ -168,8 +165,24 @@ public class Player {
         }
 
 
+
         public void setMercenaryCamp(Mercenary_camp mercenaryCamp) {
             this.mercenary_camp = mercenaryCamp;
+        }
+
+        public int getAttackBonus() {
+            return attackBonus;
+        }
+        public int getDefenseBonus() {
+            return defenseBonus;
+        }
+    
+        public int getSpeedBonus() {
+            return speedBonus;
+        }
+        public int getGoldBonus() {
+            return goldBonus;
+
         }
 
 }

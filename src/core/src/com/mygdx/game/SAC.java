@@ -11,16 +11,30 @@ public class SAC extends Game {
 	protected Client client = new Client();
 	private final static String DEFAULT_BACKGROUND_MUSIC = "castle.mp3";
 	public Music backgroundMusic; //nie moze byc static bo create() nie jest
-	protected Player player = new Player("Player");
+
+	protected static Player player = new Player("Player");
+
+	protected Player enemy = new Player("Enemy");
+
+	private Responder responder;
+
 
 	@Override
 	public void create () {
+
 		player.getArmy().add(0, new Mercenary(1));
-		player.getArmy().add(1, new Mercenary(5));
-		player.getArmy().add(2,new Mercenary(6));
+		player.getArmy().add(1, new Mercenary(9));
+
+		enemy.getArmy().add(0, new Mercenary(5));
+		enemy.getArmy().add(0, new Mercenary(4));
+		enemy.getArmy().add(0, new Mercenary(3));
+		enemy.getArmy().add(0, new Mercenary(2));
+		enemy.getArmy().add(1, new Mercenary(1));
+
+
 		try {
 			client.connect("20.117.180.142", 2137);
-			Responder responder = new Responder(client.socket);
+			responder = new Responder(client.socket);
 			Thread thread = new Thread(responder);
 			thread.start();
 			client.enterLobby();
@@ -28,11 +42,12 @@ public class SAC extends Game {
 			while(responder.isGameStarted()==false){
 				continue;
 			}
-			
+
 			System.out.println("game started");
 			client.refreshShop();
 			while(responder.getReposndStatus()!=true){
 			}
+			responder.resetRespondStatus();
 			player.setMercenaryCamp(responder.getMerceneryCamp());
 			client.endTurn(player.getArmy(), player.getName());
 			while(responder.getReposndStatus()!=true){
@@ -48,7 +63,7 @@ public class SAC extends Game {
 				System.out.println();
 			}
 
-			
+
 		} catch (Exception e) {
 			System.out.println("Connection failed");
 		}
@@ -56,6 +71,10 @@ public class SAC extends Game {
 		setScreen(new MainMenu(this));
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(DEFAULT_BACKGROUND_MUSIC));
 		backgroundMusic.play();
+	}
+
+	public Responder getResponder(){
+		return responder;
 	}
 
 	@Override

@@ -9,8 +9,8 @@ public class Mercenary_camp {
         public Mercenary_camp() {
             this.mercenary_camp = new ArrayList<Mercenary>();
             this.mercenary_camp.ensureCapacity(5);
-
         }
+
 
 
 

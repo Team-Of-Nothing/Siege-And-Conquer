@@ -5,11 +5,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+
 
 public class MercenaryView extends Actor  {
     private Sprite sprite;
@@ -26,6 +32,11 @@ public class MercenaryView extends Actor  {
     private int action = 0; // 0 = idle, 1 = attack, 2 = death, 3 = walk, 4 = damaged
     private boolean flip = false;
     private Array<Animation<TextureRegion>> animations;
+
+    LabelStyle labelStyle = new LabelStyle();
+    BitmapFont font = new BitmapFont();
+    SAC s = (SAC)Gdx.app.getApplicationListener();
+
 
     public MercenaryView (int id) {
         System.out.println("MercenaryView");
@@ -73,6 +84,13 @@ public class MercenaryView extends Actor  {
         
     }
 
+    public int[] getpos() {
+        int[] pos = new int[2];
+        pos[0] = (int) this.getX();
+        pos[1] = (int) this.getY();
+        return pos;
+    }
+
     // TODO i think sprite is drawn from center where actor is drawn from bottom left
     public void moveTo(float x,float y){
         if (id != -1)
@@ -109,6 +127,9 @@ public class MercenaryView extends Actor  {
         return id;
     }
 
+    public int getAction() {
+        return action;
+    }
     public void attack() {
         //sprite.setColor(Color.RED);
         setAction(1);
@@ -138,7 +159,8 @@ public class MercenaryView extends Actor  {
         if (id != -1)
             sprite.setPosition(v.x, v.y);
         this.setPosition(v.x, v.y);
-    } 
+    }
+
 
     // first call setPos before calling this
     public void setSize(float width, float height) {
@@ -150,6 +172,8 @@ public class MercenaryView extends Actor  {
         sprite.setSize(v.x, v.y);
         this.setBounds(sprite.getX(), sprite.getY(), v.x, v.y);
     }
+    //try to make label under the mercenery with stats
+
 
     public void setPosSize(Vector2 v1, Vector2 v2) {
         setPosSize(v1.x,v1.y, v2.x, v2.y);
@@ -196,6 +220,7 @@ public class MercenaryView extends Actor  {
         
     }
 
+
     
     @Override
     public void act(float delta) {
@@ -227,7 +252,7 @@ public class MercenaryView extends Actor  {
         sprite.draw(batch);
 
     }
-    
+
     
     public void dispose()
     {
@@ -238,4 +263,6 @@ public class MercenaryView extends Actor  {
         damaged.dispose();
         mp3_attack.dispose();
     }
+
+
 }
