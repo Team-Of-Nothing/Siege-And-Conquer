@@ -206,6 +206,7 @@ public class MercenaryView extends Actor  {
 
     public void flip() {
         
+        if (id == -1) return;
         flip = !flip;
         if (flip)
         {
