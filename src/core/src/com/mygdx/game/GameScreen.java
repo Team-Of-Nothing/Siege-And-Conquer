@@ -42,17 +42,14 @@ public class GameScreen implements Screen {
     int ShopIndex = -1;
     int ArmyIndex = -1;
     Label[] labelList = new Label[3];
-
     
     final static private String COST_OF_PASSIVES = "200";
     BitmapFont font = new BitmapFont();
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Miasto.png";
 
-
-
-        MercenaryView mercenaryView = new MercenaryView(8);
-        MercenaryView mercenaryView2 = new MercenaryView(1);
-        CoinView coinAnimation = new CoinView();
+    MercenaryView mercenaryView = new MercenaryView(8);
+    MercenaryView mercenaryView2 = new MercenaryView(1);
+    CoinView coinAnimation = new CoinView();
 
     private LabelStyle labelStyle;
 
@@ -111,6 +108,14 @@ public class GameScreen implements Screen {
         stage.addActor(marketView);
         stage.addActor(armyView);
         //stage.setDebugAll(true);
+
+        //idk what am doing rn want to show info about marcenery stats
+
+        //Label defenceInfo = new Label("COKOLWIEKKEKEKEKEK", labelStyle); //Integer.toString(SAC.player.getArmy().get(0).getDefense())
+        System.out.println("debug 5 rano"+SAC.player.getArmy().get(0).getDefense());
+        System.out.println("debug 5 rano emrcenery camp"+SAC.player.getMercenary_camp().size());
+
+        //int[] posOfMercenery = armyView.getMercenaryView(0).getpos();
 
         for(int i = 0; i < SAC.player.getArmy().size(); i++){
             int[] posOfMercenery = armyView.getMercenaryView(i).getpos();
@@ -190,10 +195,6 @@ public class GameScreen implements Screen {
 
 
     }
-    private void addLabels(){
-
-    }
-
 
     private void addMoneyInfoAndAnimation(){ //TODO RENDER
 
@@ -320,8 +321,6 @@ public class GameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 //battleButton.setText("Waiting.."); //to sie przyda ;)
                 //todo send info do servera a ten battle screen dopiero jak response 
-                game.client.endTurn(game.player.getArmy(),game.player.getName());
-                while(game.responder.getReposndStatus() != true);
                 game.setScreen(new BattleScreen(game));
                 dispose();
             }
@@ -417,46 +416,6 @@ public class GameScreen implements Screen {
         stage.draw();
         stage.act(delta);
         stage.draw();
-
-
-        if (ShopIndex != -1 && ArmyIndex != -1)
-        {
-
-            if (game.player.buyMercenary(ShopIndex, ArmyIndex))
-            {
-                float Offsetxwidth = Gdx.graphics.getWidth();
-                Offsetxwidth= Offsetxwidth/2.6f;
-                marketView.removeMercenary(ShopIndex);
-                
-                Array<Integer> armyIds = new Array <Integer>(game.player.getArmy().size());
-                for (int i = 0; i < game.player.getArmy().size(); i++)
-                    armyIds.add(game.player.getArmy().get(i).getId());
-                armyView.dispose();
-                armyView = new ArmyView(armyIds,Offsetxwidth,0,stage); // TODO not hard coded ;(
-                stage.addActor(armyView);
-                armyView.setHighlight(true);
-                armyView.addListener(new ClickListener() {
-                    public void clicked(InputEvent event, float x, float y) {
-                        MercenaryView a  = (MercenaryView)event.getTarget();
-                        
-
-                        for (int i = 0; i < armyView.getSize();i++)
-                        {
-                            if (a == armyView.getMercenaryView(i))
-                            {
-                                
-                                System.out.println("position in armyView: " + i);
-                                ArmyIndex = i;
-                                return;
-                            }
-                        }
-                    }
-                });
-            }
-                ShopIndex = -1;
-                ArmyIndex = -1;
-
-        }
         
         addMoneyInfoAndAnimation();
         addAttackPassiveInfo();
