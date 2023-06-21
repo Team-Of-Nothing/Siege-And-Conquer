@@ -33,6 +33,7 @@ final public class SettingsBox extends VerticalGroup{
     SAC s = (SAC)Gdx.app.getApplicationListener();
     Screen parentScreen;
 
+    boolean isMusicPlaying = true;
     SettingsBox(Screen screen, Batch batch){
 
         parentScreen = screen;
@@ -56,17 +57,21 @@ final public class SettingsBox extends VerticalGroup{
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
 
         //SOUND ON/OFF BUTTON
-        ImageTextButton buttonSoundOnOff = new ImageTextButton("Sound On/Off", new ImageTextButton.ImageTextButtonStyle(
+
+        ImageTextButton buttonSoundOnOff = new ImageTextButton("Sound Off", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
             null,font));
+            final ImageTextButton buttonRef = buttonSoundOnOff;
         buttonSoundOnOff.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 if(s.backgroundMusic.isPlaying()){
                     s.backgroundMusic.pause();
+                     buttonRef.setText("Sound "+ "On");
                 } else{
-                    s.backgroundMusic.play();              
+                    s.backgroundMusic.play();    
+                    buttonRef.setText("Sound "+ "Off");
                 }    
             }
         });
@@ -76,7 +81,7 @@ final public class SettingsBox extends VerticalGroup{
 
 
         //EXIT BUTTON
-        ImageTextButton buttonExit = new ImageTextButton("Exit", new ImageTextButton.ImageTextButtonStyle(
+        ImageTextButton buttonExit = new ImageTextButton("Close", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive,
             null,font));
