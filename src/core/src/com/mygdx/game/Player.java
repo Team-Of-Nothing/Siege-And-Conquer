@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
 
         private final Army army;
-        private final Mercenary_camp mercenary_camp;
+        private Mercenary_camp mercenary_camp;
         private int gold;
         private int hp;
 
@@ -112,27 +112,29 @@ public class Player {
             this.gold += 500+this.goldBonus*50;
         }
 
-        public void buyMercenary(int index,int index2) {
+        public boolean buyMercenary(int index,int index2) {
             if(this.gold < 100) {
-                return;
+                return false;
             }
-            if((this.army.getArmy().get(index2)==null)) {
+            try{this.army.getArmy().get(index2);}
+            catch(Exception e) 
+           {
                 this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
                 this.addBonuses(this.army.getArmy().get(index2));
                 this.mercenary_camp.removeMercenary(index);
                 this.gold -= 100;
-                return;
+                return true;
             }
-            else if(this.army.getArmy().get(index2).getId() == this.mercenary_camp.getMercenary_camp().get(index).getId()) {
+            if(this.army.getArmy().get(index2).getId() == this.mercenary_camp.getMercenary_camp().get(index).getId()) {
                 this.eraseBonuses(this.army.getArmy().get(index2));
                 this.getArmy().get(index2).merge();
                 this.addBonuses(this.army.getArmy().get(index2));
                 this.mercenary_camp.removeMercenary(index);
                 this.gold -= 100;
-                return;
+                return true;
             }
 
-
+            return false;
         }
 
         public void sellMercenary(int index) {
@@ -166,5 +168,8 @@ public class Player {
         }
 
 
+        public void setMercenaryCamp(Mercenary_camp mercenaryCamp) {
+            this.mercenary_camp = mercenaryCamp;
+        }
 
 }
