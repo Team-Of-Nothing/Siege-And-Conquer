@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class MainMenu implements Screen{
 
     // mainly for access to batch
-    final private SAC game;
+    static public SAC game;
 
     // manages UI
     Stage stage;
@@ -61,7 +61,7 @@ public class MainMenu implements Screen{
         
         ImageTextButton buttonPlay = new ImageTextButton("Play", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
-            buttonActive, // something has to be wrong with this
+            buttonActive, 
             null,font));
         buttonPlay.addListener(new ClickListener(){
             @Override
@@ -112,7 +112,6 @@ public class MainMenu implements Screen{
             group.space(Gdx.app.getGraphics().getHeight()*50/1440);
             
 
-  
         group.addActor(buttonPlay);
         group.addActor(settingsButton);
         group.addActor(buttonExit);

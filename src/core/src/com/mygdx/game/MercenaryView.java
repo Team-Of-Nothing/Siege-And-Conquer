@@ -73,6 +73,13 @@ public class MercenaryView extends Actor  {
         
     }
 
+    public int[] getpos() {
+        int[] pos = new int[2];
+        pos[0] = (int) this.getX();
+        pos[1] = (int) this.getY();
+        return pos;
+    }
+
     // TODO i think sprite is drawn from center where actor is drawn from bottom left
     public void moveTo(float x,float y){
         if (id != -1)

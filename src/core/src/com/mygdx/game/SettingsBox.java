@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 final public class SettingsBox extends VerticalGroup{
     
     BitmapFont font = new BitmapFont();
@@ -54,7 +55,7 @@ final public class SettingsBox extends VerticalGroup{
         buttonInactive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
         buttonActive.setMinHeight(Gdx.app.getGraphics().getHeight()*100/1440);
 
-        //this.setFillParent(true);
+        //SOUND ON/OFF BUTTON
         ImageTextButton buttonSoundOnOff = new ImageTextButton("Sound On/Off", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive, // something has to be wrong with this
@@ -71,7 +72,10 @@ final public class SettingsBox extends VerticalGroup{
         });
         buttonSoundOnOff.getLabel().setColor(Color.GOLD);
         this.addActor(buttonSoundOnOff);
-        
+        //SOUND ON/OFF BUTTON
+
+
+        //EXIT BUTTON
         ImageTextButton buttonExit = new ImageTextButton("Exit", new ImageTextButton.ImageTextButtonStyle(
             buttonInactive,
             buttonActive,
@@ -79,7 +83,27 @@ final public class SettingsBox extends VerticalGroup{
             this.addActor(buttonExit);
 
         buttonExit.addListener(new CustomCLickListener(this));
-        buttonSoundOnOff.getLabel().setColor(Color.GOLD);
+        buttonExit.getLabel().setColor(Color.GOLD);
+        //EXIT BUTTON
+
+
+        //RETURN BUTTON
+        if((!parentScreen.getClass().getSimpleName().toString().equals("MainMenu"))){
+            ImageTextButton backToMenuButton = new ImageTextButton("Return", new ImageTextButton.ImageTextButtonStyle(
+                buttonInactive,
+                buttonActive,
+                null,font));
+                backToMenuButton.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    s.setScreen(new MainMenu(MainMenu.game));
+                    parentScreen.dispose();
+                }
+            });
+            backToMenuButton.getLabel().setColor(Color.GOLD);
+            this.addActor(backToMenuButton);
+        }
+        //RETURN BUTTON
+
         this.align(Align.center);
         this.space(Gdx.app.getGraphics().getHeight()*50/1440);
     }
@@ -104,13 +128,14 @@ final public class SettingsBox extends VerticalGroup{
         @Override
         public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
             //System.out.println(parentScreen.getClass().getSimpleName().toString());
-            //wylaczanie przyciskow tylko jak MainMenu, mozna dodać niżej kolejne ify jak bedzie trzeba cos innego usuwać
             if(parentScreen.getClass().getSimpleName().toString().equals("MainMenu")){
                 settings.setVisible(false);
                 settings.getParent().getChild(2).setVisible(true);
                 settings.getParent().getChild(1).setVisible(true);
                 System.out.println(parentScreen.getClass().getSimpleName());
             }
+            settings.setVisible(false);
+
         }
     }
 }

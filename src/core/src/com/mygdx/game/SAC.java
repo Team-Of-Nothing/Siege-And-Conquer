@@ -11,11 +11,13 @@ public class SAC extends Game {
 	protected Client client = new Client();
 	private final static String DEFAULT_BACKGROUND_MUSIC = "castle.mp3";
 	public Music backgroundMusic; //nie moze byc static bo create() nie jest
-	protected Player player = new Player("Player");
+
+	protected static Player player = new Player("Player");
 
 	protected Player enemy = new Player("Enemy");
 
 	private Responder responder;
+
 
 	@Override
 	public void create () {
