@@ -43,6 +43,7 @@ public class Responder implements Runnable {
 
         String jasonData = new String(buffer,0, bytesRead, StandardCharsets.UTF_8);
         dataJson = new JSONObject(jasonData);
+        System.out.println(dataJson);
         if(Objects.equals(dataJson.getString("operation"), "refresh")){
             String key;
             int id;

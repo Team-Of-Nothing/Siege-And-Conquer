@@ -273,12 +273,15 @@ public class BattleScreen implements Screen {
             dispose();
         }
 
-        if (k == ally.size() )
-        {
+
+        if (k == ally.size()){
             game.player.defeat();
+            game.client.endBattle(game.player.getHp());
+            while(!game.responder.isGameWon() && !game.responder.isNextTurn()); // nie na while tylko jakis bool co bedzie pomijal wiekszosc kodu w renderze
             game.setScreen(new GameScreen(game));
             dispose();
         }
+        
 
     }
     @Override
