@@ -13,11 +13,6 @@ public class Mercenary_camp {
 
 
 
-public void addMercenary(Mercenary mercenary , int index) {
-            this.mercenary_camp.add(index, mercenary);
-
-        }
-
 
         public ArrayList<Mercenary> getMercenary_camp() {
             return mercenary_camp;
@@ -26,6 +21,11 @@ public void addMercenary(Mercenary mercenary , int index) {
 
         public void removeMercenary(int index) {
             this.mercenary_camp.remove(index);
+        }
+
+        public void addMercenary(Mercenary mercenary , int index) {
+            this.mercenary_camp.add(index, mercenary);
+
         }
         
 }

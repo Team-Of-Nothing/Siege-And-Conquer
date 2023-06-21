@@ -116,14 +116,16 @@ public class Player {
             if(this.gold < 100) {
                 return false;
             }
-            if((this.army.getArmy().get(index2)==null)) {
+            try{this.army.getArmy().get(index2);}
+            catch(Exception e) 
+           {
                 this.army.addMercenary(this.mercenary_camp.getMercenary_camp().get(index), index2);
                 this.addBonuses(this.army.getArmy().get(index2));
                 this.mercenary_camp.removeMercenary(index);
                 this.gold -= 100;
                 return true;
             }
-            else if(this.army.getArmy().get(index2).getId() == this.mercenary_camp.getMercenary_camp().get(index).getId()) {
+            if(this.army.getArmy().get(index2).getId() == this.mercenary_camp.getMercenary_camp().get(index).getId()) {
                 this.eraseBonuses(this.army.getArmy().get(index2));
                 this.getArmy().get(index2).merge();
                 this.addBonuses(this.army.getArmy().get(index2));

@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 public class Army {
 
-    ArrayList<Mercenary> army = new ArrayList<Mercenary>();
+    ArrayList<Mercenary> army;
 
 
     public Army() {
         int size = 5;
-        this.army = new ArrayList<Mercenary>();
-        this.army.ensureCapacity(size);
+        this.army = new ArrayList<Mercenary>(size);
     }
 
 
@@ -19,26 +18,15 @@ public class Army {
     }
 
     public void addMercenary(Mercenary mercenary, int index) {
-        this.army.set(index, mercenary);
+        this.army.add(index, mercenary);
     }
 
     public void removeMercenary(int index) {
         this.army.remove(index);
     }
 
-
-
-
     public void clearArmy() {
         this.army.clear();
     }
 
 }
-
-
-
-
-
-
-
-

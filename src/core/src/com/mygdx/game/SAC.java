@@ -17,16 +17,25 @@ public class SAC extends Game {
 
 	@Override
 	public void create () {
+
 		player.getArmy().add(0, new Mercenary(8));
 		player.getArmy().add(1, new Mercenary(3));
 		player.getArmy().add(2,new Mercenary(1));
 		player.getArmy().add(3,new Mercenary(6));
 		player.getArmy().add(4,new Mercenary(7));
+
 		try {
 			client.connect("20.117.180.142", 2137);
 			responder = new Responder(client.socket);
 			Thread thread = new Thread(responder);
 			thread.start();
+			client.enterLobby();
+			System.out.println("waiting for players");
+			while(responder.isGameStarted()==false){
+				continue;
+			}
+			
+			System.out.println("game started");
 			client.refreshShop();
 			while(responder.getReposndStatus()!=true){
 			}
@@ -45,6 +54,8 @@ public class SAC extends Game {
 				System.out.println(army.army.get(i).getSpeed());
 				System.out.println();
 			}
+
+			
 		} catch (Exception e) {
 			System.out.println("Connection failed");
 		}

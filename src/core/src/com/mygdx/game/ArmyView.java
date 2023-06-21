@@ -54,6 +54,14 @@ ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
             stage.addActor(mercenaryViews.get(i));
             
         }
+
+        for (int i = mercenaryViews.size;i < MERCENARY_MAX_SIZE;i++)
+        {
+            mercenaryViews.insert(i, new MercenaryView(-1));
+            mercenaryViews.get(i).setPosSize(mercenaryPositions.get(i),mercenarySizes.get(i) );
+            stage.addActor(mercenaryViews.get(i));
+
+        }
     }
 
 // idk why this exists, cleaner code?
@@ -95,7 +103,7 @@ ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
         return mercenaryViews.size;
     }
 
-    // not sure if that's a good idea
+    // not sure if that's a good idea works though
     @Override
     public boolean addListener (EventListener listener) 
     {
@@ -167,7 +175,7 @@ ArmyView(Array<Integer> mercenaryIDs,float xOffset,float yOffset,Stage stage)
     public void dispose() {
 
         int size = mercenaryViews.size;
-        for (int i = 0; i < size; i++)
+        for (int i = size-1; i >= 0; i--)
         {
             removeMercenary(i);
         
