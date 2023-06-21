@@ -16,9 +16,6 @@ public class Player {
         private int speedBonus;
         private int goldBonus;
 
-
-
-
         public Player(String name) {
             this.name = name;
             this.army = new Army();

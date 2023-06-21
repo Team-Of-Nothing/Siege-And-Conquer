@@ -149,6 +149,7 @@ public class BattleScreen implements Screen {
         settingsButton.setSize(Gdx.app.getGraphics().getWidth()*100/2560, Gdx.app.getGraphics().getHeight()*100/1440);
         //settingsButton.setDebug(true);
         stage.addActor(settingsButton);
+
         //SETTINGS BUTTON
 
 
@@ -158,6 +159,7 @@ public class BattleScreen implements Screen {
         //useless but funny
         //group.addAction(Actions.sequence(Actions.scaleTo(2f, 2f, 1f), Actions.scaleTo(1f, 1f, 1f)));
         //stage.addActor(group);
+
 
 
 
