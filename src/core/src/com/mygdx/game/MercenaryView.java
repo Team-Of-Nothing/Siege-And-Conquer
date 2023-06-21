@@ -109,6 +109,9 @@ public class MercenaryView extends Actor  {
         return id;
     }
 
+    public int getAction() {
+        return action;
+    }
     public void attack() {
         //sprite.setColor(Color.RED);
         setAction(1);
@@ -138,7 +141,8 @@ public class MercenaryView extends Actor  {
         if (id != -1)
             sprite.setPosition(v.x, v.y);
         this.setPosition(v.x, v.y);
-    } 
+    }
+
 
     // first call setPos before calling this
     public void setSize(float width, float height) {
@@ -195,6 +199,7 @@ public class MercenaryView extends Actor  {
         }
         
     }
+
 
     
     @Override

@@ -51,53 +51,53 @@ public class Mercenary {
         {
             case 1:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 2:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 3:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 4:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 5:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 6:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 7:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 8:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 9:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             case 10:
                 this.speed = 2;
-                this.attack = 1;
-                this.defense = 50;
+                this.attack = 2;
+                this.defense = 6;
                 break;
             default:
                 break;

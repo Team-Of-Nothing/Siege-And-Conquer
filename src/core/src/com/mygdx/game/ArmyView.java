@@ -21,8 +21,8 @@ public class ArmyView extends Actor {
     float gfxwidth = Gdx.graphics.getWidth();
 
     // position related working only on one specific map
-        float startingX = gfxwidth*0.3f;
-        float endingX = startingX * 0.41f/0.3f;
+        float startingX = gfxwidth*0.32f;
+        float endingX = startingX * 0.48f/0.32f;
         float midX = (startingX+endingX)/2;
         float startingY = 0.5f * gfxheight;
         float endingY = startingY * 0.08f/0.5f;

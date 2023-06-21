@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
         stage = new Stage(viewport, game.batch);
 
         float Offsetxwidth = Gdx.graphics.getWidth();
-        Offsetxwidth= Offsetxwidth/2.4f;
+        Offsetxwidth= Offsetxwidth/2.6f;
 
         // possibly refactor into standalone function
         Array<Integer> armyIDs = new Array <Integer>(game.player.getArmy().size());
@@ -62,7 +62,7 @@ public class GameScreen implements Screen {
 
 
         armyView = new ArmyView(armyIDs,Offsetxwidth,0,stage); // TODO not hard coded ;(
-        
+
         if (marketIDs.size > 0)
             marketView = new ArmyView(marketIDs,0,0,stage);
         else
@@ -115,6 +115,7 @@ public class GameScreen implements Screen {
             }
         });
         battleButton.getLabel().setColor(Color.GOLD);
+
 
         group.addActor(returnButton);
         group.addActor(battleButton);
@@ -190,7 +191,7 @@ public class GameScreen implements Screen {
             if (game.player.buyMercenary(ShopIndex, ArmyIndex))
             {
                 float Offsetxwidth = Gdx.graphics.getWidth();
-                Offsetxwidth= Offsetxwidth/2.4f;
+                Offsetxwidth= Offsetxwidth/2.6f;
                 marketView.removeMercenary(ShopIndex);
                 
                 Array<Integer> armyIds = new Array <Integer>(game.player.getArmy().size());

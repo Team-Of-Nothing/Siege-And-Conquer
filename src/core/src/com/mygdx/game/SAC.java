@@ -13,16 +13,22 @@ public class SAC extends Game {
 	public Music backgroundMusic; //nie moze byc static bo create() nie jest
 	protected Player player = new Player("Player");
 
+	protected Player enemy = new Player("Enemy");
+
 	private Responder responder;
 
 	@Override
 	public void create () {
 
-		player.getArmy().add(0, new Mercenary(8));
-		player.getArmy().add(1, new Mercenary(3));
-		player.getArmy().add(2,new Mercenary(1));
-		player.getArmy().add(3,new Mercenary(6));
-		player.getArmy().add(4,new Mercenary(7));
+		player.getArmy().add(0, new Mercenary(1));
+		player.getArmy().add(1, new Mercenary(9));
+
+		enemy.getArmy().add(0, new Mercenary(5));
+		enemy.getArmy().add(0, new Mercenary(4));
+		enemy.getArmy().add(0, new Mercenary(3));
+		enemy.getArmy().add(0, new Mercenary(2));
+		enemy.getArmy().add(1, new Mercenary(1));
+
 
 		try {
 			client.connect("20.117.180.142", 2137);
@@ -34,7 +40,7 @@ public class SAC extends Game {
 			while(responder.isGameStarted()==false){
 				continue;
 			}
-			
+
 			System.out.println("game started");
 			client.refreshShop();
 			while(responder.getReposndStatus()!=true){
@@ -55,7 +61,7 @@ public class SAC extends Game {
 				System.out.println();
 			}
 
-			
+
 		} catch (Exception e) {
 			System.out.println("Connection failed");
 		}
