@@ -3,20 +3,18 @@ package com.example;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+
 
 public class Server {
     private int port;
     private ServerSocket serverSocket;
-    private CyclicBarrier cyclicBarrier;
     private Socket[] clientSockets;
     private Thread[] threads;
     private ClientHandler[] clientHandlers;
     private int numberOfPlayers;
-
-    private int playersLeft = 0;
     JSONArray playersData = new JSONArray();
 
     Server(int port, int number_of_players) {
@@ -26,7 +24,6 @@ public class Server {
     }
 
     public void start() {
-        cyclicBarrier = new CyclicBarrier(numberOfPlayers + 1);
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("Server listening on port " + port);
@@ -78,7 +75,7 @@ public class Server {
         for (int j = 0; j < numberOfPlayers; j++) {
             clientSockets[j] = serverSocket.accept();
             System.out.println("Client" + (j + 1) + "connected!");
-            clientHandlers[j] = new ClientHandler(clientSockets[j], cyclicBarrier);
+            clientHandlers[j] = new ClientHandler(clientSockets[j]);
             threads[j] = new Thread(clientHandlers[j]);
             threads[j].start();
         }
@@ -94,7 +91,7 @@ public class Server {
                 System.out.println(battleSimulator.getPlayersIDs().get(i));
             }
             if (numberOfPlayers > 1) {
-                for (int i = 0; i < numberOfPlayers; i += 2) {
+                for (int i = 0; i < numberOfPlayers-1; i += 2) {
                     playersData.getJSONObject(battleSimulator.getPlayersIDs().get(i)).put("start", 0);
                     playersData.getJSONObject(battleSimulator.getPlayersIDs().get(i + 1)).put("start", 1);
                     clientHandlers[battleSimulator.getPlayersIDs().get(i)].setPlayerInformation(playersData.getJSONObject(battleSimulator.getPlayersIDs().get(i + 1)));
@@ -102,24 +99,34 @@ public class Server {
                 }
             }
             if (numberOfPlayers % 2 != 0) {
-                playersData.getJSONObject(battleSimulator.getPlayersIDs().get(numberOfPlayers - 1)).put("start", 1);
-                playersData.getJSONObject(battleSimulator.getPlayersIDs().get(numberOfPlayers - 1)).put("player", "bot");
-                clientHandlers[battleSimulator.getPlayersIDs().get(numberOfPlayers - 1)].setPlayerInformation(playersData.getJSONObject(battleSimulator.getPlayersIDs().get(numberOfPlayers - 1)));
+                int n = battleSimulator.getPlayersIDs().get(numberOfPlayers - 1);
+                playersData.getJSONObject(n).put("start", 1);
+                playersData.getJSONObject(n).put("player", "bot");
+                ;
+                for(int i = 0; i<playersData.getJSONObject(n).getInt("size"); i++){
+                    JSONObject pom = playersData.getJSONObject(n).getJSONObject(String.valueOf(i)); 
+                    playersData.getJSONObject(n).getJSONObject(String.valueOf(i)).put("attack", pom.getInt("attack")/2);
+                    playersData.getJSONObject(n).getJSONObject(String.valueOf(i)).put("defense", pom.getInt("defense")/2);
+                }
+                clientHandlers[n].setPlayerInformation(playersData.getJSONObject(n));
             }
             resetClientFlags();
             waitForClients();
             if(numberOfPlayers==1){
                 clientHandlers[0].EndGame();
+                resetClientFlags();
                 waitForClients();
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                resetClientFlags();
+                waitForClients();
                 break;
             }
             resetClientFlags();
         }
 
     }
+
+    private String toString(int i) {
+        return null;
+    }
+
 }

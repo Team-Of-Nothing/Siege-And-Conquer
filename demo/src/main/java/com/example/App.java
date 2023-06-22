@@ -3,11 +3,9 @@ package com.example;
 
 import java.io.IOException;
 
-import java.io.IOException;
-
 public class App {
     public static void main(String[] args) {
-        Server server = new Server(2137,2);        
+        Server server = new Server(2137,1);   
         server.start();
         try {
             while(true){

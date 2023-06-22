@@ -3,24 +3,16 @@ package com.example;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-import org.json.JSONObject;
-
 import java.util.Objects;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import org.json.JSONObject;
 
 public class ClientHandler implements Runnable {
 
-    private boolean response;
     private OutputStream out;
     private InputStream in;
     private JSONObject jsonData;
     private Socket clientSocket;
-
-    private CyclicBarrier barrier;
 
     private int turn = 1;
 
@@ -30,11 +22,10 @@ public class ClientHandler implements Runnable {
 
     private boolean wating = false;
 
-    final int delayMs = 500;
+    private final int delayMs = 50;
 
-    ClientHandler(Socket socket, CyclicBarrier barrier) {
+    ClientHandler(Socket socket) {
         this.clientSocket = socket;
-        this.barrier = barrier;
         try {
             out = socket.getOutputStream();
             in = socket.getInputStream();
@@ -50,25 +41,7 @@ public class ClientHandler implements Runnable {
             if(turn % 2 == 0){
                 this.pull+=2;
             }
-            if(this.gameDone){
-                jsonData.clear();
-                try {
-                    barrier.await();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (BrokenBarrierException e) {
-                    throw new RuntimeException(e);
-                }
-                jsonData.put("operation", "winGame");
-                String jsonString = jsonData.toString();
-                byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
-                try {
-                    out.write(jsonDataBytes);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            int bytesRead = 0;
+            int bytesRead;
             try{
                 bytesRead = in.read(buffer);
             } catch (IOException e) {
@@ -143,8 +116,7 @@ public class ClientHandler implements Runnable {
                     waitForServer(delayMs);
                     jsonData.clear();
                     if(gameDone){
-                        jsonData.put("operation", "gameWin");
-                        waitForServer(delayMs);
+                        jsonData.put("operation", "winGame");
                     }
                     else{
                         jsonData.put("operation", "nextTurn");
@@ -152,6 +124,7 @@ public class ClientHandler implements Runnable {
                     String jsonString = jsonData.toString();
                     byte[] jsonDataBytes = jsonString.getBytes(StandardCharsets.UTF_8);
                     try {
+                        System.out.println("wyslalem rezultat");
                         out.write(jsonDataBytes);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -159,7 +132,6 @@ public class ClientHandler implements Runnable {
                 }
             }
             turn++;
-
         }
 
     }
@@ -181,15 +153,6 @@ public class ClientHandler implements Runnable {
     void setPlayerInformation(JSONObject jsonData){
         this.jsonData = jsonData;
     }
-
-    void  setCyclicBarrier (CyclicBarrier barrier){
-        this.barrier = barrier;
-    }
-
-    public boolean isGameDone(){
-        return this.gameDone;
-    }
-
     public void  EndGame(){
         this.gameDone = true;
     }
@@ -197,6 +160,7 @@ public class ClientHandler implements Runnable {
     public boolean isWaiting(){
         return this.wating;
     }
+
     public void resetWaiting(){
         this.wating = false;
     }
