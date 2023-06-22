@@ -85,6 +85,7 @@ public class Server {
             waitForClients();
             for (int i = 0; i < numberOfPlayers; i++) {
                 playersData.put(clientHandlers[i].getPlayerInformation());
+                System.out.println(playersData.getJSONObject(i));
             }
             battleSimulator.shufflePlayers(numberOfPlayers);
             for(int i = 0; i<numberOfPlayers; i++){
@@ -110,6 +111,7 @@ public class Server {
                 }
                 clientHandlers[n].setPlayerInformation(playersData.getJSONObject(n));
             }
+            playersData.clear();
             resetClientFlags();
             waitForClients();
             if(numberOfPlayers==1){
