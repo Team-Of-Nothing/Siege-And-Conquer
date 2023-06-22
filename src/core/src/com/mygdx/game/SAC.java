@@ -21,7 +21,6 @@ public class SAC extends Game {
 
 	@Override
 	public void create () {
-
 		batch = new SpriteBatch();
 		setScreen(new MainMenu(this));
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(DEFAULT_BACKGROUND_MUSIC));

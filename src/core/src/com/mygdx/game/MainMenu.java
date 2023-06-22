@@ -66,29 +66,29 @@ public class MainMenu implements Screen{
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                try{
-                game.client.connect("20.117.180.142", 2137);
-                }catch(Exception e){
-                    return;
-                }
-			    game.responder = new Responder(game.client.socket);
-			    Thread thread = new Thread(game.responder);
-			    thread.start();
-			    game.client.enterLobby();
-			    System.out.println("waiting for players");
-			    while(game.responder.isGameStarted()==false){
-                    continue;
-                }
-                game.client.refreshShop();
-                while(game.responder.getReposndStatus()!=true){
-                }
-                game.responder.resetRespondStatus();
-                game.player.setMercenaryCamp(game.responder.getMerceneryCamp());
+            //     try{
+            //     game.client.connect("20.117.180.142", 2137);
+            //     }catch(Exception e){
+            //         return;
+            //     }
+			//     game.responder = new Responder(game.client.socket);
+			//     Thread thread = new Thread(game.responder);
+			//     thread.start();
+			//     game.client.enterLobby();
+			//     System.out.println("waiting for players");
+			//     while(game.responder.isGameStarted()==false){
+            //         continue;
+            //     }
+            //     game.client.refreshShop();
+            //     while(game.responder.getReposndStatus()!=true){
+            //     }
+            //     game.responder.resetRespondStatus();
+            //     game.player.setMercenaryCamp(game.responder.getMerceneryCamp());
                 
                 game.setScreen(new GameScreen(game));
                 dispose();
-			System.out.println("game started");
-			//game.client.endTurn(game.player.getArmy(), game.player.getName());
+			// System.out.println("game started");
+			////game.client.endTurn(game.player.getArmy(), game.player.getName());
 
             }
         });
