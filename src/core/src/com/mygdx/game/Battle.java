@@ -44,25 +44,35 @@ public class Battle {
     }
 
 
-    int[] queue(ArrayList<Mercenary> army) {
+int[] queue(ArrayList<Mercenary> army) {
         int pos = 0;
         int z = 0;
-        int[] queue = new int[army.size()];
-
-        for (int i = 0; i < army.size(); i++) {
-            pos = i;
-            if (army.get(i) != null) {
-                for (int j = i + 1; j < army.size(); j++) {
-                    if (army.get(i) != null) {
-                        if (army.get(j).getSpeed() > army.get(pos).getSpeed()) {
-                            pos = j;
-                        }
-                    }
+        int [] queue = new int[army.size()];
+        ArrayList<Mercenary> armysorted= (ArrayList<Mercenary>) army.clone();
+    for (int i = 0; i < armysorted.size(); i++) {
+            for (int j = 0; j < armysorted.size() - 1; j++) {
+                if (armysorted.get(j).getSpeed() < armysorted.get(j + 1).getSpeed()) {
+                    Mercenary temp = armysorted.get(j);
+                    armysorted.set(j, armysorted.get(j + 1));
+                    armysorted.set(j + 1, temp);
                 }
             }
-            queue[z] = pos;
-            z++;
         }
+    for(int i = 0; i < armysorted.size(); i++)
+    {
+        for(int j=0;j<army.size();j++)
+        {
+            if(armysorted.get(i).equals(army.get(j)))
+            {
+                queue[i]=j;
+                break;
+            }
+        }
+
+    }
+
+
+
         return queue;
     }
 

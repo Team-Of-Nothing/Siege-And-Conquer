@@ -125,12 +125,14 @@ public class BattleScreen implements Screen {
         stage.addActor(armyView);
         stage.setDebugAll(true);
 
-        battle = new Battle(game.player.getArmy(), game.enemy.getArmy());
-        army1Queue = battle.queue(game.player.getArmy());
-        army2Queue = battle.queue(game.enemy.getArmy());
 
-        ally = game.player.getArmy();
-        enemy = game.getResponder().getEnemyArmy().getArmy();
+
+
+        ally = (ArrayList<Mercenary>) game.player.getArmy().clone();
+        enemy = (ArrayList<Mercenary>) game.getResponder().getEnemyArmy().getArmy().clone();
+        battle = new Battle(ally, enemy);
+        army1Queue = battle.queue(ally);
+        army2Queue = battle.queue(enemy);
         random=battle.getKolejka();
 
         //SETTINGS BUTTON
@@ -167,6 +169,35 @@ public class BattleScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
     }
+    public void allyattack(int allyindex, int enemyindex)
+    {
+        battle.attack(ally.get(allyindex), enemy.get(enemyindex));
+        armyView.getMercenaryView(army1Queue[allyindex]).attack();
+        if (enemy.get(enemyindex).getDefense() == 0) {
+            army2View.getMercenaryView(enemyindex).death();
+            l++;
+        } else {
+            army2View.getMercenaryView(enemyindex).damaged();
+        }
+        i++;
+
+    }
+
+    public void enemyattack(int enemyindex, int allyindex)
+    {
+        battle.attack(enemy.get(enemyindex), ally.get(allyindex));
+        army2View.getMercenaryView(army2Queue[enemyindex]).attack();
+        if (ally.get(allyindex).getDefense() == 0) {
+            armyView.getMercenaryView(allyindex).death();
+            k++;
+        } else {
+            armyView.getMercenaryView(allyindex).damaged();
+        }
+
+
+        j++;
+
+    }
 
 
 
@@ -177,85 +208,71 @@ public class BattleScreen implements Screen {
     }
     @Override
     public void render(float delta) {
+        System.out.println("k: "+k+" l: "+l+" i: "+i+" j: "+j);
 
         Gdx.gl.glClear(16384);
         time += delta;
         stage.draw();
         stage.act(delta);
         stage.draw();
+        int a=0;
         if (time > 1.5f) {
             if (k < ally.size() && l < enemy.size()) {
-                if (i > army1Queue.length - 1) {
-                    i = 0;
+                if(i==army1Queue.length&&j<army2Queue.length)
+                {
+                    if(enemy.get(army2Queue[j]).getDefense()!=0) {
+                        enemyattack(j, k);
+                    }
+                    else {
+                        j++;
+                    }
+                    a=1;
                 }
-                if (j > army2Queue.length - 1) {
-                    j = 0;
+                if(j==army2Queue.length&&i<army1Queue.length)
+                {
+                    if(ally.get(army1Queue[i]).getDefense()!=0) {
+                        allyattack(i, l);
+                    }
+                    else {
+                        i++;
+                    }
+                    a=1;
                 }
-                while (ally.get(army1Queue[i]).getDefense() == 0) {
-                    i++;
+                if(a==0) {
                     if (i > army1Queue.length - 1) {
                         i = 0;
                     }
-                }
-                while (enemy.get(army2Queue[j]).getDefense() == 0) {
-                    j++;
                     if (j > army2Queue.length - 1) {
                         j = 0;
                     }
-                }
-
-
-                if (ally.get(army1Queue[i]).getSpeed() > enemy.get(army2Queue[j]).getSpeed()) {
-                    armyView.getMercenaryView(army1Queue[i]).attack();
-                    if (ally.get(l).getDefense() == 0) {
-                        army2View.getMercenaryView(l).death();
-                        l++;
-                    } else {
-                        army2View.getMercenaryView(l).damaged();
-                    }
-                    i++;
-
-
-                } else if (enemy.get(army2Queue[j]).getSpeed() > ally.get(army1Queue[i]).getSpeed()) {
-                    army2View.getMercenaryView(army2Queue[j]).attack();
-                    if (enemy.get(k).getDefense() == 0) {
-                        armyView.getMercenaryView(k).death();
-                        k++;
-                    } else {
-                        armyView.getMercenaryView(k).damaged();
-                    }
-
-
-                    j++;
-                } else {
-                    if (random == 1) {
-                        army2View.getMercenaryView(army1Queue[i]).attack();
-                        battle.attack(ally.get(army1Queue[i]), enemy.get(k));
-                        if (enemy.get(k).getDefense() == 0) {
-                            armyView.getMercenaryView(k).death();
-                            k++;
-                        } else {
-                            armyView.getMercenaryView(k).damaged();
-                        }
-
-
-                        j++;
-                    } else {
-                        armyView.getMercenaryView(army2Queue[j]).attack();
-                        battle.attack(enemy.get(army2Queue[j]), ally.get(l));
-                        if (ally.get(l).getDefense() == 0) {
-                            army2View.getMercenaryView(l).death();
-                            l++;
-                        } else {
-                            army2View.getMercenaryView(l).damaged();
-                        }
-
-
+                    while (ally.get(army1Queue[i]).getDefense() == 0) {
                         i++;
+                        if (i > army1Queue.length - 1) {
+                            i = 0;
+                        }
+                    }
+                    while (enemy.get(army2Queue[j]).getDefense() == 0) {
+                        j++;
+                        if (j > army2Queue.length - 1) {
+                            j = 0;
+                        }
                     }
 
+
+                    if (ally.get(army1Queue[i]).getSpeed() > enemy.get(army2Queue[j]).getSpeed()) {
+                        allyattack(i, j);
+                    } else if (enemy.get(army2Queue[j]).getSpeed() > ally.get(army1Queue[i]).getSpeed()) {
+                        enemyattack(j, k);
+                    } else {
+                        if (random == 1) {
+                            enemyattack(j, k);
+                        } else {
+                            allyattack(i, j);
+                        }
+
+                    }
+                    random *= -1;
                 }
-                random *= -1;
 
 
             }
@@ -276,6 +293,11 @@ public class BattleScreen implements Screen {
         if (k == ally.size() )
         {
             game.player.defeat();
+            game.setScreen(new GameScreen(game));
+            dispose();
+        }
+        if(l==enemy.size())
+        {
             game.setScreen(new GameScreen(game));
             dispose();
         }
