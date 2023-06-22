@@ -397,7 +397,7 @@ public class GameScreen implements Screen {
         shopButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //Mercenary removedMercenery = SAC.player.getArmy().get(clickedMerceneryFromArmy.getID());
-                //armyView.removeMercenary(ArmyIndex);
+                armyView.removeMercenary(ArmyIndex);
                 SAC.player.sellMercenary(ArmyIndex);
             }
         });
