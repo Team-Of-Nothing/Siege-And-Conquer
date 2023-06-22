@@ -36,6 +36,9 @@ public class MercenaryView extends Actor  {
     LabelStyle labelStyle = new LabelStyle();
     BitmapFont font = new BitmapFont();
     SAC s = (SAC)Gdx.app.getApplicationListener();
+    private String Adefence;
+    private String Aspeed;
+    private String Aattack;
 
 
     public MercenaryView (int id) {
@@ -221,6 +224,12 @@ public class MercenaryView extends Actor  {
         
     }
 
+    private void addStats(){
+        Adefence = new String("defence: " + Integer.toString(SAC.player.getArmy().get(id).getDefense()));
+        Aattack = new String("attack : "+Integer.toString(SAC.player.getArmy().get(id).getAttack()));
+        Aspeed = new String("speed : "+Integer.toString(SAC.player.getArmy().get(id).getSpeed()));
+    }
+
 
     
     @Override
@@ -228,6 +237,7 @@ public class MercenaryView extends Actor  {
         if (id == -1) return;
         super.act(delta);
         time += delta;
+
 
         sprite.setRegion(animations.get(action).getKeyFrame(time, false));
 
@@ -251,8 +261,13 @@ public class MercenaryView extends Actor  {
     public void draw(Batch batch, float parentAlpha) {
         if (id != -1)
         sprite.draw(batch);
+//        addStats();
+//        font.draw(batch, Adefence, this.getX(), this.getY() - 10);
+//        font.draw(batch, Adefence, this.getX(), this.getY() - 20);
+//        font.draw(batch, Adefence, this.getX(), this.getY() - 30);
 
     }
+
 
     
     public void dispose()

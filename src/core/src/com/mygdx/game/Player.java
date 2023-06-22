@@ -164,6 +164,7 @@ public class Player {
         }
         }
         public void newTurn() {
+            this.gold=0;
             addGold();
         }
 

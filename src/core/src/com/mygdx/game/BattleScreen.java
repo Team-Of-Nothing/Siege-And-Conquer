@@ -62,7 +62,9 @@ public class BattleScreen implements Screen {
 
     private int j = 0;
 
-    public int random;
+    public boolean xy = false;
+
+    private int random;
 
     private int[] army1Queue;
     private int[] army2Queue;
@@ -70,8 +72,8 @@ public class BattleScreen implements Screen {
     private float time = 0;
     Battle battle;
 
-    ArrayList<Mercenary> ally;
-    ArrayList<Mercenary> enemy;
+    ArrayList<Mercenary> ally= new ArrayList<Mercenary>();
+    ArrayList<Mercenary> enemy= new ArrayList<Mercenary>();
     BitmapFont font = new BitmapFont();
 
     final static private String DEFAULT_GAME_SCREEN_BACKGROUND = "Walka_Scena.png";
@@ -91,16 +93,16 @@ public class BattleScreen implements Screen {
             army1IDs.add(game.player.getArmy().get(i).getId());
         }
 
-        Array<Integer> army2IDs = new Array <Integer>(game.getResponder().getEnemyArmy().getArmy().size());
-        System.out.println("size :" + game.getResponder().getEnemyArmy().getArmy().size());
-        for (int i = 0; i < game.getResponder().getEnemyArmy().getArmy().size(); i++) {
-            army2IDs.add(game.getResponder().getEnemyArmy().getArmy().get(i).getId());
-        }
+//        Array<Integer> army2IDs = new Array <Integer>(game.getResponder().getEnemyArmy().getArmy().size());
+//        System.out.println("size :" + game.getResponder().getEnemyArmy().getArmy().size());
+//        for (int i = 0; i < game.getResponder().getEnemyArmy().getArmy().size(); i++) {
+//            army2IDs.add(game.getResponder().getEnemyArmy().getArmy().get(i).getId());
+//        }
 
 
         armyView = new ArmyView(army1IDs,0,0,stage); // TODO not hard coded ;(
 
-        army2View = new ArmyView(army2IDs,Offsetxwidth,0,stage);
+//        army2View = new ArmyView(army2IDs,Offsetxwidth,0,stage);
 
 
 
@@ -115,10 +117,10 @@ public class BattleScreen implements Screen {
         group.setSize(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
         group.setDebug(true);
 
-        game.enemy.initArmy(game.responder.getEnemyArmy());
-        for(int i = 0; i < game.enemy.getArmy().size(); i++){
-            army2View.getMercenaryView(i).flip();
-        }
+//        game.enemy.initArmy(game.responder.getEnemyArmy());
+//        for(int i = 0; i < game.enemy.getArmy().size(); i++){
+//            army2View.getMercenaryView(i).flip();
+//        }
 
 
         stage.addActor(army2View);
@@ -126,14 +128,25 @@ public class BattleScreen implements Screen {
         stage.setDebugAll(true);
 
 
+        for(int i=0;i<game.player.getArmy().size();i++){
+            ally.add(game.player.getArmy().get(i));
+        }
+//        for(int i=0;i<game.getResponder().getEnemyArmy().getArmy().size();i++){
+//            enemy.add(game.getResponder().getEnemyArmy().getArmy().get(i));
+//        }
 
-
-        ally = (ArrayList<Mercenary>) game.player.getArmy().clone();
-        enemy = (ArrayList<Mercenary>) game.getResponder().getEnemyArmy().getArmy().clone();
-        battle = new Battle(ally, enemy);
+//        ally = (ArrayList<Mercenary>) game.player.getArmy().clone();
+//        enemy = (ArrayList<Mercenary>) game.getResponder().getEnemyArmy().getArmy().clone();
+        battle = new Battle();
         army1Queue = battle.queue(ally);
         army2Queue = battle.queue(enemy);
-        random=battle.getKolejka();
+        xy=game.responder.getAttackPriority();
+        if(xy==true){
+random=1;
+        }
+        else{
+random=-1;
+        }
 
         //SETTINGS BUTTON
         TextureRegionDrawable settingsbuttonInactive = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Settings_Button.png"))));
@@ -294,11 +307,27 @@ public class BattleScreen implements Screen {
         {
             game.player.defeat();
             game.setScreen(new GameScreen(game));
+            game.client.refreshShop();
+            while(game.responder.getReposndStatus()==false)
+            {
+                continue;
+            }
+            game.responder.resetRespondStatus();
+            game.player.setMercenaryCamp(game.responder.getMerceneryCamp());
+            game.player.newTurn();
             dispose();
         }
         if(l==enemy.size())
         {
             game.setScreen(new GameScreen(game));
+            game.client.refreshShop();
+            while(game.responder.getReposndStatus()==false)
+            {
+                continue;
+            }
+            game.responder.resetRespondStatus();
+            game.player.setMercenaryCamp(game.responder.getMerceneryCamp());
+            game.player.newTurn();
             dispose();
         }
 

@@ -6,23 +6,17 @@ import java.util.ArrayList;
 public class Battle {
 
 
-    private final ArrayList<Mercenary> army1;
 
-    private final ArrayList<Mercenary> army2;
     private int kolejka = 1;
 
 
     private  int result;
 
-    private final int[] army1Queue;
 
-    private final int[] army2Queue;
 
-    public Battle(ArrayList<Mercenary> player1, ArrayList<Mercenary> player2) {
-        this.army1 = player1;
-        this.army2 = player2;
-        this.army1Queue = queue(this.army1);
-        this.army2Queue = queue(this.army2);
+    public Battle() {
+        this.result = 0;
+
     }
 
     //Zwraca 0 jeśli wygrał Player1, 1 jeśli wygrał Player2
