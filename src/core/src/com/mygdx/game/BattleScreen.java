@@ -69,6 +69,9 @@ public class BattleScreen implements Screen {
     private int[] army1Queue;
     private int[] army2Queue;
 
+    private int[] army1def = new int[5];
+    private int[] army2def = new int[5];
+
     private float time = 0;
     Battle battle;
 
@@ -115,7 +118,7 @@ public class BattleScreen implements Screen {
         VerticalGroup group = new VerticalGroup();
         group.setPosition(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
         group.setSize(Gdx.app.getGraphics().getWidth()*150/2560, Gdx.app.getGraphics().getHeight()*300/1440);
-        group.setDebug(true);
+        //group.setDebug(true);
 
         game.enemy.initArmy(game.responder.getEnemyArmy());
         for(int i = 0; i < game.enemy.getArmy().size(); i++){
@@ -125,14 +128,16 @@ public class BattleScreen implements Screen {
 
         stage.addActor(army2View);
         stage.addActor(armyView);
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
 
 
         for(int i=0;i<game.player.getArmy().size();i++){
             ally.add(game.player.getArmy().get(i));
+            army1def[i]=game.player.getArmy().get(i).getDefense();
         }
         for(int i=0;i<game.getResponder().getEnemyArmy().getArmy().size();i++){
             enemy.add(game.getResponder().getEnemyArmy().getArmy().get(i));
+            army2def[i]=game.getResponder().getEnemyArmy().getArmy().get(i).getDefense();
         }
 
 //        ally = (ArrayList<Mercenary>) game.player.getArmy().clone();
@@ -305,8 +310,16 @@ random=-1;
 
         if (k == ally.size() )
         {
+            for(int i=0;i<game.player.getArmy().size();i++)
+            {
+                game.player.getArmy().get(i).setDefense(army1def[i]);
+            }
             game.player.defeat();
-            game.setScreen(new GameScreen(game));
+            game.client.endBattle(game.player.getHp());
+            while(game.responder.isNextTurn() == false && game.responder.isNextTurn() == false){
+                continue;
+            }
+            game.responder.resetNextTurn();
             game.client.refreshShop();
             while(game.responder.getReposndStatus()==false)
             {
@@ -315,11 +328,20 @@ random=-1;
             game.responder.resetRespondStatus();
             game.player.setMercenaryCamp(game.responder.getMerceneryCamp());
             game.player.newTurn();
+            game.setScreen(new GameScreen(game));
             dispose();
         }
         if(l==enemy.size())
         {
-            game.setScreen(new GameScreen(game));
+            for(int i=0;i<game.player.getArmy().size();i++)
+            {
+                game.player.getArmy().get(i).setDefense(army1def[i]);
+            }
+            game.client.endBattle(game.player.getHp());
+            while(game.responder.isNextTurn() == false && game.responder.isNextTurn() == false){
+                continue;
+            }
+            game.responder.resetNextTurn();
             game.client.refreshShop();
             while(game.responder.getReposndStatus()==false)
             {
@@ -328,6 +350,7 @@ random=-1;
             game.responder.resetRespondStatus();
             game.player.setMercenaryCamp(game.responder.getMerceneryCamp());
             game.player.newTurn();
+            game.setScreen(new GameScreen(game));
             dispose();
         }
 

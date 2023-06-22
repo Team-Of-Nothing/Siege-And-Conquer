@@ -86,8 +86,6 @@ public class Client {
         dataJson.put("hp", playerHp);
         String jsonData = dataJson.toString();
         byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
-        Scanner scanncer = new Scanner(System.in);
-        String armyInformation = scanncer.nextLine();
         try {
             out.write(jsonDataBytes);
         } catch (IOException e) {

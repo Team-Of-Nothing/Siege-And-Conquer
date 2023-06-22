@@ -111,6 +111,9 @@ public class Responder implements Runnable {
     public synchronized boolean isGameStarted(){
         return this.game;
     }
+    public synchronized void resetNextTurn(){
+        this.nextTurn = false;
+    }
 
     public synchronized boolean isNextTurn(){
         return this.nextTurn;
